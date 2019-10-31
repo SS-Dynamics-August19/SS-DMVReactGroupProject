@@ -1,0 +1,98 @@
+body, html {
+    min-height: 100%;
+}
+
+body {
+    background-image: linear-gradient(black, #1E323F);
+    padding: 15px;
+    text-align: center;
+    color: #777;
+    overflow-y: scroll;
+}
+
+div.mainColumn {
+    margin: auto;
+    width: 975px;
+    min-height: 100%;
+    text-align: center;
+}
+
+div.header {
+    background-image: linear-gradient(#6A3, #471);
+    padding: 20px 0 10px 15px;
+    color: #EEE;
+}
+
+div.nav {
+    width: auto;
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: 15px;
+}
+
+ul.list-inline {
+    background-color: #333;
+}
+
+li.nav-list {
+    padding: 15px;
+}
+
+    li.nav-list:hover {
+        background-color: #111;
+    }
+
+    li.nav-list:active {
+        background-color: #000;
+    }
+
+li.active-nav-list {
+    background-color: white;
+    padding: 15px;
+}
+
+.list-inline-item a {
+    color: #77F;
+}
+
+div.content {
+    background: white;
+    line-height: 1.5em;
+    margin-top: -16px;
+}
+
+div.home {
+    padding: 18px 25px 18px 25px;
+    text-align: left;
+}
+
+table.CRMTable {
+    width: 100%;
+    margin-top: -1px;
+}
+
+table.CRMTable, th.CRMTable, td.CRMTable {
+    padding: 3px;
+}
+
+th.CRMTable, td.CRMTable {
+    text-align: center;
+}
+
+th.CRMTable {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+tr.CRMTable:nth-child(even) {
+    background-color: #EEE;
+}
+
+div.footer {
+    background-image: linear-gradient(#871E08, #681706);
+    padding: 8px 18px 8px 18px;
+    color: #AAA;
+    font-size: 0.8em;
+    line-height: 1.5em;
+}
