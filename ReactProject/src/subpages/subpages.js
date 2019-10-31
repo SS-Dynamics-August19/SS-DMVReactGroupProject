@@ -1,3 +1,4 @@
+import React from 'react';
 import Login from '../components/login.js';
 
 class Subpage {
@@ -23,6 +24,7 @@ class Subpage {
 
 const subpages = [
     new Subpage(Login, "/", function(props) { return (props.login === undefined ? "Log In" : "Log Out") }),
+    new Subpage("", "/Applications", "Applications")
 ];
 
 export default subpages;

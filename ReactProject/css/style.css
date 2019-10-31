@@ -23,18 +23,18 @@ div.header {
     color: #EEE;
 }
 
-div.nav {
-    width: auto;
-    margin-left: auto;
-    margin-right: 0;
+nav {
+    min-width: 100%;
     margin-top: 15px;
+    text-align: left;
 }
 
-ul.list-inline {
-    background-color: #333;
+li.nav-list, li.active-nav-list {
+    display: inline-flex;
 }
 
 li.nav-list {
+    background-color: #333;
     padding: 15px;
 }
 

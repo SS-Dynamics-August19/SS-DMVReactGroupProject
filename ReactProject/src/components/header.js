@@ -1,29 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import subpages from '../subpages/subpages.js';
 
-const header = function(props) {
+let header = function(props) {
     return(
         <div>
             <div className="header">
                 <h1>React MS Dynamics DMV Staff Portal</h1>
             </div>
-            <div className="nav">
-                <nav>
-                    <ul className="list-inline">
-                        {renderNavItems(props)}
-                    </ul>
-                </nav>
-            </div>
+            <nav>
+                <ul className="list-inline">
+                    {renderNavItems(props)}
+                </ul>
+            </nav>
         </div>
     );
 }
+
+header.propTypes = {
+    currentPath: PropTypes.string,
+    navCallback: PropTypes.func.isRequired
+};
 
 const renderNavItems = function(props) {
     let ret = [];
     for (let i = 0; i < subpages.length; i++) {
         let subpage = subpages[i];
-        subpage.active = (subpage.href === props.currentPage);
+        subpage.active = (subpage.href === props.currentPath);
         let JSX  = toJSX(subpage, props)
         ret.push(JSX);
     }
@@ -41,10 +45,14 @@ const toJSX = function(subpage, props) {
     }
 
     return (
-        <Link key={label} to={subpage.path} replace>
+        <Link key={label} to={subpage.path} replace onClick={function () { props.navCallback(subpage.path); }}>
             <li className="nav-list"> {label} </li>
         </Link>
     );
 }
+
+toJSX.propTypes = {
+    navCallback: PropTypes.func.isRequired
+};
 
 export default header;
