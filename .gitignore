@@ -1,0 +1,6 @@
+**/ReactProject/node_modules
+**/ReactProject/.vscode
+**/ReactProject/dist
+**/ReactProject/package-lock.json
+**/ReactProject/.vs
+**/.vs
