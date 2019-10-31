@@ -7,7 +7,7 @@ import Content from './content.js';
 import Footer  from './footer.js';
 
 
-export class App extends React.Component {
+export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,16 +19,14 @@ export class App extends React.Component {
     render() {
         return(
             <div className="mainColumn">
-                <Header login={this.state.login} currentPath={this.state.currentPath} />
+                <Header login={this.state.login} currentPath={this.state.currentPath} navCallback={this.setPath.bind(this)} />
                 <Content {...this.state} />
                 <Footer />
             </div>
         );
     }
 
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
+    setPath(path) {
+        this.setState({currentPath: path});
     }
 }
