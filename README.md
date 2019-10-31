@@ -15,4 +15,4 @@ To update from github master into local repository use command
 git pull origin master
 
 
-test1
+test2
