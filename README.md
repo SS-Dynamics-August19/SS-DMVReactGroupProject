@@ -11,8 +11,7 @@ initial setup of project in visual studio code
 
 https://gist.github.com/jedmao/5053440
 
-To update from github master into local repository use command
-git pull origin master
-
-
-test2
+1. Link to the Central Repository
+	git remote add upstream https://github.com/SS-Dynamics-August19/SS-DMVReactGroupProject.git
+2. Pull Changes from upstream (Central Repository)
+	git pull upstream master
