@@ -10,9 +10,3 @@ initial setup of project in visual studio code
 7. To view the project, go to the url listed near the end of the console after npm start finishes (ex: Server started http://localhost:9090)
 
 https://gist.github.com/jedmao/5053440
-
-1. Link to the Central Repository
-	git remote add upstream https://github.com/SS-Dynamics-August19/SS-DMVReactGroupProject.git
-2. Pull Changes from upstream (Central Repository)
-	git pull upstream master
-3.test3
