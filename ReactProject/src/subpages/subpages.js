@@ -1,4 +1,4 @@
-import Login from '../components/login.js';
+import Login from '../components/Login/componentLogin.js';
 
 class Subpage {
     constructor(componentReference, path, navLabel) {

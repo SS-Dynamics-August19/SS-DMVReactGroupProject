@@ -6,7 +6,7 @@ import React from 'react'
  * Todo: talk with team about state of the component
  */
 
-export class Login extends React.Component {
+export default class Login extends React.Component {
     constructor() {
         super()
         this.state = {
@@ -15,10 +15,6 @@ export class Login extends React.Component {
             password : ''
             }
         }
-
-        this.usernameFieldChange = this.usernameFieldChange.bind(this)
-        this.passwordFieldChange = this.passwordFieldChange.bind(this)
-        this.submitCredintials = this.submitCredintials.bind(this);
     }
 
 
@@ -37,7 +33,7 @@ export class Login extends React.Component {
      * @param event ~ onChangeEvent  
      * ? Will set state work or should we just mutate state directly 
      */
-    usernameFieldChange(e) {
+    usernameFieldChange() {
         /**
          * Will set the username in the information object
          */
@@ -49,7 +45,7 @@ export class Login extends React.Component {
      * @param event ~ onChangeEvent  
      * ? Will set state work or should we just mutate state directly 
      */
-    passwordFieldChange(e) {
+    passwordFieldChange() {
         /**
          * Will set the password in the information object
          */
@@ -65,16 +61,16 @@ export class Login extends React.Component {
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
-                            <input type="text" name="username" placeholder="username.." onChange={this.usernameFieldChange}/>//input username field with an 'onChange' event
+                            <input type="text" name="username" placeholder="username.." onChange={this.usernameFieldChange.bind(this)}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Username</label>
-                            <input type="password" name="password" placeholder="password.." onChange={this.passwordFieldChange}/>//input password field with an 'onChange' event
+                            <input type="password" name="password" placeholder="password.." onChange={this.passwordFieldChange.bind(this)}/>
                         </div>
                     </div>
                 </div>
                 <div className="footer">
-                    <button type="button" className="btn" onClick={submitCredintials}>Login</button>//button  to validate user
+                    <button type="button" className="btn" onClick={this.submitCredintials.bind(this)}>Login</button>
                 </div>
             </div>
         );
