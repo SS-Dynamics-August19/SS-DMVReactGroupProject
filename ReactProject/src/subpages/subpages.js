@@ -1,6 +1,6 @@
 import Subpage from './Subpage.js';
 
-import Login         from '../components/login.js';
+import Login from '../components/Login/componentLogin.js';
 import CustomersView from '../components/views/CustomersView.js';
 
 const subpages = [
