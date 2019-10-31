@@ -21,7 +21,7 @@ export default class Login extends React.Component {
     /**
      * *Bind the login button to a trigger event
      */
-    submitCredintials() {
+    submitCredentials() {
         /***
          * Will be tied to the login button from the form
          */
@@ -70,7 +70,7 @@ export default class Login extends React.Component {
                     </div>
                 </div>
                 <div className="footer">
-                    <button type="button" className="btn" onClick={this.submitCredintials.bind(this)}>Login</button>
+                    <button type="button" className="btn" onClick={this.submitCredentials.bind(this)}>Login</button>
                 </div>
             </div>
         );
