@@ -1,0 +1,10 @@
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\bin\Debug\DMVVinDecodePlugin.dll
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\bin\Debug\DMVVinDecodePlugin.pdb
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\bin\Debug\Microsoft.Crm.Sdk.Proxy.dll
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\bin\Debug\Microsoft.Xrm.Sdk.dll
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\bin\Debug\Microsoft.Crm.Sdk.Proxy.xml
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\bin\Debug\Microsoft.Xrm.Sdk.xml
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\obj\Debug\DMVVinDecodePlugin.csprojAssemblyReference.cache
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\obj\Debug\DMVVinDecodePlugin.csproj.CopyComplete
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\obj\Debug\DMVVinDecodePlugin.dll
+C:\Users\chris\source\repos\DMVVinDecodePlugin\DMVVinDecodePlugin\obj\Debug\DMVVinDecodePlugin.pdb
