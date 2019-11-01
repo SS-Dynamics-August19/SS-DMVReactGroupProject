@@ -23,18 +23,18 @@ div.header {
     color: #EEE;
 }
 
-div.nav {
-    width: auto;
-    margin-left: auto;
-    margin-right: 0;
+nav {
+    min-width: 100%;
     margin-top: 15px;
+    text-align: left;
 }
 
-ul.list-inline {
-    background-color: #333;
+li.nav-list, li.active-nav-list, .shrink-wrap {
+    display: inline-flex;
 }
 
 li.nav-list {
+    background-color: #333;
     padding: 15px;
 }
 
@@ -55,15 +55,18 @@ li.active-nav-list {
     color: #77F;
 }
 
+div.footer {
+    background-image: linear-gradient(#871E08, #681706);
+    padding: 8px 18px 8px 18px;
+    color: #AAA;
+    font-size: 0.8em;
+    line-height: 1.5em;
+}
+
 div.content {
     background: white;
     line-height: 1.5em;
     margin-top: -16px;
-}
-
-div.home {
-    padding: 18px 25px 18px 25px;
-    text-align: left;
 }
 
 table.CRMTable {
@@ -80,19 +83,35 @@ th.CRMTable, td.CRMTable {
 }
 
 th.CRMTable {
-    background-color: #333;
-    color: white;
+    background-color: white;
+    color: black;
     font-weight: bold;
 }
 
-tr.CRMTable:nth-child(even) {
+tr.CRMTable:nth-child(odd) {
     background-color: #EEE;
 }
 
-div.footer {
-    background-image: linear-gradient(#871E08, #681706);
-    padding: 8px 18px 8px 18px;
-    color: #AAA;
-    font-size: 0.8em;
-    line-height: 1.5em;
+div.form {
+    border: 1px solid black;
+    margin: 15px;
+    padding: 15px;
+    display: inline;
+}
+
+label {
+    font-weight: bold;
+    color: black;
+}
+
+input {
+    font-weight: bold;
+    color: black;
+}
+
+.button {
+    border: 3px outset #592;
+    background-color: #592;
+    font-weight: bold;
+    color: white;
 }
