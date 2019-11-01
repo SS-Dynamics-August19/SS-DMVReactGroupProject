@@ -8,5 +8,5 @@ initial setup of project in visual studio code
 5. open terminal and type npm install.
 6. Once previous step is complete, type in terminal npm start.
 7. To view the project, go to the url listed near the end of the console after npm start finishes (ex: Server started http://localhost:9090)
-1313
+
 https://gist.github.com/jedmao/5053440
