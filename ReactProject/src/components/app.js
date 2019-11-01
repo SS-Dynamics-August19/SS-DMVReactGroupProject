@@ -5,7 +5,7 @@ import React from 'react';
 import Header  from './header.js';
 import Content from './content.js';
 import Footer  from './footer.js';
-//import Optionset from './optionset.js';       // uncomment to use option set component
+//import Optionset from './optionset.js';   // uncomment to use component
 
 import stores  from '../stores/DataStores.js';
 
@@ -13,7 +13,7 @@ import {State} from "../constants/DataLoaderConstants.js";
 
 // test block for option set component
 // place in return of render() to test
-// currentValue prop is optional
+// current value is optional
 /*
 <Optionset 
     opset={[{name: "test1", value: "test1"}, {name: "test2", value: "test2"}, {name: "test3", value: "test3"}, {name: "test4", value: "test4"}]} 
