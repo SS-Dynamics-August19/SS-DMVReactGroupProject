@@ -24,7 +24,7 @@ const view = function(props) {
 }
 
 view.propTypes = {
-    stores: PropTypes.array.isRequired
+    stores: PropTypes.object.isRequired
 };
 
 export default view;

@@ -49,7 +49,7 @@ export default class App extends React.Component {
 
     componentWillUnmount() {
         for (let type in stores) {
-            let store = stores[i];
+            let store = stores[type];
             store.removeChangeListener(this._onStoreChange.bind(this, store.type));
         }
     }
