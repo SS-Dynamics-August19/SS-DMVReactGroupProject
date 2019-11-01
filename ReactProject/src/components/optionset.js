@@ -8,34 +8,36 @@ import PropTypes from 'prop-types';
  * Input Parameters: props with array called opset where each index includes name
  *              and value, and a starting value
  *           ex: props {
- *                  opset[] = [{ name: value: }, { name: value: }]
- *                  startValue
- *                  updateValue()
+ *                  opset[] = [{ name: value: }, { name: value: }]     (required)
+ *                  currentValue                                       (optional)
+ *                  updateValue(returnValue)                           (required)
  *              } 
  * Input: none
- * Output: makes a call to callback function updateValue in props
+ * Output: makes a call to callback function updateValue in props passing the changed value of
+ *          the option set as a parameter
  * Return: jsx object of html select input
  ********************************/
 const Optionset = (props) => {
     // create variables list
     let optionsList = "";
-    let currentValue = props.value;
 
+    // function for on change of the option set
+    // makes a call to the callback function
     const handleChange = (event) => {
-        currentValue = event.target.value;
-        props.updateValue(currentValue);
+        props.updateValue(event.target.value);
     }
 
+    // creates the option jsx object from object passed by map
     const makeOption = (opt) => {
         return (
-            <option value={opt.value}>{opt.name}</option>
+            <option key={opt.value} value={opt.value}>{opt.name}</option>
         );
     }
 
     // map each in option set list to optionsList
     optionsList = (
         
-        <select value={currentValue} onChange={handleChange}>
+        <select defaultValue={props.currentValue} onChange={handleChange}>
             <option value=""></option>
             {props.opset.map(makeOption, this)}
         </select>
@@ -51,8 +53,8 @@ const Optionset = (props) => {
 
 Optionset.propTypes = {
     opset: PropTypes.array.isRequired,
-    value: PropTypes.string,
-    updateValue: PropTypes.func
+    currentValue: PropTypes.string,
+    updateValue: PropTypes.func.isRequired
 }
 
 export default Optionset;

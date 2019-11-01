@@ -5,11 +5,22 @@ import React from 'react';
 import Header  from './header.js';
 import Content from './content.js';
 import Footer  from './footer.js';
-import Optionset from './optionset.js';
+//import Optionset from './optionset.js';       // uncomment to use option set component
 
 import stores  from '../stores/DataStores.js';
 
 import {State} from "../constants/DataLoaderConstants.js";
+
+// test block for option set component
+// place in return of render() to test
+// currentValue prop is optional
+/*
+<Optionset 
+    opset={[{name: "test1", value: "test1"}, {name: "test2", value: "test2"}, {name: "test3", value: "test3"}, {name: "test4", value: "test4"}]} 
+    currentValue={"test3"} 
+    updateValue={(retValue)=>{alert(retValue);}} 
+/>
+*/
 
 
 export default class App extends React.Component {
@@ -30,7 +41,6 @@ export default class App extends React.Component {
     render() {
         return(
             <div className="mainColumn">
-                <Optionset opset={[{name: "test1", value: "test1"}, {name: "test2", value: "test2"}, {name: "test3", value: "test3"}, {name: "test4", value: "test4"}]} value={""} updateValue={(retValue)=>{alert(retValue);}} />
                 <Header login={this.state.login} currentPath={this.state.currentPath} navCallback={this.setPath.bind(this)} />
                 <Content {...this.state} />
                 <Footer />
