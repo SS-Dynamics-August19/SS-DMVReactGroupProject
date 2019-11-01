@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
  *          the option set as a parameter
  * Return: jsx object of html select input
  ********************************/
-const Optionset = (props) => {
+let Optionset = (props) => {
     // create variables list
     let optionsList = "";
 
