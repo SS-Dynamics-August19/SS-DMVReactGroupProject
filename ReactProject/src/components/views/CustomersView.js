@@ -12,11 +12,10 @@ let _COLUMNS = [
     {header: "Phone", key: "madmv_phonenumber"}
 ]
 
-const view = function(props) {
+const view = function() {
     return (
         <CRMView
             dataType   = {_DATA_TYPE}
-            tableState = {props.stores[_DATA_TYPE]}
             rowKey     = {_ROW_KEY}
             columns    = {_COLUMNS}
         />

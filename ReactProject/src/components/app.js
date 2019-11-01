@@ -9,8 +9,6 @@ import Footer  from './footer.js';
 
 import stores  from '../stores/DataStores.js';
 
-import {State} from "../constants/DataLoaderConstants.js";
-
 // test block for option set component
 // place in return of render() to test
 // current value is optional
@@ -26,16 +24,7 @@ import {State} from "../constants/DataLoaderConstants.js";
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            login:       undefined,
-            currentPath: "/",
-            stores: {
-                customer: {
-                    records:   [],
-                    readState: State.DEFAULT
-                }
-            }
-        }
+        this.state = { currentPath: "/" };
     }
 
     render() {
@@ -66,11 +55,7 @@ export default class App extends React.Component {
         }
     }
 
-    _onStoreChange(type) {
-        let update = {};
-        update.stores = {};
-        update.stores[type] = stores[type].getData();
-
-        this.setState(update);
+    _onStoreChange() {
+        this.forceUpdate();
     }
 }

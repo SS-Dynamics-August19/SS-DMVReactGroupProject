@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader             from '../../actions/DataLoader.js';
+import stores                 from '../../stores/dataStores.js';
 
 export default class CRMView extends React.Component {
     render() {
@@ -13,7 +14,7 @@ export default class CRMView extends React.Component {
     }
 
     getContent() {
-        let state = this.props.tableState.readState;
+        let state = stores[this.props.dataType].data.readState;
         switch (state) {
             case State.DEFAULT:
                 return this.getDefaultContent();
@@ -24,9 +25,16 @@ export default class CRMView extends React.Component {
             case State.FAILURE:
                 return this.getFailureContent();
         }
+        return this.getStartedContent();
     }
 
-    getDefaultContent() { return "Error..."; }
+    getDefaultContent() {
+        return (
+            <div className="alert alert-danger" role="alert">
+                Loading did not start.
+            </div>
+        );
+    }
 
     getStartedContent() {
         return (
@@ -75,7 +83,7 @@ export default class CRMView extends React.Component {
     }
 
     getTableBodyContent() {
-        let tableData = this.props.tableState.records;
+        let tableData = stores[this.props.dataType].data.records;
         return tableData.map(this.createTableRow, this);
     }
     
@@ -118,7 +126,7 @@ export default class CRMView extends React.Component {
     }
 
     needsToLoad() {
-        return (this.props.tableState.readState != State.SUCCESS);
+        return (stores[this.props.dataType].data.readState != State.SUCCESS);
     }
 
     loadFromCRM() {
@@ -143,7 +151,6 @@ export default class CRMView extends React.Component {
 
 CRMView.propTypes = {
     dataType:   PropTypes.string.isRequired,
-    tableState: PropTypes.object.isRequired,
     rowKey:     PropTypes.string.isRequired,
     columns:    PropTypes.array.isRequired
 };
