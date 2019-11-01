@@ -28,9 +28,16 @@ export function Lookup(props) {
         alert("this worked");
     }
 
+    for (const [key, value] of Object.entries(record)) {//create a list with the fields and values
+        infoAsList.push(<li>{key} | {value}</li>)
+    }
+
 
     return (
         <div>
+            <ul>
+                {infoAsList}
+            </ul>
             This Worked!!! USE RECORD HERE (IT NOW HOLDS THE RETURNED RECORD)!!! 
         </div>
     );
