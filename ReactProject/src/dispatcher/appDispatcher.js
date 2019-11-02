@@ -1,7 +1,6 @@
-import { Dispatcher } from 'flux';
+import { Dispatcher } from "flux";
 
-class DispatcherClass extends Dispatcher {
-}
+class DispatcherClass extends Dispatcher {}
 
 const AppDispatcher = new DispatcherClass();
 
