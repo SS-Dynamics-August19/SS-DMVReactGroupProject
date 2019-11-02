@@ -3,3 +3,4 @@
 **/.vs
 **/dist
 **/package-lock.json
+**/sscc.sh
