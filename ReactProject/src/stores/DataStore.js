@@ -23,9 +23,13 @@ export default class DataStore extends EventEmitter {
 
   actionHandler(action) {
     let dataAction = constant.ACTION_PREFIX + this.type;
+    let updateAction = 'update_' + this.type;
     let started = dataAction + constant.STARTED_SUFFIX;
     let success = dataAction + constant.SUCCESS_SUFFIX;
     let failure = dataAction + constant.FAILURE_SUFFIX;
+    let updateStarted = updateAction + '_started';
+    let updateSuccess = updateAction + '_success';
+    let updateFailure = updateAction + '_failure';
 
     switch (action.actionType) {
       case success:
@@ -40,6 +44,12 @@ export default class DataStore extends EventEmitter {
         this.data.readState = State.STARTED;
         this.onStarted(action);
         break;
+      case updateStarted:
+        break;
+      case updateSuccess:
+        break;
+      case updateFailure:
+          break;
       default:
         return;
     }
