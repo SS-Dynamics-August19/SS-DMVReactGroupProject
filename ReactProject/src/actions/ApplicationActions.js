@@ -7,7 +7,6 @@
  *************************************/
 import Dispatcher from '../dispatcher/appDispatcher.js';
 import axios from 'axios';
-import ExternalURL from '../constants/DataLoaderConstants.js';
 
 /*
 Functions included in file
@@ -23,14 +22,21 @@ const ApplicationActions = {
         Dispatcher.dispatch({
             actionType: 'update_application_started'
         });
-        // build uri
-        let uri = ExternalURL.DYNAMICS_PREFIX + "application(" + id + ")/";
+        // build uri and headers
+        let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications(" + id + ")";
+        let config = {
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        }
 
         // make axios put call
-        axios.patch(uri, application)
+        axios.patch(uri, application, config)
                 .then(res => {
                     Dispatcher.dispatch({
                         actionType: 'update_application_success',
+                        data: res.data
                     });
                 })
                 .catch( (error) => {
