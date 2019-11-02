@@ -21,125 +21,8 @@ export default class CRMView extends React.Component {
       case State.FAILURE:
         return this.getFailureContent();
     }
-<<<<<<< HEAD
     return this.getStartedContent();
   }
-
-  getDefaultContent() {
-    return (
-      <div className="alert alert-danger" role="alert">
-        Loading did not start.
-      </div>
-    );
-  }
-
-  getStartedContent() {
-    return (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-  getSuccessContent() {
-    return (
-      <table className="CRMTable">
-        <thead>{this.getTableHeaderContent()}</thead>
-        <tbody>{this.getTableBodyContent()}</tbody>
-      </table>
-    );
-  }
-
-  getTableHeaderContent() {
-    return <tr className="CRMTable">{this.createHeaderRowCells()}</tr>;
-  }
-
-  createHeaderRowCells() {
-    let columns = this.props.columns;
-    let ret = [];
-
-    columns.forEach(function(column) {
-      ret.push(
-        <th key={column.header} className="CRMTable">
-          {column.header}
-        </th>
-      );
-    });
-
-    return ret;
-  }
-
-  getTableBodyContent() {
-    let tableData = stores[this.props.dataType].data.records;
-    return tableData.map(this.createTableRow, this);
-  }
-
-  createTableRow(record) {
-    let key = record[this.props.rowKey];
-
-    return (
-      <tr key={key} className="CRMTable">
-        {this.createTableRowCells(record, key)}
-      </tr>
-    );
-  }
-
-  createTableRowCells(record, keyPrefix) {
-    let columns = this.props.columns;
-    let ret = [];
-
-    columns.forEach(function(column) {
-      ret.push(
-        <td key={keyPrefix + ":" + column.key} className="CRMTable">
-          {record[column.key]}
-        </td>
-      );
-    });
-
-    return ret;
-  }
-
-  getFailureContent() {
-    return (
-      <div className="alert alert-danger" role="alert">
-        Error while loading!
-      </div>
-    );
-  }
-
-  componentDidMount() {
-    if (this.needsToLoad()) this.loadFromCRM();
-  }
-
-  needsToLoad() {
-    return stores[this.props.dataType].data.readState != State.SUCCESS;
-  }
-
-  loadFromCRM() {
-    let dataType = this.props.dataType;
-    let query = this.generateQuery();
-    new DataLoader(query, dataType).load();
-  }
-
-  generateQuery() {
-    let columns = this.props.columns;
-    let rowKey = this.props.rowKey;
-
-    let query =
-      ExternalURL.DYNAMICS_PREFIX +
-      this.props.dataType +
-      ExternalURL.DYNAMICS_SUFFIX +
-      rowKey;
-    for (let i = 0; i < columns.length; i++) {
-      let key = columns[i].key;
-      query += "," + key;
-    }
-
-    return query;
-  }
-=======
 
     getDefaultContent() {
         return (
@@ -286,7 +169,6 @@ export default class CRMView extends React.Component {
 
         return query;
     }
->>>>>>> ffe8999360cf44e22e71ad37e4cc84c130a78eef
 }
 
 CRMView.propTypes = {
