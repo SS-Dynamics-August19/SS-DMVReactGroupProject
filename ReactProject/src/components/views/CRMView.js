@@ -84,7 +84,32 @@ export default class CRMView extends React.Component {
 
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;
+     
+
+        // check if tableData contains application info & replace appl.type digits with label
+        if (tableData.some(ob => ob.madmv_applicationtype)) {
+            tableData.forEach(obj => {
+             switch(obj.madmv_applicationtype) {
+                 case 876570000:
+                  obj.madmv_applicationtype = "Vehicle Registration";
+                  break;
+                  case 876570001:
+                   obj.madmv_applicationtype = "Address Change";
+                   break;
+                  case 876570002:
+                   obj.madmv_applicationtype = "New Driving License";
+                   break;
+                   case 876570003:
+                   obj.madmv_applicationtype = "Driving License Renewal";
+                   break;
+               }
+
+            })
+        
+        }
+
         return tableData.map(this.createTableRow, this);
+        
     }
     
     
@@ -92,7 +117,7 @@ export default class CRMView extends React.Component {
         let key = record[this.props.rowKey];
 
         return (
-            <tr key={key} className="CRMTable">
+           <tr key={key} className="CRMTable">
                 {this.createTableRowCells(record, key)}
             </tr>
         );
@@ -106,7 +131,7 @@ export default class CRMView extends React.Component {
             ret.push(
                 <td key={keyPrefix + ":" + column.key} className="CRMTable">
                     { record[column.key] }
-                </td>
+                </td> 
             );
         });
 
@@ -143,6 +168,7 @@ export default class CRMView extends React.Component {
         for (let i = 0; i < columns.length; i++) {
             let key = columns[i].key;
             query += "," + key;
+
         }
 
         return query;
