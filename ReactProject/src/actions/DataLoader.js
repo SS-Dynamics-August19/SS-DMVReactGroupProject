@@ -23,6 +23,7 @@ export default class DataLoader {
     }
 
     signalLoadSuccess(result) {
+        console.log(result);
         let successSignal = { actionType: constant.ACTION_PREFIX + this.prefix + constant.SUCCESS_SUFFIX, data: result.data.value };
         DataLoader.signal(successSignal);
     }
