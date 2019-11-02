@@ -31,7 +31,7 @@ export default class App extends React.Component {
         return(
             <div className="mainColumn">
                 <Header login={this.state.login} currentPath={this.state.currentPath} navCallback={this.setPath.bind(this)} />
-                <Content {...this.state} />
+                <Content {...this.state}/>
                 <Footer />
             </div>
         );
