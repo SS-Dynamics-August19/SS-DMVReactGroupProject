@@ -1,6 +1,9 @@
 import Dispatcher from "../Dispatcher/AppDispatcher";
 import { EventEmitter } from "events";
 
+
+
+const CHANGE = "change";
 //*********FOR CREATOR COMPONENT*********\\
 let _creating = {
   status: {

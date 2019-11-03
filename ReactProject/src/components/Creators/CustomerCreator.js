@@ -252,6 +252,6 @@ const capitalize = s => {
 };
 
 //validate proptypes
-Creator.propTypes = {
+CustomerCreator.propTypes = {
   creationStatus: PropTypes.object.isRequired
 };

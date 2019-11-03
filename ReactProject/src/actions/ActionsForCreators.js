@@ -1,4 +1,12 @@
 import Dispatcher from "../dispatcher/appDispatcher";
+import Axios from "axios";
+
+const config = {
+  'OData-MaxVersion': 4.0,
+  'OData-Version': 4.0,
+  'Accept': 'application/json',
+  'Content-Type': 'application/json; charset=utf-8'
+}
 
 //***ACTIONS PERFORMED BY THE CREATOR COMPONENT***\\
 export const ActionsForCreator = {
@@ -23,7 +31,7 @@ export const ActionsForCreator = {
     Dispatcher.dispatch({
       actionType: "creating_record"
     });
-    Xrm.WebApi.online.createRecord("madmv_ma_customer", customer)
+    Axios.post("https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers",customer,config)
       .then(res => {
         Dispatcher.dispatch({
           actionType: "created_successfully",
@@ -44,15 +52,15 @@ export const ActionsForCreator = {
   createVehicle: function(description) {
     //build record object (vehicle) for CRM from parameter object (description)
     var vehicle = {};
-    vehicle.madmv_yearmodel = "";
-    vehicle.madmv_vehiclemake = "";
-    vehicle.madmv_modelorseries = "";
-    vehicle.madmv_vehicleidnumber = "";
+    vehicle.madmv_yearmodel = description.year;
+    vehicle.madmv_vehiclemake = description.make;
+    vehicle.madmv_modelorseries = description.model;
+    vehicle.madmv_vehicleidnumber = description.vin;
 
     Dispatcher.dispatch({
       actionType: "creating_record"
     });
-    Xrm.WebApi.online.createRecord("madmv_ma_vehicle", vehicle)
+    Axios.post("https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles",vehicle,config)
       .then(res => {
         Dispatcher.dispatch({
           actionType: "created_successfully",
@@ -67,3 +75,31 @@ export const ActionsForCreator = {
       });
   }
 };
+
+// var entity = {};
+// entity.madmv_yearmodel = "";
+// entity.madmv_vehiclemake = "";
+// entity.madmv_modelorseries = "";
+// entity.madmv_vehicleidnumber = "";
+
+// *To make xhr req
+// var req = new XMLHttpRequest();
+// req.open("POST", Xrm.Page.context.getClientUrl() + "/api/data/v9.1/madmv_ma_vehicles", true);
+// req.setRequestHeader("OData-MaxVersion", "4.0");
+// req.setRequestHeader("OData-Version", "4.0");
+// req.setRequestHeader("Accept", "application/json");
+// req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+// req.onreadystatechange = function() {
+//     if (this.readyState === 4) {
+//         req.onreadystatechange = null;
+//         if (this.status === 204) {
+//             var uri = this.getResponseHeader("OData-EntityId");
+//             var regExp = /\(([^)]+)\)/;
+//             var matches = regExp.exec(uri);
+//             var newEntityId = matches[1];
+//         } else {
+//             Xrm.Utility.alertDialog(this.statusText);
+//         }
+//     }
+// };
+// req.send(JSON.stringify(entity));
