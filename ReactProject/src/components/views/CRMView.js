@@ -166,6 +166,17 @@ export default class CRMView extends React.Component {
                }
 
             })
+
+            tableData.forEach(obj => {
+                if(obj.madmv_appid === null) 
+                     obj.madmv_appid = " ";
+                if(obj.madmv_applicationtype === null) 
+                    obj.madmv_applicationtype = " ";
+                if(obj.applicationsubject === null)
+                    obj.madmv_applicationsubject = " ";
+           
+                    
+                  })
         
         }
 

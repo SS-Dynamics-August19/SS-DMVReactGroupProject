@@ -5,7 +5,7 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 
-export default class CRMViewContact extends React.Component {
+export default class CRMViewVehicle extends React.Component {
   render() {
     return <div>{this.getContent()}</div>;
   }
@@ -50,65 +50,68 @@ export default class CRMViewContact extends React.Component {
 
             {
     
-              label:'Name',
-    
-              field:'madmv_fullname',
-    
-            },
-    
-            {
-    
-              label:'Age',
-    
-              field:'madmv_age',
-    
-            },
-    
-            {
-    
-              label:'SSN',
-    
-              field:'madmv_cssn',
-    
-            },
-            {
-    
-                label:'Email',
+                label:'Year Model',
       
-                field:'madmv_email',
+                field:'madmv_yearmodel',
       
               },
-              {
+            
+            {
     
-                label:'Phone',
+              label:'Vehicle Make',
+    
+              field:'madmv_vehiclemake',
+    
+            },
+            {
+    
+           
+                label:'Vehicle Identification Number',
       
-                field:'madmv_phonenumber',
+            
+                field:'madmv_vehicleidnumber',
       
-              }
+            },
+            {
+    
+                label:'License Plate Number',
+      
+            
+                field:'madmv_licenseplate',
+      
+            },
+    
+            
+            {
+    
+                label:'Creation Time',
+      
+            
+                field:'createdon',
+      
+            }
           ],
 
     
           rows: this.getTableBodyContent(),
     
         }
-        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
-        {
-            return (
-                <Row className ="mb-4">
-                        <Col md="12">
-                            <Card>
-                                <CardBody>
-                                    <MDBDataTable
-                                        striped
-                                        bordered
-                                        hover
-                                        data={content}
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Col>
+        return (
+            <Row className ="mb-4">
+                    <Col md="12">
+                        <Card>
+                            <CardBody>
+                                <MDBDataTable
+                                    striped
+                                    bordered
+                                    hover
+                                    data={content}
+                                 />
+                             </CardBody>
+                         </Card>
+                    </Col>
                 </Row>
-            );
+
 
 
 
@@ -122,8 +125,7 @@ export default class CRMViewContact extends React.Component {
                     {this.getTableBodyContent()}
                 </tbody>    
             </table>*/
-        
-        }
+        );
     }
 /*
     getTableHeaderContent() {
@@ -149,52 +151,31 @@ export default class CRMViewContact extends React.Component {
         return ret;
     }
 */
+
+//this will now be use to make sure the data is in correct format so the datata can run successful
+//without any null error
     getTableBodyContent() {
+     
         let tableData = stores[this.props.dataType].data.records;
-        tableData.forEach(obj => {
-            if(obj.madmv_fullname === null) 
-                 obj.madmv_fullname = " ";
-            if(obj.madmv_age === null) 
-                obj.madmv_age = " ";
-            if(obj.madmv_cssn === null)
-                obj.madmv_cssn = " ";
-            if(obj.madmv_email === null)
-                obj.madmv_email = " ";
-            if(obj.madmv_phonenumber === null)
-                obj.madmv_phonenumber = " ";
+           
+
+          tableData.forEach(obj => {
+            if(obj.madmv_yearmodel === null) 
+                 obj.madmv_yearmodel = " ";
+            if(obj.madmv_vehiclemake === null) 
+                obj.madmv_vehiclemake = " ";
+            if(obj.madmv_licenseplate === null)
+                obj.madmv_licenseplate = " ";
+            if(obj.madmv_vehicleidnumber === null)
+                obj.madmv_vehicleidnumber = " ";
+                
               })
             
         
         console.log(tableData)
-  
+
         return tableData
-  
-        /* //obsolete code.
-        // check if tableData contains application info & replace appl.type digits with label
-        if (tableData.some(ob => ob.madmv_applicationtype)) {
-            tableData.forEach(obj => {
-             switch(obj.madmv_applicationtype) {
-                 case 876570000:
-                  obj.madmv_applicationtype = "Vehicle Registration";
-                  break;
-                  case 876570001:
-                   obj.madmv_applicationtype = "Address Change";
-                   break;
-                  case 876570002:
-                   obj.madmv_applicationtype = "New Driving License";
-                   break;
-                   case 876570003:
-                   obj.madmv_applicationtype = "Driving License Renewal";
-                   break;
-               }
-
-            })
         
-        } */
-
-
-
-            
     }
     
    /* 
@@ -260,7 +241,7 @@ export default class CRMViewContact extends React.Component {
     }
 }
 
-CRMViewContact.propTypes = {
+CRMViewVehicle.propTypes = {
   dataType: PropTypes.string.isRequired,
   rowKey: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired
