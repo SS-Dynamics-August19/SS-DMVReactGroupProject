@@ -1,4 +1,8 @@
 import React from "react";
+import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
+import DataLoader from "../../actions/DataLoader.js";
+import stores from "../../stores/dataStores.js";
+
 
 /**
  * Create layout for a login page
@@ -13,9 +17,22 @@ export default class Login extends React.Component {
       information: {
         //should change on field change to match user input
         username: "",
-        password: ""
+        password: "",
       }
     };
+
+    //this.submit = this.submit.bind(this);
+    this.usernameFieldChange = this.usernameFieldChange.bind(this);
+    this.passwordFieldChange = this.passwordFieldChange.bind(this);
+  }
+
+
+  componentDidMount() {
+    if(this.needsToLoad()) this.loadFromCRM();
+  }
+
+  needsToLoad() {
+    return (stores["user"].data.readState != State.SUCCESS);
   }
 
   /**
@@ -25,6 +42,48 @@ export default class Login extends React.Component {
     /***
      * Will be tied to the login button from the form
      */
+
+    console.log(this.props);
+    let tableData = stores["user"].data.records;
+
+    if (tableData.some(ob => ob.madmv_name)) {
+      tableData.forEach(obj => {
+        if (this.state.information.username == obj.madmv_name)
+        {
+          if (this.state.information.password == obj.madmv_password)
+          {
+            new DataLoader().signalLogIn(obj.madmv_securityroles);
+          }
+        }
+      })
+    }
+  }
+
+  logOut() {
+    new DataLoader().signalLogOut();
+  }
+
+  loadFromCRM() {
+    let datatype = "user";
+    let query = this.generateQuery();
+    new DataLoader(query, datatype).load();
+  }
+
+  generateQuery() {
+    let rowKey = "madmv_name";
+    let datatype = "user";
+    let columns = [
+      { header: "Password"         , key: "madmv_password"              },
+      { header: "Security"         , key: "madmv_securityroles"              }];
+
+    let query = ExternalURL.DYNAMICS_PREFIX + datatype + ExternalURL.DYNAMICS_SUFFIX + rowKey;
+    for (let i = 0; i < columns.length; i++) {
+        let key = columns[i].key;
+        query += "," + key;
+
+    }
+    
+    return query;
   }
 
   /**
@@ -32,34 +91,60 @@ export default class Login extends React.Component {
    * @param event ~ onChangeEvent
    * ? Will set state work or should we just mutate state directly
    */
-  usernameFieldChange() {
+  usernameFieldChange(event) {
     /**
-     * Will set the username in the information object
+     * had to set password to empty string as well, otherwise it is set to undefined and becomes an uncontrolled input which throws an error
      */
+    event.preventDefault();
+    this.setState({information: {[event.currentTarget.name]: event.currentTarget.value, password: this.state.information.password}}); 
   }
 
   /**
    * *Bind the input field to information.password
    * @param event ~ onChangeEvent
-   * ? Will set state work or should we just mutate state directly
+   * had to keep password and username seperate since setstate undefines the other values.
    */
-  passwordFieldChange() {
+  passwordFieldChange(event) {
     /**
-     * Will set the password in the information object
+     * had to set username to empty string as well, otherwise it is set to undefined and becomes an uncontrolled input which throws an error
      */
+    event.preventDefault();
+    this.setState({information: {[event.currentTarget.name]: event.currentTarget.value, username: this.state.information.username}});
   }
 
   render() {
-    return (
-      <div>
-        {this.getErrorMessage()}
-        {this.getForm()}
-      </div>
-    );
+    if (stores["user"].data.loggedIn == false)
+    {
+      return (
+        <div>
+          {this.getErrorMessage()}
+          {this.getForm()}
+        </div>
+      );
+    } else
+    {
+      return (
+        <div>
+          {this.getLogOutButton()}
+        </div>
+      );
+    }
   }
 
   getErrorMessage() {
     return "";
+  }
+
+  getLogOutButton() {
+    return (
+      <button
+        type="button"
+        className="button"
+        onClick={this.logOut.bind(this)}
+      >
+        Logout
+    </button>
+    )
   }
 
   getForm() {
@@ -70,8 +155,8 @@ export default class Login extends React.Component {
             <input
               type="text"
               name="username"
-              placeholder="Username"
-              onChange={this.usernameFieldChange.bind(this)}
+              onChange={this.usernameFieldChange}
+              value={this.state.information.username}
             />
           </div>
           <div className="form-group">
@@ -79,7 +164,8 @@ export default class Login extends React.Component {
               type="password"
               name="password"
               placeholder="Password"
-              onChange={this.passwordFieldChange.bind(this)}
+              onChange={this.passwordFieldChange}
+              value={this.state.information.password}
             />
           </div>
           <button

@@ -91,22 +91,24 @@ export default class CRMViewContact extends React.Component {
           rows: stores[this.props.dataType].data.records,
     
         }
-        return (
-            <Row className ="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable
-                                    striped
-                                    bordered
-                                    hover
-                                    data={content}
-                                 />
-                             </CardBody>
-                         </Card>
-                    </Col>
+        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
+        {
+            return (
+                <Row className ="mb-4">
+                        <Col md="12">
+                            <Card>
+                                <CardBody>
+                                    <MDBDataTable
+                                        striped
+                                        bordered
+                                        hover
+                                        data={content}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Col>
                 </Row>
-
+            );
 
 
 
@@ -120,7 +122,8 @@ export default class CRMViewContact extends React.Component {
                     {this.getTableBodyContent()}
                 </tbody>    
             </table>*/
-        );
+        
+        }
     }
 /*
     getTableHeaderContent() {

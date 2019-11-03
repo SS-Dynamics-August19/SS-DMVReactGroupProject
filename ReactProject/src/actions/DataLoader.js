@@ -44,6 +44,21 @@ export default class DataLoader {
     DataLoader.signal(failureSignal);
   }
 
+  signalLogIn(secRoles) {
+    let loggedInSignal = {
+      actionType: 'user_logged_in',
+      data: secRoles
+    };
+    DataLoader.signal(loggedInSignal);
+  }
+
+  signalLogOut() {
+    let loggedOutSignal = {
+      actionType: 'user_Logged_out'
+    };
+    DataLoader.signal(loggedOutSignal);
+  }
+
   static signal(signalObj) {
     Dispatcher.dispatch(signalObj);
   }
