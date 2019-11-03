@@ -5,7 +5,7 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 
-export default class CRMView extends React.Component {
+export default class CRMViewVehicle extends React.Component {
   render() {
     return <div>{this.getContent()}</div>;
   }
@@ -50,34 +50,46 @@ export default class CRMView extends React.Component {
 
             {
     
-              label:'Appname',
-    
-              field:'madmv_appid',
-    
-            },
-    
-            {
-    
-              label:'Apptype',
-    
-              field:'madmv_applicationtype',
-    
-            },
-    
-            {
-    
-              label:'Subject',
-    
-              field:'madmv_applicationsubject',
-    
-            },
-            {
-    
-                label:'CreamTime',
+                label:'Year Model',
       
+                field:'madmv_yearmodel',
+      
+              },
+            
+            {
+    
+              label:'Vehicle Make',
+    
+              field:'madmv_vehiclemake',
+    
+            },
+            {
+    
+           
+                label:'Vehicle Identification Number',
+      
+            
+                field:'madmv_vehicleidnumber',
+      
+            },
+            {
+    
+                label:'License Plate Number',
+      
+            
+                field:'madmv_licenseplate',
+      
+            },
+    
+            
+            {
+    
+                label:'Creation Time',
+      
+            
                 field:'createdon',
       
-              }
+            }
           ],
 
     
@@ -139,42 +151,28 @@ export default class CRMView extends React.Component {
         return ret;
     }
 */
+
+//this will now be use to make sure the data is in correct format so the datata can run successful
+//without any null error
     getTableBodyContent() {
-        let tableData = stores[this.props.dataType].data.records;
      
-
-        // check if tableData contains application info & replace appl.type digits with label
-        if (tableData.some(ob => ob.madmv_applicationtype)) {
-            tableData.forEach(obj => {
-             switch(obj.madmv_applicationtype) {
-                 case 876570000:
-                  obj.madmv_applicationtype = "Vehicle Registration";
-                  break;
-                  case 876570001:
-                   obj.madmv_applicationtype = "Address Change";
-                   break;
-                  case 876570002:
-                   obj.madmv_applicationtype = "New Driving License";
-                   break;
-                   case 876570003:
-                   obj.madmv_applicationtype = "Driving License Renewal";
-                   break;
-               }
-
-            })
-
-            tableData.forEach(obj => {
-                if(obj.madmv_appid === null) 
-                     obj.madmv_appid = " ";
-                if(obj.madmv_applicationtype === null) 
-                    obj.madmv_applicationtype = " ";
-                if(obj.applicationsubject === null)
-                    obj.madmv_applicationsubject = " ";
+        let tableData = stores[this.props.dataType].data.records;
            
-                    
-                  })
+
+          tableData.forEach(obj => {
+            if(obj.madmv_yearmodel === null) 
+                 obj.madmv_yearmodel = " ";
+            if(obj.madmv_vehiclemake === null) 
+                obj.madmv_vehiclemake = " ";
+            if(obj.madmv_licenseplate === null)
+                obj.madmv_licenseplate = " ";
+            if(obj.madmv_vehicleidnumber === null)
+                obj.madmv_vehicleidnumber = " ";
+                
+              })
+            
         
-        }
+        console.log(tableData)
 
         return tableData
         
@@ -243,7 +241,7 @@ export default class CRMView extends React.Component {
     }
 }
 
-CRMView.propTypes = {
+CRMViewVehicle.propTypes = {
   dataType: PropTypes.string.isRequired,
   rowKey: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired
