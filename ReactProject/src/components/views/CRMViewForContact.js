@@ -5,7 +5,7 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 
-export default class CRMView extends React.Component {
+export default class CRMViewContact extends React.Component {
   render() {
     return <div>{this.getContent()}</div>;
   }
@@ -50,38 +50,45 @@ export default class CRMView extends React.Component {
 
             {
     
-              label:'Appname',
+              label:'Name',
     
-              field:'madmv_appid',
-    
-            },
-    
-            {
-    
-              label:'Apptype',
-    
-              field:'madmv_applicationtype',
+              field:'madmv_fullname',
     
             },
     
             {
     
-              label:'Subject',
+              label:'Age',
     
-              field:'madmv_applicationsubject',
+              field:'madmv_age',
+    
+            },
+    
+            {
+    
+              label:'SSN',
+    
+              field:'madmv_cssn',
     
             },
             {
     
-                label:'CreamTime',
+                label:'Email',
       
-                field:'createdon',
+                field:'madmv_email',
+      
+              },
+              {
+    
+                label:'Phone',
+      
+                field:'madmv_phonenumber',
       
               }
           ],
 
     
-          rows: this.getTableBodyContent(),
+          rows: stores[this.props.dataType].data.records,
     
         }
         return (
@@ -232,7 +239,7 @@ export default class CRMView extends React.Component {
     }
 }
 
-CRMView.propTypes = {
+CRMViewContact.propTypes = {
   dataType: PropTypes.string.isRequired,
   rowKey: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired
