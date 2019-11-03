@@ -106,16 +106,101 @@ export default class CRMViewContact extends React.Component {
                          </Card>
                     </Col>
                 </Row>
+
+
+
+
+
+            
+          /*  <table className="CRMTable">
+                <thead>
+                    {this.getTableHeaderContent()}
+                </thead>
+                <tbody>
+                    {this.getTableBodyContent()}
+                </tbody>    
+            </table>*/
+        );
+    }
+/*
+    getTableHeaderContent() {
+        return (
+            <tr className="CRMTable">
+                {this.createHeaderRowCells()}
+            </tr>
         );
     }
 
+    createHeaderRowCells() {
+        let columns = this.props.columns;
+        let ret = [];
+
+        columns.forEach(function(column) {
+            ret.push(
+                <th key={column.header} className="CRMTable">
+                    {column.header}
+                </th>
+            );
+        });
+
+        return ret;
+    }
+*/
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;
+     
+        /* //obsolete code.
+        // check if tableData contains application info & replace appl.type digits with label
+        if (tableData.some(ob => ob.madmv_applicationtype)) {
+            tableData.forEach(obj => {
+             switch(obj.madmv_applicationtype) {
+                 case 876570000:
+                  obj.madmv_applicationtype = "Vehicle Registration";
+                  break;
+                  case 876570001:
+                   obj.madmv_applicationtype = "Address Change";
+                   break;
+                  case 876570002:
+                   obj.madmv_applicationtype = "New Driving License";
+                   break;
+                   case 876570003:
+                   obj.madmv_applicationtype = "Driving License Renewal";
+                   break;
+               }
+
+            })
+        
+        } */
 
         return tableData
         
     }
     
+   /* 
+    createTableRow(record) {
+        let key = record[this.props.rowKey];
+
+        return (
+           <tr key={key} className="CRMTable">
+                {this.createTableRowCells(record, key)}
+            </tr>
+        );
+    }
+
+    createTableRowCells(record, keyPrefix) {
+        let columns = this.props.columns;
+        let ret = [];
+
+        columns.forEach( function(column) {
+            ret.push(
+                <td key={keyPrefix + ":" + column.key} className="CRMTable">
+                    { record[column.key] }
+                </td> 
+            );
+        });
+
+        return ret;
+    }*/
 
     getFailureContent() {
         return (
