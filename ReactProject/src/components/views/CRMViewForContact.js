@@ -123,7 +123,16 @@ export default class CRMViewContact extends React.Component {
                 </tbody>    
             </table>*/
         
+        } else {
+
+            
+            return (
+                <div>
+                    You are not authorized to view this page
+                </div>
+            );
         }
+
     }
 /*
     getTableHeaderContent() {

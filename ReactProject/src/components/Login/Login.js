@@ -5,6 +5,19 @@ import stores from "../../stores/dataStores.js";
 
 
 /**
+ * Initial login/logout functionality added
+ * Test Info
+ * user1 pass1 (vehicle/application)
+ * user2 pass2 (customer/application)
+ * user3 pass3 (all access)
+ * user4 pass4 (no access)
+ */
+
+
+
+
+/**
+ * (old comments)
  * Create layout for a login page
  * ? Component's set, but will it take params / What else would be stored outside of the username and password
  * Todo: talk with team about state of the component
@@ -17,13 +30,9 @@ export default class Login extends React.Component {
       information: {
         //should change on field change to match user input
         username: "",
-        password: "",
+        password: ""
       }
     };
-
-    //this.submit = this.submit.bind(this);
-    this.usernameFieldChange = this.usernameFieldChange.bind(this);
-    this.passwordFieldChange = this.passwordFieldChange.bind(this);
   }
 
 
@@ -38,12 +47,7 @@ export default class Login extends React.Component {
   /**
    * *Bind the login button to a trigger event
    */
-  submitCredentials() {
-    /***
-     * Will be tied to the login button from the form
-     */
-
-    console.log(this.props);
+  attemptLogin() {
     let tableData = stores["user"].data.records;
 
     if (tableData.some(ob => ob.madmv_name)) {
@@ -52,13 +56,14 @@ export default class Login extends React.Component {
         {
           if (this.state.information.password == obj.madmv_password)
           {
-            new DataLoader().signalLogIn(obj.madmv_securityroles);
+            new DataLoader().signalLogIn(obj.madmv_securityroles); // log in if user and pass are correct and match
           }
         }
       })
     }
   }
 
+  // log out resets authorization string to "user" because that is required to log in and sets loggedin boolen to false
   logOut() {
     new DataLoader().signalLogOut();
   }
@@ -80,21 +85,15 @@ export default class Login extends React.Component {
     for (let i = 0; i < columns.length; i++) {
         let key = columns[i].key;
         query += "," + key;
-
     }
-    
     return query;
   }
 
   /**
    * *Bind the input field to information.username
    * @param event ~ onChangeEvent
-   * ? Will set state work or should we just mutate state directly
    */
   usernameFieldChange(event) {
-    /**
-     * had to set password to empty string as well, otherwise it is set to undefined and becomes an uncontrolled input which throws an error
-     */
     event.preventDefault();
     this.setState({information: {[event.currentTarget.name]: event.currentTarget.value, password: this.state.information.password}}); 
   }
@@ -102,12 +101,8 @@ export default class Login extends React.Component {
   /**
    * *Bind the input field to information.password
    * @param event ~ onChangeEvent
-   * had to keep password and username seperate since setstate undefines the other values.
    */
   passwordFieldChange(event) {
-    /**
-     * had to set username to empty string as well, otherwise it is set to undefined and becomes an uncontrolled input which throws an error
-     */
     event.preventDefault();
     this.setState({information: {[event.currentTarget.name]: event.currentTarget.value, username: this.state.information.username}});
   }
@@ -155,7 +150,7 @@ export default class Login extends React.Component {
             <input
               type="text"
               name="username"
-              onChange={this.usernameFieldChange}
+              onChange={this.usernameFieldChange.bind(this)}
               value={this.state.information.username}
             />
           </div>
@@ -164,14 +159,14 @@ export default class Login extends React.Component {
               type="password"
               name="password"
               placeholder="Password"
-              onChange={this.passwordFieldChange}
+              onChange={this.passwordFieldChange.bind(this)}
               value={this.state.information.password}
             />
           </div>
           <button
             type="button"
             className="button"
-            onClick={this.submitCredentials.bind(this)}
+            onClick={this.attemptLogin.bind(this)}
           >
             Login
           </button>
