@@ -1,32 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
-import DataLoader             from '../../actions/DataLoader.js';
-import stores                 from '../../stores/dataStores.js';
+import DataLoader from "../../actions/DataLoader.js";
+import stores from "../../stores/dataStores.js";
 
 export default class CRMView extends React.Component {
-    render() {
-        return (
-            <div>
-                {this.getContent()}
-            </div>
-        );
-    }
+  render() {
+    return <div>{this.getContent()}</div>;
+  }
 
-    getContent() {
-        let state = stores[this.props.dataType].data.readState;
-        switch (state) {
-            case State.DEFAULT:
-                return this.getDefaultContent();
-            case State.STARTED:
-                return this.getStartedContent();
-            case State.SUCCESS:
-                return this.getSuccessContent();
-            case State.FAILURE:
-                return this.getFailureContent();
-        }
+  getContent() {
+    let state = stores[this.props.dataType].data.readState;
+    switch (state) {
+      case State.DEFAULT:
+        return this.getDefaultContent();
+      case State.STARTED:
         return this.getStartedContent();
+      case State.SUCCESS:
+        return this.getSuccessContent();
+      case State.FAILURE:
+        return this.getFailureContent();
     }
+    return this.getStartedContent();
+  }
 
     getDefaultContent() {
         return (
@@ -84,7 +80,32 @@ export default class CRMView extends React.Component {
 
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;
+     
+
+        // check if tableData contains application info & replace appl.type digits with label
+        if (tableData.some(ob => ob.madmv_applicationtype)) {
+            tableData.forEach(obj => {
+             switch(obj.madmv_applicationtype) {
+                 case 876570000:
+                  obj.madmv_applicationtype = "Vehicle Registration";
+                  break;
+                  case 876570001:
+                   obj.madmv_applicationtype = "Address Change";
+                   break;
+                  case 876570002:
+                   obj.madmv_applicationtype = "New Driving License";
+                   break;
+                   case 876570003:
+                   obj.madmv_applicationtype = "Driving License Renewal";
+                   break;
+               }
+
+            })
+        
+        }
+
         return tableData.map(this.createTableRow, this);
+        
     }
     
     
@@ -92,7 +113,7 @@ export default class CRMView extends React.Component {
         let key = record[this.props.rowKey];
 
         return (
-            <tr key={key} className="CRMTable">
+           <tr key={key} className="CRMTable">
                 {this.createTableRowCells(record, key)}
             </tr>
         );
@@ -106,7 +127,7 @@ export default class CRMView extends React.Component {
             ret.push(
                 <td key={keyPrefix + ":" + column.key} className="CRMTable">
                     { record[column.key] }
-                </td>
+                </td> 
             );
         });
 
@@ -143,6 +164,7 @@ export default class CRMView extends React.Component {
         for (let i = 0; i < columns.length; i++) {
             let key = columns[i].key;
             query += "," + key;
+
         }
 
         return query;
@@ -150,7 +172,7 @@ export default class CRMView extends React.Component {
 }
 
 CRMView.propTypes = {
-    dataType:   PropTypes.string.isRequired,
-    rowKey:     PropTypes.string.isRequired,
-    columns:    PropTypes.array.isRequired
+  dataType: PropTypes.string.isRequired,
+  rowKey: PropTypes.string.isRequired,
+  columns: PropTypes.array.isRequired
 };

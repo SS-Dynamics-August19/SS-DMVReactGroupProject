@@ -1,13 +1,13 @@
-"use strict"
+"use strict";
 
-import React from 'react';
+import React from "react";
 
-import Header  from './header.js';
-import Content from './content.js';
-import Footer  from './footer.js';
+import Header from "./header.js";
+import Content from "./content.js";
+import Footer from "./footer.js";
 //import Optionset from './optionset.js';   // uncomment to use component
 
-import stores  from '../stores/DataStores.js';
+import stores from "../stores/DataStores.js";
 
 // test block for option set component
 // place in return of render() to test
@@ -20,42 +20,45 @@ import stores  from '../stores/DataStores.js';
 />
 */
 
-
 export default class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { currentPath: "/" };
-    }
+  constructor(props) {
+    super(props);
+    this.state = { currentPath: "/" };
+  }
 
-    render() {
-        return(
-            <div className="mainColumn">
-                <Header login={this.state.login} currentPath={this.state.currentPath} navCallback={this.setPath.bind(this)} />
-                <Content {...this.state}/>
-                <Footer />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="mainColumn">
+        <Header
+          login={this.state.login}
+          currentPath={this.state.currentPath}
+          navCallback={this.setPath.bind(this)}
+        />
+        <Content {...this.state} />
+        <Footer />
+      </div>
+    );
+  }
 
-    setPath(path) {
-        this.setState({currentPath: path});
-    }
+  setPath(path) {
+    this.setState({ currentPath: path });
+  }
 
-    componentDidMount() {
-        for (let type in stores) {
-            let store = stores[type];
-            store.addChangeListener(this._onStoreChange.bind(this, store.type));
-        }
+  componentDidMount() {
+    for (let type in stores) {
+      let store = stores[type];
+      store.addChangeListener(this._onStoreChange.bind(this, store.type));
     }
+  }
 
-    componentWillUnmount() {
-        for (let type in stores) {
-            let store = stores[type];
-            store.removeChangeListener(this._onStoreChange.bind(this, store.type));
-        }
+  componentWillUnmount() {
+    for (let type in stores) {
+      let store = stores[type];
+      store.removeChangeListener(this._onStoreChange.bind(this, store.type));
     }
+  }
 
-    _onStoreChange() {
-        this.forceUpdate();
-    }
+  _onStoreChange() {
+    this.forceUpdate();
+  }
 }
