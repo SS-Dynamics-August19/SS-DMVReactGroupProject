@@ -1,38 +1,43 @@
 import React from "react";
-//! import { ActionsForCreator } from "../action/AllActions"; //
+import { ActionsForCreator } from "../../actions/ActionsForCreators"; //
 import PropTypes from "prop-types";
 
-export class Creator extends React.Component {
+
+/**
+ * *Component with input fields for creating a customer record in the CRM
+ * @param props should be the global state ~ actions will dispatch a status of the creation and this component will render success or failure message based on results
+ */
+export class CustomerCreator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = {//values from input values
+      ssn: "",
       firstname: "",
       lastname: "",
       bday: "",
-      ssn: "",
       email: "",
       street1: "",
       street2: "",
       city: "",
       state: "",
-      zip: ""
+      zip: "",
     };
-    this.creationStatus = props;//should be passed from global state / should contain the readState  
 
+    //field change methods
+    this.ssnFieldChange = this.ssnFieldChange.bind(this);
     this.firstNameFieldChange = this.firstNameFieldChange.bind(this);
     this.lastNameFieldChange = this.lastNameFieldChange.bind(this);
     this.bdayFieldChange = this.bdayFieldChange.bind(this);
-    this.ssnFieldChange = this.ssnFieldChange.bind(this);
     this.emailFieldChange = this.emailFieldChange.bind(this);
     this.street1FieldChange = this.street1FieldChange.bind(this);
     this.street2FieldChange = this.street2FieldChange.bind(this);
     this.cityFieldChange = this.cityFieldChange.bind(this);
     this.stateFieldChange = this.stateFieldChange.bind(this);
     this.zipFieldChange = this.zipFieldChange.bind(this);
-    this.startCreation = this.startCreation.bind(this);
+    this.startCreation = this.startCreation.bind(this);//the submit action
   }
 
-  //*the field changes are bound to the class
+  //*the field change methods are bound to the class
   //*when the field's value changes the event triggers an event
   //*the event is passed as a param and the targets value is stored in the component's state
   firstNameFieldChange(e) {
@@ -65,14 +70,13 @@ export class Creator extends React.Component {
   zipFieldChange(e) {
     this.setState({ zip: e.target.value });
   }
-  //submit values when form is complete
   startCreation() {
-    alert(`${this.state.firstname} ${this.state.lastname} ${this.state.bday}`); //as for now alert the values of a few input values to confirm change
-    // ActionsForCreator.create(this.state); //**! Place Action Method Here and pass the props of the creation */
+    //submit values when form is complete
+    ActionsForCreator.createCustomer(this.state); //**! Place Action Method Here and pass the state of this component */
   }
 
   render() {
-    let display = ""; //changes based on prop status
+    let display = ""; //changes based on state of the app
 
     if (this.props.creationStatus.readState.success) {
       display = ( //shows success message if the creation was successful
@@ -96,7 +100,7 @@ export class Creator extends React.Component {
         </div>
       );
     } else {
-      display = ( //displays the form since creationStatus didn't return success or failure / default (no change in global state)
+      display = ( //display's the form since creationStatus didn't return success or failure / default (no change in global state)
         <div className="card-header">
           <div className="input-group mb-3">
             <input
@@ -229,10 +233,10 @@ export class Creator extends React.Component {
             </div>
           </div>
           <button
-            onClick={this.startCreation}//should trigger the submit action
+            onClick={this.startCreation} //should trigger the submit action
             className="btn btn-block btn-success btn-lg"
           >
-            CLICK HERE WHEN YOU&apos;RE DONE
+            CLICK HERE TO SUBMIT
           </button>
         </div>
       );
@@ -241,7 +245,8 @@ export class Creator extends React.Component {
   }
 }
 
-const capitalize = s => {//accepts a string and capitalizes the first char
+const capitalize = s => {
+  //accepts a string and capitalizes the first char
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
