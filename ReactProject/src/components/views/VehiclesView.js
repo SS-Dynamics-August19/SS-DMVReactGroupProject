@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CRMViewVehicle from "./CRMViewForVehicle.js";
+import CRMViewVehicle from "./CRMViewForVehicle";
 
 let _DATA_TYPE = "vehicle";
 let _ROW_KEY = "madmv_ma_vehicleid";
