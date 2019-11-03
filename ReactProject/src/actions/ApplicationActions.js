@@ -15,8 +15,18 @@ Functions included in file
                         to the Dynamics system to update the application. Sends an action to dispatcher
                         to notify store of this process starting, on success, and on failure
 */
-
 const ApplicationActions = {
+    /* Example call to function updateApplication
+        let app = { 
+            madmv_appid: "APP-2022",    // string field
+            madmv_applicationtype: 876570001,   // option set field
+            madmv_age: 23,  // numerical field
+            madmv_addressfieldeffectivedate: new Date("10/13/2019")   // date field
+        }
+        app["madmv_OwnerInfo@odata.bind"] = "/madmv_ma_customers(f7407fa0-81fd-e911-a811-000d3a36857d)";    // lookup field
+
+        ApplicationActions.updateApplication("765fc9b6-81fd-e911-a811-000d3a36880e", app);    // function call
+    */
     updateApplication: (id, application) => {
         // notify store that update has started
         Dispatcher.dispatch({

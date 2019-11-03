@@ -8,7 +8,6 @@ import Footer from "./footer.js";
 //import Optionset from './optionset.js';   // uncomment to use component
 
 import stores from "../stores/DataStores.js";
-import ApplicationActions from '../actions/ApplicationActions.js';
 
 
 // test block for option set component
@@ -51,8 +50,6 @@ export default class App extends React.Component {
       let store = stores[type];
       store.addChangeListener(this._onStoreChange.bind(this, store.type));
     }
-  //  ApplicationActions.updateApplication("765fc9b6-81fd-e911-a811-000d3a36880e", { madmv_appid: "APP-2022", madmv_applicationtype: 876570002, madmv_age: 23 });
-    ApplicationActions.updateApplication("765fc9b6-81fd-e911-a811-000d3a36880e", {madmv_appid: "APP-1022", madmv_applicationtype: 876570001, madmv_age: null, madmv_OwnerInfo: "/madmv_ma_customer(0e417fa0-81fd-e911-a811-000d3a36857d)" });
   }
 
   componentWillUnmount() {
