@@ -1,15 +1,15 @@
-import React from 'react';
+//import React from 'react';
 import PropTypes from 'prop-types';
 
 
 
 
-const detailedView = function(props) {
-    return (
+const detailedView = function() {
+    /*return ( 
         <div>
-            details
-        </div>
-    );
+             details 
+        </div> 
+    ); */
 }
 
 
@@ -20,4 +20,4 @@ detailedView.propTypes = {
 };
 
 
-export default view;
+//export default view;
