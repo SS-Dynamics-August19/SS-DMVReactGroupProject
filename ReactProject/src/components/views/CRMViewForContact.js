@@ -149,22 +149,47 @@ export default class CRMViewContact extends React.Component {
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;
         tableData.forEach(obj => {
-          if(obj.madmv_fullname === null) 
-               obj.madmv_fullname = " ";
-          if(obj.madmv_age === null) 
-              obj.madmv_age = " ";
-          if(obj.madmv_cssn === null)
-              obj.madmv_cssn = " ";
-          if(obj.madmv_email === null)
-              obj.madmv_email = " ";
-          if(obj.madmv_phonenumber === null)
-              obj.madmv_phonenumber = " ";
-            })
-          
-      
-      console.log(tableData)
+            if(obj.madmv_fullname === null) 
+                 obj.madmv_fullname = " ";
+            if(obj.madmv_age === null) 
+                obj.madmv_age = " ";
+            if(obj.madmv_cssn === null)
+                obj.madmv_cssn = " ";
+            if(obj.madmv_email === null)
+                obj.madmv_email = " ";
+            if(obj.madmv_phonenumber === null)
+                obj.madmv_phonenumber = " ";
+              })
+            
+        
+        console.log(tableData)
+  
+        return tableData
+  
+        /* //obsolete code.
+        // check if tableData contains application info & replace appl.type digits with label
+        if (tableData.some(ob => ob.madmv_applicationtype)) {
+            tableData.forEach(obj => {
+             switch(obj.madmv_applicationtype) {
+                 case 876570000:
+                  obj.madmv_applicationtype = "Vehicle Registration";
+                  break;
+                  case 876570001:
+                   obj.madmv_applicationtype = "Address Change";
+                   break;
+                  case 876570002:
+                   obj.madmv_applicationtype = "New Driving License";
+                   break;
+                   case 876570003:
+                   obj.madmv_applicationtype = "Driving License Renewal";
+                   break;
+               }
 
-      return tableData
+            })
+        
+        } */
+
+
 
             
     }
