@@ -149,7 +149,7 @@ export default class CRMViewContact extends React.Component {
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;
      
-
+        /* //obsolete code.
         // check if tableData contains application info & replace appl.type digits with label
         if (tableData.some(ob => ob.madmv_applicationtype)) {
             tableData.forEach(obj => {
@@ -170,7 +170,7 @@ export default class CRMViewContact extends React.Component {
 
             })
         
-        }
+        } */
 
         return tableData
         
