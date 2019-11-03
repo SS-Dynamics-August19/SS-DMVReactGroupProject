@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CRMView from "./CRMView.js";
+import CRMViewContact from "./CRMViewForContact";
 
 let _DATA_TYPE = "customer";
 let _ROW_KEY = "madmv_ma_customerid";
@@ -13,7 +13,7 @@ let _COLUMNS = [
 ];
 
 const view = function() {
-  return <CRMView dataType={_DATA_TYPE} rowKey={_ROW_KEY} columns={_COLUMNS} />;
+  return <CRMViewContact dataType={_DATA_TYPE} rowKey={_ROW_KEY} columns={_COLUMNS} />;
 };
 
 view.propTypes = {
