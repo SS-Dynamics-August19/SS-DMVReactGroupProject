@@ -13,6 +13,7 @@ let _COLUMNS = [
 
 const view = function() {
   return <CRMView dataType={_DATA_TYPE} rowKey={_ROW_KEY} columns={_COLUMNS} />;
+
 };
 
 view.propTypes = {
