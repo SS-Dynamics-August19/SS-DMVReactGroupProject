@@ -46,6 +46,7 @@ export default class CRMView extends React.Component {
     handleClick(event){
         console.log("hello")
     }
+    
     getSuccessContent() {
         console.log(stores[this.props.dataType].data.records);
          

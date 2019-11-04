@@ -31,24 +31,92 @@ export default class Login extends React.Component {
         //should change on field change to match user input
         username: "",
         password: ""
-      }
+      },
+      dataType: "user"
     };
+
+    this.usernameFieldChange = this.usernameFieldChange.bind(this);
+    this.passwordFieldChange = this.passwordFieldChange.bind(this);
+    this.attemptLogin = this.attemptLogin.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
+
+  render() {
+    return <div>{this.getContent()}</div>;
+  }
+
+  getContent() {
+    let state = stores[this.state.dataType].data.readState;
+    switch (state) {
+      case State.DEFAULT:
+        return this.getDefaultContent();
+      case State.STARTED:
+        return this.getStartedContent();
+      case State.SUCCESS:
+        return this.getSuccessContent();
+      case State.FAILURE:
+        return this.getFailureContent();
+    }
+    return this.getStartedContent();
+  }
+
+    getDefaultContent() {
+        return (
+            <div className="alert alert-danger" role="alert">
+                Loading did not start.
+            </div>
+        );
+    }
+
+    getStartedContent() {
+        return (
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div> 
+            </div>
+        );
+    }
+
+    getSuccessContent() {
+      console.log(stores[this.state.dataType].data.records);
+
+      if (stores[this.state.dataType].data.loggedIn == false)
+      {
+        return (
+          <div>
+            {this.getErrorMessage()}
+            {this.getForm()}
+          </div>
+        );
+      } else
+      {
+        return (
+          <div>
+            {this.getLogOutButton()}
+          </div>
+        );
+      }
+
+    }
 
 
   componentDidMount() {
-    if(this.needsToLoad()) this.loadFromCRM();
+    if(this.needsToLoad()) 
+      this.loadFromCRM();
   }
 
   needsToLoad() {
-    return (stores["user"].data.readState != State.SUCCESS);
+    return (stores[this.state.dataType].data.readState != State.SUCCESS);
+    
   }
 
   /**
    * *Bind the login button to a trigger event
    */
   attemptLogin() {
-    let tableData = stores["user"].data.records;
+    event.preventDefault();
+    let tableData = stores[this.state.dataType].data.records;
 
     if (tableData.some(ob => ob.madmv_name)) {
       tableData.forEach(obj => {
@@ -69,19 +137,17 @@ export default class Login extends React.Component {
   }
 
   loadFromCRM() {
-    let datatype = "user";
     let query = this.generateQuery();
-    new DataLoader(query, datatype).load();
+    new DataLoader(query, this.state.dataType).load();
   }
 
   generateQuery() {
     let rowKey = "madmv_name";
-    let datatype = "user";
     let columns = [
       { header: "Password"         , key: "madmv_password"              },
       { header: "Security"         , key: "madmv_securityroles"              }];
 
-    let query = ExternalURL.DYNAMICS_PREFIX + datatype + ExternalURL.DYNAMICS_SUFFIX + rowKey;
+    let query = ExternalURL.DYNAMICS_PREFIX + this.state.dataType + ExternalURL.DYNAMICS_SUFFIX + rowKey;
     for (let i = 0; i < columns.length; i++) {
         let key = columns[i].key;
         query += "," + key;
@@ -107,25 +173,6 @@ export default class Login extends React.Component {
     this.setState({information: {[event.currentTarget.name]: event.currentTarget.value, username: this.state.information.username}});
   }
 
-  render() {
-    if (stores["user"].data.loggedIn == false)
-    {
-      return (
-        <div>
-          {this.getErrorMessage()}
-          {this.getForm()}
-        </div>
-      );
-    } else
-    {
-      return (
-        <div>
-          {this.getLogOutButton()}
-        </div>
-      );
-    }
-  }
-
   getErrorMessage() {
     return "";
   }
@@ -135,7 +182,7 @@ export default class Login extends React.Component {
       <button
         type="button"
         className="button"
-        onClick={this.logOut.bind(this)}
+        onClick={this.logOut}
       >
         Logout
     </button>
@@ -150,7 +197,7 @@ export default class Login extends React.Component {
             <input
               type="text"
               name="username"
-              onChange={this.usernameFieldChange.bind(this)}
+              onChange={this.usernameFieldChange}
               value={this.state.information.username}
             />
           </div>
@@ -159,14 +206,14 @@ export default class Login extends React.Component {
               type="password"
               name="password"
               placeholder="Password"
-              onChange={this.passwordFieldChange.bind(this)}
+              onChange={this.passwordFieldChange}
               value={this.state.information.password}
             />
           </div>
           <button
             type="button"
             className="button"
-            onClick={this.attemptLogin.bind(this)}
+            onClick={this.attemptLogin}
           >
             Login
           </button>
