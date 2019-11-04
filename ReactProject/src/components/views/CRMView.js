@@ -46,6 +46,7 @@ export default class CRMView extends React.Component {
     handleClick(event){
         console.log("hello")
     }
+    
     getSuccessContent() {
         console.log(stores[this.props.dataType].data.records);
          
@@ -87,21 +88,33 @@ export default class CRMView extends React.Component {
           rows: this.getTableBodyContent(),
     
         }
-        return (
-            <Row className ="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable
-                                    striped
-                                    bordered
-                                    hover
-                                    data={content}
-                                 />
-                             </CardBody>
-                         </Card>
-                    </Col>
-                </Row>
+        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
+        {
+            return (
+                <Row className ="mb-4">
+                        <Col md="12">
+                            <Card>
+                                <CardBody>
+                                    <MDBDataTable
+                                        striped
+                                        bordered
+                                        hover
+                                        data={content}
+                                        />
+                                    </CardBody>
+                                </Card>
+                        </Col>
+                    </Row>
+            );
+        } else {
+
+            
+            return (
+                <div>
+                    You are not authorized to view this page
+                </div>
+            );
+        }
 
 
 
@@ -116,7 +129,7 @@ export default class CRMView extends React.Component {
                     {this.getTableBodyContent()}
                 </tbody>    
             </table>*/
-        );
+        
     }
 /*
     getTableHeaderContent() {
@@ -217,6 +230,8 @@ export default class CRMView extends React.Component {
             </div>
         );
     }
+
+    
 
     componentDidMount() {
         if(this.needsToLoad()) this.loadFromCRM();
