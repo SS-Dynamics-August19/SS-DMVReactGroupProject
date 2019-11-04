@@ -11,7 +11,10 @@ export default class DataStore extends EventEmitter {
     this.type = dataTypeName;
     this.data = {
       records: [],
-      readState: State.DEFAULT_STATE
+      readState: State.DEFAULT_STATE,
+      loggedIn: false,
+      authorization: "user",
+      user: "Please Log In"
     };
 
     this.registerActionHandler();
@@ -49,7 +52,13 @@ export default class DataStore extends EventEmitter {
       case updateSuccess:
         break;
       case updateFailure:
-          break;
+        break;
+      case 'user_logged_in':
+        this.userLogIn(action);
+        break;
+      case 'user_Logged_out':
+        this.userLogOut();
+        break;
       default:
         return;
     }
@@ -72,6 +81,20 @@ export default class DataStore extends EventEmitter {
 
   emitChange() {
     this.emit(CHANGE_EVENT);
+  }
+
+  userLogIn(action)
+  {
+    this.data.authorization = action.data.authorization;
+    this.data.user = "Logged in as " + action.data.user;
+    this.data.loggedIn = true;
+  }
+
+  userLogOut()
+  {
+    this.data.authorization = "user";
+    this.data.user = "Please Log In";
+    this.data.loggedIn = false;
   }
 
   getData() {
