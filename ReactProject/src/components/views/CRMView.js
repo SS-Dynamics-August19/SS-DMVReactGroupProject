@@ -42,11 +42,21 @@ export default class CRMView extends React.Component {
             </div>
         );
     }
-    
-    handleClick(event){
-        console.log("hello")
+    handleChange(obj){
+        
+        console.log(obj)
+        
+        
+
     }
+    handleClick(id){
+        
+        console.log(id)
+        
+    }
+    
     getSuccessContent() {
+        
         console.log(stores[this.props.dataType].data.records);
          
         let content = {columns: [
@@ -76,32 +86,60 @@ export default class CRMView extends React.Component {
             },
             {
     
-                label:'CreamTime',
+                label:'CreatTime',
       
                 field:'createdon',
       
+              
+            },
+            {
+    
+                label:' ',
+      
+                field:'click',
+      
+              },
+              {
+    
+                label:' ',
+      
+                field:'checkbox',
+      
               }
+
           ],
 
     
           rows: this.getTableBodyContent(),
     
         }
-        return (
-            <Row className ="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable
-                                    striped
-                                    bordered
-                                    hover
-                                    data={content}
-                                 />
-                             </CardBody>
-                         </Card>
-                    </Col>
-                </Row>
+        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
+        {
+            return (
+                <Row className ="mb-4">
+                        <Col md="12">
+                            <Card>
+                                <CardBody>
+                                    <MDBDataTable
+                                        striped
+                                        bordered
+                                        hover
+                                        data={content}
+                                        />
+                                    </CardBody>
+                                </Card>
+                        </Col>
+                    </Row>
+            );
+        } else {
+
+            
+            return (
+                <div>
+                    You are not authorized to view this page
+                </div>
+            );
+        }
 
 
 
@@ -116,7 +154,7 @@ export default class CRMView extends React.Component {
                     {this.getTableBodyContent()}
                 </tbody>    
             </table>*/
-        );
+        
     }
 /*
     getTableHeaderContent() {
@@ -167,14 +205,15 @@ export default class CRMView extends React.Component {
             })
 
             tableData.forEach(obj => {
-                obj["clickEvent"] = ()=>this.handleClick(event)
+                obj["click"] = <input type="button" value="Detail Info"  onClick={()=>this.handleClick(obj)}/>
+                obj["checkbox"] = <input type="button" value="delete" onClick={()=>this.handleChange(obj.madmv_ma_applicationid)}/>
                 if(obj.madmv_appid === null) 
                      obj.madmv_appid = " ";
                 if(obj.madmv_applicationtype === null) 
                     obj.madmv_applicationtype = " ";
                 if(obj.applicationsubject === null)
                     obj.madmv_applicationsubject = " ";
-           
+                //console.log()
                     
                   })
         
@@ -217,6 +256,8 @@ export default class CRMView extends React.Component {
             </div>
         );
     }
+
+    
 
     componentDidMount() {
         if(this.needsToLoad()) this.loadFromCRM();

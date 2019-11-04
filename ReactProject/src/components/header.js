@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import subpages from "../subpages/subpages.js";
+import stores from "../stores/DataStores.js";
 
 let header = function(props) {
   return (
@@ -10,7 +11,7 @@ let header = function(props) {
         <h1>React MS Dynamics DMV Staff Portal</h1>
       </div>
       <nav>
-        <ul className="list-inline">{renderNavItems(props)}</ul>
+        <ul className="list-inline">{renderNavItems(props)} <span className="username">{stores["user"].data.user}</span></ul>
       </nav>
     </div>
   );
