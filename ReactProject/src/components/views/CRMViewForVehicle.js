@@ -47,7 +47,7 @@ export default class CRMViewVehicle extends React.Component {
     handleDelete(id){
         
         console.log(id)
-        ApplicationActions.deleteApplication(id)
+        //ApplicationActions.deleteApplication(id) same, call the deleteVehicle function
         
         
 

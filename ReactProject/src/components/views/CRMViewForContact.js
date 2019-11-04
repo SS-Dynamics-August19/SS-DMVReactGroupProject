@@ -47,7 +47,7 @@ export default class CRMViewContact extends React.Component {
     handleDelete(id){
         
         console.log(id)
-        ApplicationActions.deleteApplication(id)
+        //ApplicationActions.deleteApplication(id) need to be change once have delete contact function
         
         
 
