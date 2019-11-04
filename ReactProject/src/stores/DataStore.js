@@ -13,7 +13,8 @@ export default class DataStore extends EventEmitter {
       records: [],
       readState: State.DEFAULT_STATE,
       loggedIn: false,
-      authorization: "user"
+      authorization: "user",
+      user: "Please Log In"
     };
 
     this.registerActionHandler();
@@ -84,13 +85,15 @@ export default class DataStore extends EventEmitter {
 
   userLogIn(action)
   {
-    this.data.authorization = action.data;
+    this.data.authorization = action.data.authorization;
+    this.data.user = "Logged in as " + action.data.user;
     this.data.loggedIn = true;
   }
 
   userLogOut()
   {
     this.data.authorization = "user";
+    this.data.user = "Please Log In";
     this.data.loggedIn = false;
   }
 

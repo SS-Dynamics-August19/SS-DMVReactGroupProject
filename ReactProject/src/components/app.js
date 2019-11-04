@@ -24,10 +24,12 @@ import stores from "../stores/DataStores.js";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentPath: "/" };
+    this.state = { currentPath: "/",
+                  login: "" };
   }
 
   render() {
+    console.log(stores["user"].data.loggedIn);
     return (
       <div className="mainColumn">
         <Header

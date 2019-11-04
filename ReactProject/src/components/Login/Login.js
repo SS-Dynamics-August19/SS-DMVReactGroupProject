@@ -24,8 +24,8 @@ import stores from "../../stores/dataStores.js";
  */
 
 export default class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       information: {
         //should change on field change to match user input
@@ -42,6 +42,7 @@ export default class Login extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return <div>{this.getContent()}</div>;
   }
 
@@ -124,7 +125,7 @@ export default class Login extends React.Component {
         {
           if (this.state.information.password == obj.madmv_password)
           {
-            new DataLoader().signalLogIn(obj.madmv_securityroles); // log in if user and pass are correct and match
+            new DataLoader().signalLogIn(obj.madmv_securityroles, obj.madmv_name); // log in if user and pass are correct and match
           }
         }
       })

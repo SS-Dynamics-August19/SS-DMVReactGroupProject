@@ -44,10 +44,10 @@ export default class DataLoader {
     DataLoader.signal(failureSignal);
   }
 
-  signalLogIn(secRoles) {
+  signalLogIn(secRoles, username) {
     let loggedInSignal = {
       actionType: 'user_logged_in',
-      data: secRoles
+      data: {authorization: secRoles, user: username}
     };
     DataLoader.signal(loggedInSignal);
   }
