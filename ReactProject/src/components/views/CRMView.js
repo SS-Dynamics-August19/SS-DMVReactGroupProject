@@ -42,11 +42,20 @@ export default class CRMView extends React.Component {
             </div>
         );
     }
-    
-    handleClick(event){
-        console.log("hello")
+    handleChange(obj){
+        
+        console.log(obj)
+        
+        
+
+    }
+    handleClick(id){
+        
+        console.log(id)
+        
     }
     getSuccessContent() {
+        
         console.log(stores[this.props.dataType].data.records);
          
         let content = {columns: [
@@ -76,11 +85,27 @@ export default class CRMView extends React.Component {
             },
             {
     
-                label:'CreamTime',
+                label:'CreatTime',
       
                 field:'createdon',
       
+              
+            },
+            {
+    
+                label:' ',
+      
+                field:'click',
+      
+              },
+              {
+    
+                label:' ',
+      
+                field:'checkbox',
+      
               }
+
           ],
 
     
@@ -167,14 +192,15 @@ export default class CRMView extends React.Component {
             })
 
             tableData.forEach(obj => {
-                obj["clickEvent"] = ()=>this.handleClick(event)
+                obj["click"] = <input type="button" value="Detail Info"  onClick={()=>this.handleClick(obj)}/>
+                obj["checkbox"] = <input type="button" value="delete" onClick={()=>this.handleChange(obj.madmv_ma_applicationid)}/>
                 if(obj.madmv_appid === null) 
                      obj.madmv_appid = " ";
                 if(obj.madmv_applicationtype === null) 
                     obj.madmv_applicationtype = " ";
                 if(obj.applicationsubject === null)
                     obj.madmv_applicationsubject = " ";
-           
+                //console.log()
                     
                   })
         
