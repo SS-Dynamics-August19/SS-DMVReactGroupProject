@@ -8,7 +8,10 @@ let _COLUMNS = [
   { header: "Name"         , key: "madmv_appid"              },
   { header: "Type"         , key: "madmv_applicationtype"    },
   { header: "Subject"      , key: "madmv_applicationsubject" },
-  { header: "Creation Time", key: "createdon"                }
+  { header: "Creation Time", key: "createdon"                },
+  { header: "Insurance Proof", key: "madmv_insuranceproof"   },
+  { header: "ID Proof", key: "madmv_idproof"    },
+  { header : "Owner" , key :"madmv_OwnerInfo"}
 ];
 
 const view = function() {
