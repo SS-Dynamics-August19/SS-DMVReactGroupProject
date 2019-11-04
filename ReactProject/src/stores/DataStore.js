@@ -12,6 +12,7 @@ export default class DataStore extends EventEmitter {
     this.data = {
       records: [],
       readState: State.DEFAULT_STATE,
+      updateState: State.DEFAULT_STATE,
       loggedIn: false,
       authorization: "user",
       user: "Please Log In"
@@ -48,10 +49,13 @@ export default class DataStore extends EventEmitter {
         this.onStarted(action);
         break;
       case updateStarted:
+        this.data.updateState = State.STARTED;
         break;
       case updateSuccess:
+        this.data.updateState = State.SUCCESS;
         break;
       case updateFailure:
+        this.data.updateState = State.FAILURE;
         break;
       case 'user_logged_in':
         this.userLogIn(action);
