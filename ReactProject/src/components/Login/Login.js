@@ -196,17 +196,21 @@ export default class Login extends React.Component {
       >
         Logout
     </button>
-    <button
+
+
+    </div>
+    )
+  }
+
+  /*
+      <button
         type="delete"
         className="delete"
         onClick={this.testDelete}
       >
         Delete
     </button>
-
-    </div>
-    )
-  }
+    */
 
   getForm() {
     return (
