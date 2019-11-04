@@ -2,6 +2,7 @@ import React from "react";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
+//import ApplicationActions from "../../actions/ApplicationActions.js";
 
 
 /**
@@ -139,6 +140,11 @@ export default class Login extends React.Component {
     new DataLoader().signalLogOut();
   }
 
+  //testDelete() {
+  //  let id = "919bc5c6-43ff-e911-a811-000d3a36880e"
+  //  ApplicationActions.deleteApplication(id);
+  //}
+
   loadFromCRM() {
     let query = this.generateQuery();
     new DataLoader(query, this.state.dataType).load();
@@ -182,6 +188,7 @@ export default class Login extends React.Component {
 
   getLogOutButton() {
     return (
+      <div>
       <button
         type="button"
         className="button"
@@ -189,6 +196,15 @@ export default class Login extends React.Component {
       >
         Logout
     </button>
+    <button
+        type="delete"
+        className="delete"
+        onClick={this.testDelete}
+      >
+        Delete
+    </button>
+
+    </div>
     )
   }
 
