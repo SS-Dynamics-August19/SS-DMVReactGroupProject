@@ -42,6 +42,10 @@ export default class CRMViewContact extends React.Component {
             </div>
         );
     }
+
+    handleClick(event){
+        console.log("hello")
+    }
     
     getSuccessContent() {
         console.log(stores[this.props.dataType].data.records);
@@ -88,7 +92,7 @@ export default class CRMViewContact extends React.Component {
           ],
 
     
-          rows: this.getTableBodyContent(),
+          rows: this.getTableBodyContent()
     
         }
         if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
@@ -160,7 +164,10 @@ export default class CRMViewContact extends React.Component {
 */
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;
+        
         tableData.forEach(obj => {
+            
+            obj["clickEvent"] = ()=>this.handleClick(event)
             if(obj.madmv_fullname === null) 
                  obj.madmv_fullname = " ";
             if(obj.madmv_age === null) 
@@ -171,10 +178,14 @@ export default class CRMViewContact extends React.Component {
                 obj.madmv_email = " ";
             if(obj.madmv_phonenumber === null)
                 obj.madmv_phonenumber = " ";
+                console.log(typeof obj)
+                
+                
+
               })
             
         
-        console.log(tableData)
+        console.log( tableData)
   
         return tableData
   
