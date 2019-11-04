@@ -4,6 +4,7 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import ApplicationActions from "../../actions/ApplicationActions.js";
 
 export default class CRMViewContact extends React.Component {
   render() {
@@ -43,8 +44,18 @@ export default class CRMViewContact extends React.Component {
         );
     }
 
-    handleClick(event){
-        console.log("hello")
+    handleDelete(id){
+        
+        console.log(id)
+        ApplicationActions.deleteApplication(id)
+        
+        
+
+    }
+    handleView(obj){
+        
+        console.log(obj)
+        
     }
     
     getSuccessContent() {
@@ -87,6 +98,20 @@ export default class CRMViewContact extends React.Component {
                 label:'Phone',
       
                 field:'madmv_phonenumber',
+      
+              },
+              {
+    
+                label:' ',
+      
+                field:'detail',
+      
+              },
+              {
+    
+                label:' ',
+      
+                field:'delete',
       
               }
           ],
@@ -166,8 +191,9 @@ export default class CRMViewContact extends React.Component {
         let tableData = stores[this.props.dataType].data.records;
         
         tableData.forEach(obj => {
+            obj["detail"] = <input type="button" value="Detail Info"  onClick={()=>this.handleView(obj)}/>
+            obj["delete"] = <input type="button" value="delete" onClick={()=>this.handleDelete(obj.madmv_ma_customerid)}/>
             
-            obj["clickEvent"] = ()=>this.handleClick(event)
             if(obj.madmv_fullname === null) 
                  obj.madmv_fullname = " ";
             if(obj.madmv_age === null) 

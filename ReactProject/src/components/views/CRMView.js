@@ -4,6 +4,7 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import ApplicationActions from "../../actions/ApplicationActions.js";
 
 export default class CRMView extends React.Component {
   render() {
@@ -42,16 +43,17 @@ export default class CRMView extends React.Component {
             </div>
         );
     }
-    handleChange(obj){
+    handleDelete(id){
         
-        console.log(obj)
+        console.log(id)
+        ApplicationActions.deleteApplication(id)
         
         
 
     }
-    handleClick(id){
+    handleView(obj){
         
-        console.log(id)
+        console.log(obj)
         
     }
     
@@ -205,8 +207,8 @@ export default class CRMView extends React.Component {
             })
 
             tableData.forEach(obj => {
-                obj["click"] = <input type="button" value="Detail Info"  onClick={()=>this.handleClick(obj)}/>
-                obj["checkbox"] = <input type="button" value="delete" onClick={()=>this.handleChange(obj.madmv_ma_applicationid)}/>
+                obj["click"] = <input type="button" value="Detail Info"  onClick={()=>this.handleView(obj)}/>
+                obj["checkbox"] = <input type="button" value="delete" onClick={()=>this.handleDelete(obj.madmv_ma_applicationid)}/>
                 if(obj.madmv_appid === null) 
                      obj.madmv_appid = " ";
                 if(obj.madmv_applicationtype === null) 

@@ -4,6 +4,7 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import ApplicationActions from "../../actions/ApplicationActions.js";
 
 export default class CRMViewVehicle extends React.Component {
   render() {
@@ -43,10 +44,19 @@ export default class CRMViewVehicle extends React.Component {
         );
     }
 
-    handleClick(event){
-        console.log("hello")
+    handleDelete(id){
+        
+        console.log(id)
+        ApplicationActions.deleteApplication(id)
+        
+        
+
     }
-    
+    handleView(obj){
+        
+        console.log(obj)
+        
+    }
     getSuccessContent() {
         console.log(stores[this.props.dataType].data.records);
          
@@ -92,6 +102,22 @@ export default class CRMViewVehicle extends React.Component {
       
             
                 field:'createdon',
+      
+            },
+            {
+    
+                label:' ',
+      
+            
+                field:'detail',
+      
+            },
+            {
+    
+                label:' ',
+      
+            
+                field:'delete',
       
             }
           ],
@@ -172,10 +198,12 @@ export default class CRMViewVehicle extends React.Component {
     getTableBodyContent() {
      
         let tableData = stores[this.props.dataType].data.records;
-           
+         
         
           tableData.forEach(obj => {
-            obj["clickEvent"] = ()=>this.handleClick(event)
+            obj["detail"] = <input type="button" value="Detail Info"  onClick={()=>this.handleView(obj)}/>
+            obj["delete"] = <input type="button" value="delete" onClick={()=>this.handleDelete(obj.madmv_ma_vehicleid)}/>
+            
             if(obj.madmv_yearmodel === null) 
                  obj.madmv_yearmodel = " ";
             if(obj.madmv_vehiclemake === null) 
