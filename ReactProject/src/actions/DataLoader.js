@@ -26,7 +26,6 @@ export default class DataLoader {
   }
 
   signalLoadSuccess(result) {
-    console.log(result);
     let successSignal = {
       actionType:
         constant.ACTION_PREFIX + this.prefix + constant.SUCCESS_SUFFIX,
@@ -36,6 +35,7 @@ export default class DataLoader {
   }
 
   signalLoadFailure(error) {
+    console.log("DataLoader received error from API:");
     console.log(error);
 
     let failureSignal = {

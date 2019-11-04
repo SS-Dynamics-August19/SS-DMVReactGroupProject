@@ -29,7 +29,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(stores["user"].data.loggedIn);
+    //console.log("Rendering App. stores.user.data.loggedIn:");
+    //console.log(stores["user"].data.loggedIn);
     return (
       <div className="mainColumn">
         <Header

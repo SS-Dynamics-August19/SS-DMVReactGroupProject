@@ -42,7 +42,8 @@ export default class Login extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    //console.log("Rendering. Login.props:");
+    //console.log(this.props);
     return <div>{this.getContent()}</div>;
   }
 
@@ -80,7 +81,8 @@ export default class Login extends React.Component {
     }
 
     getSuccessContent() {
-      console.log(stores[this.state.dataType].data.records);
+      //console.log("Rendering Login success mode. " + this.state.dataType + " records:");
+      //console.log(stores[this.state.dataType].data.records);
 
       if (stores[this.state.dataType].data.loggedIn == false)
       {
@@ -108,7 +110,7 @@ export default class Login extends React.Component {
   }
 
   needsToLoad() {
-    return (stores[this.state.dataType].data.readState != State.SUCCESS);
+    return (stores[this.state.dataType].data.readState !== State.SUCCESS);
     
   }
 
