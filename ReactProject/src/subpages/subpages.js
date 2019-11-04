@@ -7,9 +7,10 @@ import applicationsView from "../components/views/ApplicationsView.js";
 import vehiclesView from "../components/views/VehiclesView.js";
 
 const subpages = [
-  new Subpage(Login, Constants.REACT_COMPONENT, "/", function(props) {
+  /*new Subpage(Login, Constants.REACT_COMPONENT, "/", function(props) {
     return props.login === undefined ? "Log In" : "Log Out";
-  }),
+  }),*/
+    new Subpage(Login, Constants.REACT_COMPONENT, "/", "Log In/Out"),
     new Subpage(customersView, Constants.FUNCTIONAL, "/Customers", "Customers"),
     new Subpage(vehiclesView, Constants.FUNCTIONAL, "/Vehicles", "Vehicles"),
     new Subpage(

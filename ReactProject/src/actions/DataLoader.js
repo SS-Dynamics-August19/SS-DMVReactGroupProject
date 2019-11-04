@@ -26,7 +26,6 @@ export default class DataLoader {
   }
 
   signalLoadSuccess(result) {
-    console.log(result);
     let successSignal = {
       actionType:
         constant.ACTION_PREFIX + this.prefix + constant.SUCCESS_SUFFIX,
@@ -36,12 +35,28 @@ export default class DataLoader {
   }
 
   signalLoadFailure(error) {
+    console.log("DataLoader received error from API:");
     console.log(error);
 
     let failureSignal = {
       actionType: constant.ACTION_PREFIX + this.prefix + constant.FAILURE_SUFFIX
     };
     DataLoader.signal(failureSignal);
+  }
+
+  signalLogIn(secRoles, username) {
+    let loggedInSignal = {
+      actionType: 'user_logged_in',
+      data: {authorization: secRoles, user: username}
+    };
+    DataLoader.signal(loggedInSignal);
+  }
+
+  signalLogOut() {
+    let loggedOutSignal = {
+      actionType: 'user_Logged_out'
+    };
+    DataLoader.signal(loggedOutSignal);
   }
 
   static signal(signalObj) {
