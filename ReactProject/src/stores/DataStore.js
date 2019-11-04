@@ -11,7 +11,8 @@ export default class DataStore extends EventEmitter {
     this.type = dataTypeName;
     this.data = {
       records: [],
-      readState: State.DEFAULT_STATE
+      readState: State.DEFAULT_STATE,
+      updateState: State.DEFAULT_STATE
     };
 
     this.registerActionHandler();
@@ -45,11 +46,14 @@ export default class DataStore extends EventEmitter {
         this.onStarted(action);
         break;
       case updateStarted:
+        this.data.updateState = State.STARTED;
         break;
       case updateSuccess:
+        this.data.updateState = State.SUCCESS;
         break;
       case updateFailure:
-          break;
+        this.data.updateState = State.FAILURE;
+        break;
       default:
         return;
     }

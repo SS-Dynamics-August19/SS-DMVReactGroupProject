@@ -10,7 +10,9 @@ import axios from 'axios';
 
 /*
 Functions included in file
-    updateApplication:  takes object with data member variables named after application field
+    updateApplication:  
+                ApplicationActions.updateApplication(id, application);
+                        takes object with data member variables named after application field
                         names from Dynamics with their values and makes a web api call
                         to the Dynamics system to update the application. Sends an action to dispatcher
                         to notify store of this process starting, on success, and on failure
@@ -43,18 +45,18 @@ const ApplicationActions = {
 
         // make axios put call
         axios.patch(uri, application, config)
-                .then(res => {
-                    Dispatcher.dispatch({
-                        actionType: 'update_application_success',
-                        data: res.data
-                    });
-                })
-                .catch( (error) => {
-                    console.log(error);
-                    Dispatcher.dispatch({
-                        actionType: 'update_application_failure'
-                    });
+            .then(res => {
+                Dispatcher.dispatch({
+                    actionType: 'update_application_success',
+                    data: res.data
                 });
+            })
+            .catch( (error) => {
+                console.log(error);
+                Dispatcher.dispatch({
+                    actionType: 'update_application_failure'
+                });
+            });
 
     }
 }
