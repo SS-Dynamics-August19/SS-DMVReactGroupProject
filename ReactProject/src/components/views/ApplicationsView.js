@@ -13,7 +13,7 @@ let _COLUMNS = [
 ]
 
 
-const view = function(props) {
+const view = function() {
     return (
         <CRMView
             dataType   = {_DATA_TYPE}
