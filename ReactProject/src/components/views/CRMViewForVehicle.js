@@ -42,6 +42,10 @@ export default class CRMViewVehicle extends React.Component {
             </div>
         );
     }
+
+    handleClick(event){
+        console.log("hello")
+    }
     
     getSuccessContent() {
         console.log(stores[this.props.dataType].data.records);
@@ -158,8 +162,9 @@ export default class CRMViewVehicle extends React.Component {
      
         let tableData = stores[this.props.dataType].data.records;
            
-
+        
           tableData.forEach(obj => {
+            obj["clickEvent"] = ()=>this.handleClick(event)
             if(obj.madmv_yearmodel === null) 
                  obj.madmv_yearmodel = " ";
             if(obj.madmv_vehiclemake === null) 

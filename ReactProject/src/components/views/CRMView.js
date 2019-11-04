@@ -43,6 +43,9 @@ export default class CRMView extends React.Component {
         );
     }
     
+    handleClick(event){
+        console.log("hello")
+    }
     getSuccessContent() {
         console.log(stores[this.props.dataType].data.records);
          
@@ -164,6 +167,7 @@ export default class CRMView extends React.Component {
             })
 
             tableData.forEach(obj => {
+                obj["clickEvent"] = ()=>this.handleClick(event)
                 if(obj.madmv_appid === null) 
                      obj.madmv_appid = " ";
                 if(obj.madmv_applicationtype === null) 
