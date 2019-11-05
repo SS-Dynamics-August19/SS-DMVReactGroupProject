@@ -4,8 +4,11 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
-import ApplicationActions from "../../actions/ApplicationActions.js";
+//import ApplicationActions from "../../actions/ApplicationActions.js";
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
+import { CustomerDetailsView } from "./CustomerDetailsView.js";
+
+//const DATA_STORE "customerID";
 
 export default class CRMViewContact extends React.Component {
     render() {
@@ -50,8 +53,13 @@ export default class CRMViewContact extends React.Component {
         //ApplicationActions.deleteApplication(id) need to be change once have delete contact function
     }
 
-    handleView(obj) {
-        console.log(obj);
+    handleView(id) {
+        console.log(id);
+        //this.setState({ information: { [event.currentTarget.name]: event.currentTarget.value, this.data.customerID: id } });
+        //this is where i'll handle redirection with URL parameter i guess?
+        //console.log(this.data.customerID);
+
+        window.location.href = CustomerDetailsView;
     }
 
     getSuccessContent() {
@@ -188,7 +196,8 @@ export default class CRMViewContact extends React.Component {
             obj["detail"] = (
               <button
                 className="btn btn-sm btn-primary"
-                onClick={() => this.handleView(obj)}
+                    onClick={() => this.handleView(obj.madmv_ma_customerid)}
+
               >
                 Detail Info
               </button>
