@@ -60,63 +60,15 @@ export default class CRMViewContact extends React.Component {
     getSuccessContent() {
         let content = {
             columns: [
-
-                {
-
-                    label: 'Name',
-
-                    field: 'madmv_fullname',
-
-                },
-
-                {
-
-                    label: 'Age',
-
-                    field: 'madmv_age',
-
-                },
-
-                {
-
-                    label: 'SSN',
-
-                    field: 'madmv_cssn',
-
-                },
-                {
-
-                    label: 'Email',
-
-                    field: 'madmv_email',
-
-                },
-                {
-
-                    label: 'Phone',
-
-                    field: 'madmv_phonenumber',
-
-                },
-                {
-
-                    label: ' ',
-
-                    field: 'detail',
-
-                },
-                {
-
-                    label: ' ',
-
-                    field: 'delete',
-
-                }
+                { label: 'Name',  field: 'madmv_fullname'},
+                { label: 'Age'  , field: 'madmv_age'},
+                { label: 'SSN'  , field: 'madmv_cssn'},
+                { label: 'Email', field: 'madmv_email'},
+                { label: 'Phone', field: 'madmv_phonenumber'},
+                { label: ' '    , field: 'detail'},
+                { label: ' '    , field: 'delete'}
             ],
-
-
             rows: this.getTableBodyContent()
-
         }
         return (
             <div>
@@ -176,7 +128,7 @@ export default class CRMViewContact extends React.Component {
             obj["delete"] = (
               <button
                 className="btn btn-sm btn-danger"
-                onClick={() => this.handleDelete(obj.madmv_ma_customerid)}
+                onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(obj.madmv_ma_customerid)}}
               >
                 Delete
               </button>
