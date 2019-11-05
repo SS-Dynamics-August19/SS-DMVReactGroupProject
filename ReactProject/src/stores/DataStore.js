@@ -12,6 +12,7 @@ export default class DataStore extends EventEmitter {
         this.data = {
             records: [],
             readState: State.DEFAULT_STATE,
+            updateState: State.DEFAULT_STATE,
             loggedIn: false,
             authorization: "user",
             user: "Please Log In"
@@ -80,7 +81,12 @@ export default class DataStore extends EventEmitter {
     }
 
     emitChange() {
-        this.emit(CHANGE_EVENT);
+        // Hack to duck a bug.
+
+        let self = this
+        setTimeout(function() { // Run after dispatcher has finished
+            self.emit(CHANGE_EVENT);
+        }, 0);
     }
 
     userLogIn(action) {

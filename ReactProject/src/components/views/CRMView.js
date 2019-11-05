@@ -4,6 +4,7 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import ApplicationActions from "../../actions/ApplicationActions.js";
 
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
@@ -66,6 +67,15 @@ export default class CRMView extends React.Component {
         );
     }
 
+    handleDelete(id){
+        console.log(id)
+        ApplicationActions.deleteApplication(id)
+    }
+
+    handleView(obj){
+        console.log(obj)
+    }
+
     handleClick() {
         // Placeholder, intended to update in some way so as to call a different click event depending on which record is clicked.
         console.log("Placeholder CRMView record clicked event.")
@@ -77,7 +87,9 @@ export default class CRMView extends React.Component {
                 { label: 'ID',            field: 'madmv_appid' },
                 { label: 'Type',          field: 'madmv_applicationtype' },
                 { label: 'Subject',       field: 'madmv_applicationsubject' },
-                { label: 'Creation Time', field: 'createdon' }
+                { label: 'Creation Time', field: 'createdon' },
+                { label:' ',              field: 'click' },
+                { label:' ',              field: 'checkbox' }
             ],
             rows: this.getTableBodyContent()
         }
@@ -115,6 +127,7 @@ export default class CRMView extends React.Component {
     cleanup(record) {
         this.applyOptionSetMappings(record);
         this.cleanupNullFieldValues(record);
+        this.addInputs(record);
     }
 
     applyOptionSetMappings(record) {
@@ -130,13 +143,13 @@ export default class CRMView extends React.Component {
         }
     }
 
-    addClickEvent(record) {
-        record.clickEvent = function() { this.handleClick() };
+    addInputs(record) {
+        record.click    = <input type="button" value="Detail Info"  onClick={()=>this.handleView(record)}/>
+        record.checkbox = <input type="button" value="delete"       onClick={()=>this.handleDelete(record.madmv_ma_applicationid)}/>
     }
 
-    componentWillMount() {
-        console.log("CRMView debug:");
-        console.log(stores[this.props.dataType]);
+    addClickEvent(record) {
+        record.clickEvent = function() { this.handleClick() };
     }
 
     componentDidMount() {
@@ -144,7 +157,7 @@ export default class CRMView extends React.Component {
     }
 
     needsToLoad() {
-        return (stores[this.props.dataType].data.readState !== State.SUCCESS);
+        return (stores[this.props.dataType].data.readState === State.DEFAULT_STATE);
     }
 
     loadFromCRM() {

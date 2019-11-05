@@ -43,12 +43,16 @@ export default class CRMViewVehicle extends React.Component {
         );
     }
 
-    handleClick() {
-        console.log("hello")
+    handleDelete(id){
+        console.log(id)
+        //ApplicationActions.deleteApplication(id) same, call the deleteVehicle function
     }
-    
+
+    handleView(obj){
+        console.log(obj)
+    }
+
     getSuccessContent() {
-        console.log(stores[this.props.dataType].data.records);
          
         let content = {columns: [
 
@@ -92,6 +96,22 @@ export default class CRMViewVehicle extends React.Component {
       
             
                 field:'createdon',
+      
+            },
+            {
+    
+                label:' ',
+      
+            
+                field:'detail',
+      
+            },
+            {
+    
+                label:' ',
+      
+            
+                field:'delete',
       
             }
           ],
@@ -172,10 +192,12 @@ export default class CRMViewVehicle extends React.Component {
     getTableBodyContent() {
      
         let tableData = stores[this.props.dataType].data.records;
-           
+         
         
           tableData.forEach(obj => {
-            obj["clickEvent"] = ()=>this.handleClick(event)
+            obj["detail"] = <input type="button" value="Detail Info"  onClick={()=>this.handleView(obj)}/>
+            obj["delete"] = <input type="button" value="delete" onClick={()=>this.handleDelete(obj.madmv_ma_vehicleid)}/>
+            
             if(obj.madmv_yearmodel === null) 
                  obj.madmv_yearmodel = " ";
             if(obj.madmv_vehiclemake === null) 
@@ -188,7 +210,6 @@ export default class CRMViewVehicle extends React.Component {
               })
             
         
-        console.log(tableData)
 
         return tableData
         

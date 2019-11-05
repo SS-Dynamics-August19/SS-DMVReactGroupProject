@@ -2,6 +2,7 @@ import React from "react";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
+//import ApplicationActions from "../../actions/ApplicationActions.js";
 
 
 /**
@@ -38,6 +39,10 @@ export default class Login extends React.Component {
                 password: ""
             }
         };
+        
+        let query = this.generateQuery();
+        this.mydataloader = new DataLoader(query, this.state.dataType);
+        if(this.needsToLoad()) this.loadFromCRM();
 
         this.usernameFieldChange = this.usernameFieldChange.bind(this);
         this.passwordFieldChange = this.passwordFieldChange.bind(this);
@@ -101,18 +106,10 @@ export default class Login extends React.Component {
                 </div>
             );
         }
-
-    }
-
-
-    componentDidMount() {
-        if (this.needsToLoad())
-            this.loadFromCRM();
     }
 
     needsToLoad() {
-        return (stores.user.data.readState !== State.SUCCESS);
-
+        return (stores.user.data.readState === State.DEFAULT_STATE);
     }
 
     /**

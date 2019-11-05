@@ -18,6 +18,8 @@ const renderRoutes = function(props) {
     for (const subpage of subpages) {
         let JSX;
 
+        // TODO    this commented code intended to preform login validation. Uncomment when ready to implement or delete if page validation has been implemented.
+
         //if (stores.user.data.authorization.includes(subpage.getPermission())) {
             JSX = subpage.toJSX(props);
         //} else {

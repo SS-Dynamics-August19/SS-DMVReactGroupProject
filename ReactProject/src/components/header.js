@@ -1,9 +1,19 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import subpages from "../subpages/subpages.js";
 import stores from "../stores/DataStores.js";
 
 let header = function() {
+    let logoutButton = "";
+    if (stores.user.data.loggedIn === true) {
+        logoutButton = (
+            <button type="button" className="button">
+                Logout
+            </button>
+        );
+    }
+
     return (
         <div>
             <div className="header">
@@ -13,7 +23,7 @@ let header = function() {
                 <ul className="list-inline">
                     {renderNavItems()}
                     <span className="username">
-                        {stores.user.data.user}
+                        {stores.user.data.user}{logoutButton}
                     </span>
                 </ul>
             </nav>
