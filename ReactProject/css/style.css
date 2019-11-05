@@ -161,3 +161,49 @@ input {
     max-height: calc(100% - 1em);
   }
 }
+
+.thDetailedView {
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+.thDetailedView, .detailedHeader {
+    padding: 10px 10px 10px 10px;
+}
+
+.detailedHeader {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+}
+
+.trDetailedView {
+    display: flex;
+    justify-content: space-around;
+}
+
+.trDetailedView, .detailedHeader, .fieldDetailed, .h2Th {
+    display: flex;
+}
+
+.detailedHeader, .h2Th {
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.fieldDetailed {
+    justify-content: space-between;
+}
+
+.detailedForm {
+    margin-left: 18%;
+}
+
+.h2Th {
+    margin-bottom: 3%;
+    margin-top: 3%;
+}
+
+pre {
+    border: 0;
+    background-color: inherit;
+}
