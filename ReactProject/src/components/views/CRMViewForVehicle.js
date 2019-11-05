@@ -43,12 +43,16 @@ export default class CRMViewVehicle extends React.Component {
         );
     }
 
-    handleClick(event){
-        console.log("hello")
+    handleDelete(id){
+        console.log(id)
+        //ApplicationActions.deleteApplication(id) same, call the deleteVehicle function
     }
-    
+
+    handleView(obj){
+        console.log(obj)
+    }
+
     getSuccessContent() {
-        console.log(stores[this.props.dataType].data.records);
          
         let content = {columns: [
 
@@ -93,6 +97,22 @@ export default class CRMViewVehicle extends React.Component {
             
                 field:'createdon',
       
+            },
+            {
+    
+                label:' ',
+      
+            
+                field:'detail',
+      
+            },
+            {
+    
+                label:' ',
+      
+            
+                field:'delete',
+      
             }
           ],
 
@@ -100,36 +120,47 @@ export default class CRMViewVehicle extends React.Component {
           rows: this.getTableBodyContent(),
     
         }
-        return (
-            <Row className ="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable
-                                    striped
-                                    bordered
-                                    hover
-                                    data={content}
-                                 />
-                             </CardBody>
-                         </Card>
-                    </Col>
-                </Row>
+        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
+        {
+            return (
+                <Row className ="mb-4">
+                        <Col md="12">
+                            <Card>
+                                <CardBody>
+                                    <MDBDataTable
+                                        striped
+                                        bordered
+                                        hover
+                                        data={content}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
 
 
 
 
+
+                
+            /*  <table className="CRMTable">
+                    <thead>
+                        {this.getTableHeaderContent()}
+                    </thead>
+                    <tbody>
+                        {this.getTableBodyContent()}
+                    </tbody>    
+                </table>*/
+            );
+        } else {
 
             
-          /*  <table className="CRMTable">
-                <thead>
-                    {this.getTableHeaderContent()}
-                </thead>
-                <tbody>
-                    {this.getTableBodyContent()}
-                </tbody>    
-            </table>*/
-        );
+            return (
+                <div>
+                    You are not authorized to view this page
+                </div>
+            );
+        }
     }
 /*
     getTableHeaderContent() {
@@ -161,10 +192,12 @@ export default class CRMViewVehicle extends React.Component {
     getTableBodyContent() {
      
         let tableData = stores[this.props.dataType].data.records;
-           
+         
         
           tableData.forEach(obj => {
-            obj["clickEvent"] = ()=>this.handleClick(event)
+            obj["detail"] = <input type="button" value="Detail Info"  onClick={()=>this.handleView(obj)}/>
+            obj["delete"] = <input type="button" value="delete" onClick={()=>this.handleDelete(obj.madmv_ma_vehicleid)}/>
+            
             if(obj.madmv_yearmodel === null) 
                  obj.madmv_yearmodel = " ";
             if(obj.madmv_vehiclemake === null) 
@@ -177,7 +210,6 @@ export default class CRMViewVehicle extends React.Component {
               })
             
         
-        console.log(tableData)
 
         return tableData
         
