@@ -4,8 +4,10 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
-import CustomerActions from "../../actions/CustomerActions.js";
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
+import { CustomerDetailsView } from "./CustomerDetailsView.js";
+
+//const DATA_STORE "customerID";
 
 export default class CRMViewContact extends React.Component {
     render() {
@@ -67,46 +69,23 @@ export default class CRMViewContact extends React.Component {
             ],
             rows: this.getTableBodyContent()
         }
-        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType)) {
-            return (
-                <div>
-                  <Row className="mb-4">
+        return (
+            <div>
+                <Row className="mb-4">
                     <Col md="12">
-                      <Card>
-                        <CardBody>
-                          <MDBDataTable striped bordered hover data={content} />
-                        </CardBody>
-                      </Card>
+                        <Card>
+                            <CardBody>
+                                <MDBDataTable striped bordered hover data={content} />
+                            </CardBody>
+                        </Card>
                     </Col>
-                  </Row>
-                  <div className="pb-4">
+                </Row>
+                <div className="pb-4">
                     <CustomerCreateModal />
-                  </div>
                 </div>
-              );
+            </div>
+        );
 
-
-
-
-
-            /*  <table className="CRMTable">
-                  <thead>
-                      {this.getTableHeaderContent()}
-                  </thead>
-                  <tbody>
-                      {this.getTableBodyContent()}
-                  </tbody>    
-              </table>*/
-
-        } else {
-
-
-            return (
-                <div>
-                    You are not authorized to view this page
-                </div>
-            );
-        }
 
     }
     /*

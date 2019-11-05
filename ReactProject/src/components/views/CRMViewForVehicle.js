@@ -68,47 +68,22 @@ export default class CRMViewVehicle extends React.Component {
           rows: this.getTableBodyContent(),
     
         }
-        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType))
-        {
-            return (
-                <Row className ="mb-4">
-                        <Col md="12">
-                            <Card>
-                                <CardBody>
-                                    <MDBDataTable
-                                        striped
-                                        bordered
-                                        hover
-                                        data={content}
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    </Row>
-
-
-
-
-
-                
-            /*  <table className="CRMTable">
-                    <thead>
-                        {this.getTableHeaderContent()}
-                    </thead>
-                    <tbody>
-                        {this.getTableBodyContent()}
-                    </tbody>    
-                </table>*/
-            );
-        } else {
-
-            
-            return (
-                <div>
-                    You are not authorized to view this page
-                </div>
-            );
-        }
+        return (
+            <Row className="mb-4">
+                <Col md="12">
+                    <Card>
+                        <CardBody>
+                            <MDBDataTable
+                                striped
+                                bordered
+                                hover
+                                data={content}
+                            />
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        );
     }
 /*
     getTableHeaderContent() {
