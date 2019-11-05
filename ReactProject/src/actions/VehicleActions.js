@@ -7,6 +7,12 @@
  *************************************/
 import Dispatcher from '../dispatcher/appDispatcher.js';
 import axios from 'axios';
+const config = {
+    'OData-MaxVersion': 4.0,
+    'OData-Version': 4.0,
+    'Accept': 'application/json',
+    'Content-Type': 'application/json; charset=utf-8'
+  }
 
 /*
 Functions included in file
@@ -122,7 +128,36 @@ const VehicleActions = {
                     actionType: 'update_vehicle_failure'
                 });
             });
-    }
+    },
+      /**
+   * *Send vehicle create request to the Dynamics365 api
+   * @param vehicle object built from the creator component
+   */
+  createVehicle: function(description) {
+    //build record object (vehicle) for CRM from parameter object (description)
+    var vehicle = {};
+    vehicle.madmv_yearmodel = description.year;
+    vehicle.madmv_vehiclemake = description.make;
+    vehicle.madmv_modelorseries = description.model;
+    vehicle.madmv_vehicleidnumber = description.vin;
+
+    Dispatcher.dispatch({
+      actionType: "creating_record"
+    });
+    axios.post("https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles",vehicle,config)
+      .then(res => {
+        Dispatcher.dispatch({
+          actionType: "created_successfully",
+          data: res.data
+        });
+      })
+      .catch(e => {
+        console.log(e);
+        Dispatcher.dispatch({
+          actionType: "creation_failed"
+        });
+      });
+  }
 }
 
 
