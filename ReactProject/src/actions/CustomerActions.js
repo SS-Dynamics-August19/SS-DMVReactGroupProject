@@ -7,6 +7,13 @@
  *************************************/
 import Dispatcher from '../dispatcher/appDispatcher.js';
 import axios from 'axios';
+const config = {
+    'OData-MaxVersion': 4.0,
+    'OData-Version': 4.0,
+    'Accept': 'application/json',
+    'Content-Type': 'application/json; charset=utf-8'
+  }
+
 
 /*
 Functions included in file
@@ -57,7 +64,43 @@ const CustomerActions = {
                 });
             });
 
-    }
+    },
+      /**
+   * *Send customer create request to the Dynamics365 api
+   * @param person object built from the creator component
+   */
+  createCustomer: function(person) {
+    //build record object (customer) for CRM from parameter object (person)
+    var customer = {};
+    customer.madmv_cssn = person.ssn;
+    customer.madmv_firstname = person.firstname;
+    customer.madmv_lastname = person.lastname;
+    customer.madmv_birthdate = person.bday;
+    customer.emailaddress = person.email;
+    customer.madmv_street1 = person.street1;
+    customer.madmv_street2 = person.street2;
+    customer.madmv_city = person.city;
+    customer.madmv_stateprovince = person.state;
+    customer.madmv_zippostalcode = person.zip;
+
+    Dispatcher.dispatch({
+      actionType: "creating_record"
+    });
+    axios.post("https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers",customer,config)
+      .then(res => {
+        Dispatcher.dispatch({
+          actionType: "created_successfully",
+          data: res.data
+        });
+      })
+      .catch(e => {
+        console.log(e);
+        Dispatcher.dispatch({
+          actionType: "creation_failed"
+        });
+      });
+  }
+
 }
 
 module.exports = CustomerActions;
