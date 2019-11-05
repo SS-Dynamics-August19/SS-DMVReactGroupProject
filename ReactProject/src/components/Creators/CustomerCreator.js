@@ -1,7 +1,6 @@
 import React from "react";
-import { ActionsForCreator } from "../../actions/ActionsForCreators"; //
-import PropTypes from "prop-types";
-
+// import {CustomerActions} from '../../actions/CustomerActions'
+// import PropTypes from "prop-types";
 
 /**
  * *Component with input fields for creating a customer record in the CRM
@@ -10,7 +9,8 @@ import PropTypes from "prop-types";
 export class CustomerCreator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {//values from input values
+    this.state = {
+      //values from input values
       ssn: "",
       firstname: "",
       lastname: "",
@@ -20,7 +20,7 @@ export class CustomerCreator extends React.Component {
       street2: "",
       city: "",
       state: "",
-      zip: "",
+      zip: ""
     };
 
     //field change methods
@@ -34,7 +34,7 @@ export class CustomerCreator extends React.Component {
     this.cityFieldChange = this.cityFieldChange.bind(this);
     this.stateFieldChange = this.stateFieldChange.bind(this);
     this.zipFieldChange = this.zipFieldChange.bind(this);
-    this.startCreation = this.startCreation.bind(this);//the submit action
+    this.startCreation = this.startCreation.bind(this); //the submit action
   }
 
   //*the field change methods are bound to the class
@@ -72,175 +72,176 @@ export class CustomerCreator extends React.Component {
   }
   startCreation() {
     //submit values when form is complete
-    ActionsForCreator.createCustomer(this.state); //**! Place Action Method Here and pass the state of this component */
+    // CustomerActions.createCustomer(this.state); //**! Place Action Method Here and pass the state of this component */
   }
 
   render() {
     let display = ""; //changes based on state of the app
 
-    if (this.props.creationStatus.readState.success) {
-      display = ( //shows success message if the creation was successful
-        <div className="alert alert-success" role="alert">
-          <h1 className="alert-heading">Success!!</h1>
-          <hr />
-          <h6 className="mb-0">
-            Created account for {this.state.firstname} {this.state.lastname}, successfully.
-          </h6>
+    // if (this.props.creationStatus.readState.success) {
+    //   display = ( //shows success message if the creation was successful
+    //     <div className="alert alert-success" role="alert">
+    //       <h1 className="alert-heading">Success!!</h1>
+    //       <hr />
+    //       <h6 className="mb-0">
+    //         Created account for {this.state.firstname} {this.state.lastname},
+    //         successfully.
+    //       </h6>
+    //     </div>
+    //   );
+    // } else if (this.props.creationStatus.readState.failure) {
+    //   display = ( //shows failure message if the create encountered any errors
+    //     <div className="alert alert-danger" role="alert">
+    //       <h1 className="alert-heading">Uh oh!</h1>
+    //       <hr />
+    //       <h6 className="mb-0">
+    //         Could not create account for {this.state.firstname} {this.state.lastname}.
+    //       </h6>
+    //       <p>Refresh and try again..</p>
+    //     </div>
+    //   );
+    // } else {
+    display = ( //display's the form since creationStatus didn't return success or failure / default (no change in global state)
+      <div className="">
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.firstNameFieldChange}
+            className="form-control"
+            placeholder="Enter first name.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              First Name
+            </span>
+          </div>
         </div>
-      );
-    } else if (this.props.creationStatus.readState.failure) {
-      display = ( //shows failure message if the create encountered any errors
-        <div className="alert alert-danger" role="alert">
-          <h1 className="alert-heading">Uh oh!</h1>
-          <hr />
-          <h6 className="mb-0">
-            Could not create account for {this.state.firstname} {this.state.lastname}.
-          </h6>
-          <p>Refresh and try again..</p>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.lastNameFieldChange}
+            className="form-control"
+            placeholder="Enter last name.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Last Name
+            </span>
+          </div>
         </div>
-      );
-    } else {
-      display = ( //display's the form since creationStatus didn't return success or failure / default (no change in global state)
-        <div className="card-header">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.firstNameFieldChange}
-              className="form-control"
-              placeholder="Enter first name.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                First Name
-              </span>
-            </div>
+        <div className="input-group mb-3">
+          <input
+            type="date"
+            onChange={this.bdayFieldChange}
+            className="form-control"
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Birthdate
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.lastNameFieldChange}
-              className="form-control"
-              placeholder="Enter last name.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Last Name
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.ssnFieldChange}
+            className="form-control"
+            placeholder="Enter Social Security Number"
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Social Security Number
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="date"
-              onChange={this.bdayFieldChange}
-              className="form-control"
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Birthdate
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="email"
+            onChange={this.emailFieldChange}
+            className="form-control"
+            placeholder="Enter email address.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Email
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.ssnFieldChange}
-              className="form-control"
-              placeholder="Enter Social Security Number"
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Social Security Number
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.street1FieldChange}
+            className="form-control"
+            placeholder="Enter line 1 of street address.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Street 1
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="email"
-              onChange={this.emailFieldChange}
-              className="form-control"
-              placeholder="Enter email address.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Email
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.street2FieldChange}
+            className="form-control"
+            placeholder="Enter line 2 of street address.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Street 2
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.street1FieldChange}
-              className="form-control"
-              placeholder="Enter line 1 of street address.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Street 1
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.cityFieldChange}
+            className="form-control"
+            placeholder="Enter city of residence.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              City
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.street2FieldChange}
-              className="form-control"
-              placeholder="Enter line 2 of street address.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Street 2
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.stateFieldChange}
+            className="form-control"
+            maxLength="2"
+            placeholder="Enter state abbreviation.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              State
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.cityFieldChange}
-              className="form-control"
-              placeholder="Enter city of residence.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                City
-              </span>
-            </div>
+        </div>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            onChange={this.zipFieldChange}
+            className="form-control"
+            placeholder="Enter zip code.."
+          />
+          <div className="input-group-append">
+            <span className="input-group-text" id="basic-addon2">
+              Zip Code
+            </span>
           </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.stateFieldChange}
-              className="form-control"
-              maxLength="2"
-              placeholder="Enter state abbreviation.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                State
-              </span>
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              onChange={this.zipFieldChange}
-              className="form-control"
-              placeholder="Enter zip code.."
-            />
-            <div className="input-group-append">
-              <span className="input-group-text" id="basic-addon2">
-                Zip Code
-              </span>
-            </div>
-          </div>
-          <button
+        </div>
+        {/* <button
             onClick={this.startCreation} //should trigger the submit action
             className="btn btn-block btn-success btn-lg"
           >
             CLICK HERE TO SUBMIT
-          </button>
-        </div>
-      );
-    }
+          </button> */}
+      </div>
+    );
+    // }
     return <div className="">{display}</div>;
   }
 }
@@ -252,6 +253,6 @@ const capitalize = s => {
 };
 
 //validate proptypes
-CustomerCreator.propTypes = {
-  creationStatus: PropTypes.object.isRequired
-};
+// CustomerCreator.propTypes = {
+//   creationStatus: PropTypes.object.isRequired
+// };

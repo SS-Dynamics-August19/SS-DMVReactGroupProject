@@ -1,7 +1,6 @@
 import React from "react";
-import { ActionsForCreator } from "../../actions/ActionsForCreators";
 import PropTypes from "prop-types";
-
+// import VehicleActions from '../../actions/VehicleActions'
 
 /**
  * *Component with input fields for creating a vehicle record in the CRM
@@ -41,7 +40,7 @@ export class VehicleCreator extends React.Component {
   };
   startCreation() {
     //submit values when form is complete
-    ActionsForCreator.createVehicle(this.state);
+    // VehicleActions.createVehicle(this.state);
   }
 
   render() {
