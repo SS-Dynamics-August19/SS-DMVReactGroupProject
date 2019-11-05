@@ -124,15 +124,6 @@ export default class Login extends React.Component {
     }
 
 
-  componentDidMount() {
-    //console.log("log in is in componentDidMount");
-  }
-
-  componentWillMount() {
-    //console.log("log in is in componentWillMount");
-  }
-
-
 
   
 
