@@ -5,7 +5,8 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
-
+import CustomerActions from "../../actions/CustomerActions.js";
+import VehicleActions from "../../actions/VehicleActions.js";
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -76,9 +77,9 @@ export default class CRMView extends React.Component {
         if(deletetype == 'application')
             ApplicationActions.deleteApplication(id)
         else if(deletetype == 'customer')
-            console.log('delete customer')
-        else if(deletetype == 'vehicle')
-            console.log('delete vehicle')
+            CustomerActions.deleteCustomer(id)
+        else if(deletetype == 'vehicle') 
+            VehicleActions.deleteVehicle(id)
     }
 
     handleView(obj){
@@ -135,10 +136,7 @@ export default class CRMView extends React.Component {
             
             //this.addClickEvent(record);
         });
-        console.log(records)
-
         return records;
-
     }
 
     cleanup(record) {
@@ -228,9 +226,7 @@ export default class CRMView extends React.Component {
         for (let i = 0; i < columns.length; i++) {
             let key = columns[i].field;
             query += "," + key;
-
         }
-
         return query;
     }
 }

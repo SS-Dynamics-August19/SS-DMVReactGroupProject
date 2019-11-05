@@ -4,6 +4,8 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import VehicleActions from "../../actions/VehicleActions.js";
+
 
 export default class CRMViewVehicle extends React.Component {
   render() {
@@ -45,7 +47,7 @@ export default class CRMViewVehicle extends React.Component {
 
     handleDelete(id){
         console.log(id)
-        //ApplicationActions.deleteApplication(id) same, call the deleteVehicle function
+        VehicleActions.deleteVehicle(id)
     }
 
     handleView(obj){
