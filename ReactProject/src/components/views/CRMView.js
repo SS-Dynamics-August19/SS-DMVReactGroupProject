@@ -119,9 +119,7 @@ export default class CRMView extends React.Component {
             this.cleanup(record);
             this.addClickEvent(record);
         });
-
         return records;
-
     }
 
     cleanup(record) {
@@ -174,9 +172,7 @@ export default class CRMView extends React.Component {
         for (let i = 0; i < columns.length; i++) {
             let key = columns[i].key;
             query += "," + key;
-
         }
-
         return query;
     }
 }
