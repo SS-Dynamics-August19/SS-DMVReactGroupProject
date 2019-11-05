@@ -4,7 +4,6 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
-import ApplicationActions from "../../actions/ApplicationActions.js";
 
 export default class CRMViewVehicle extends React.Component {
   render() {
@@ -45,20 +44,15 @@ export default class CRMViewVehicle extends React.Component {
     }
 
     handleDelete(id){
-        
         console.log(id)
         //ApplicationActions.deleteApplication(id) same, call the deleteVehicle function
-        
-        
+    }
 
-    }
     handleView(obj){
-        
         console.log(obj)
-        
     }
+
     getSuccessContent() {
-        console.log(stores[this.props.dataType].data.records);
          
         let content = {columns: [
 
@@ -216,7 +210,6 @@ export default class CRMViewVehicle extends React.Component {
               })
             
         
-        console.log(tableData)
 
         return tableData
         
