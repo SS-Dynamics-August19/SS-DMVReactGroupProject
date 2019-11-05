@@ -5,13 +5,28 @@ import subpages from "../subpages/subpages.js";
 import stores from "../stores/DataStores.js";
 
 let header = function(props) {
+  let content = ''
+  if (stores["user"].data.loggedIn == true) {
+    content = 
+    (
+      <button
+        type="button"
+        className="button"
+        onClick={function() {
+          props.logout();
+        }}
+        >
+        Logout
+    </button>
+    )
+  } 
   return (
     <div>
       <div className="header">
         <h1>React MS Dynamics DMV Staff Portal</h1>
       </div>
       <nav>
-        <ul className="list-inline">{renderNavItems(props)} <span className="username">{stores["user"].data.user}</span></ul>
+        <ul className="list-inline">{renderNavItems(props)} <span className="username">{stores["user"].data.user}{content}</span></ul>
       </nav>
     </div>
   );
@@ -19,7 +34,8 @@ let header = function(props) {
 
 header.propTypes = {
   currentPath: PropTypes.string,
-  navCallback: PropTypes.func.isRequired
+  navCallback: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 const renderNavItems = function(props) {
