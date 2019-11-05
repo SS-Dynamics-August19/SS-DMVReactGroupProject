@@ -4,6 +4,8 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import ApplicationActions from "../../actions/ApplicationActions.js";
+import { CustomerCreateModal } from "./CustomerCreateModal.js";
 
 export default class CRMViewContact extends React.Component {
     render() {
@@ -115,21 +117,21 @@ export default class CRMViewContact extends React.Component {
         }
         if (stores[this.props.dataType].data.authorization.includes(this.props.dataType)) {
             return (
-                <Row className="mb-4">
+                <div>
+                  <Row className="mb-4">
                     <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable
-                                    striped
-                                    bordered
-                                    hover
-                                    data={content}
-                                />
-                            </CardBody>
-                        </Card>
+                      <Card>
+                        <CardBody>
+                          <MDBDataTable striped bordered hover data={content} />
+                        </CardBody>
+                      </Card>
                     </Col>
-                </Row>
-            );
+                  </Row>
+                  <div className="pb-4">
+                    <CustomerCreateModal />
+                  </div>
+                </div>
+              );
 
 
 
@@ -183,9 +185,23 @@ export default class CRMViewContact extends React.Component {
         let tableData = stores[this.props.dataType].data.records;
 
         tableData.forEach(obj => {
-            obj["detail"] = <input type="button" value="Detail Info" onClick={() => this.handleView(obj)} />
-            obj["delete"] = <input type="button" value="delete" onClick={() => this.handleDelete(obj.madmv_ma_customerid)} />
-
+            obj["detail"] = (
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => this.handleView(obj)}
+              >
+                Detail Info
+              </button>
+            );
+            obj["delete"] = (
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={() => this.handleDelete(obj.madmv_ma_customerid)}
+              >
+                Delete
+              </button>
+            );
+            
             if (obj.madmv_fullname === null)
                 obj.madmv_fullname = " ";
             if (obj.madmv_age === null)
