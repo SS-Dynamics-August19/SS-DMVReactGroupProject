@@ -15,11 +15,17 @@ export default class Subpage {
      * @param {string} path The URL path for this subpage. For example, "/vehicle" would render at "http://localhost:9090/#/vehicle".
      * @param {string} navLabel String for the navbar label. */
     constructor(componentReference, componentType, path, navLabel, requiredPermission) {
-        this.component = componentReference;
-        this.type      = componentType;
-        this.path      = path;
-        this.label     = navLabel;
+        this.component          = componentReference;
+        this.type               = componentType;
+        this.path               = path;
+        this.label              = navLabel;
         this.requiredPermission = requiredPermission;
+        this.hasNavigation      = true;
+    }
+
+    setNoNavigation() {
+        this.hasNavigation = false;
+        return this;
     }
 
     getLabel() {
@@ -28,7 +34,7 @@ export default class Subpage {
 
     toNavJSX() {
         let label = this.getLabel();
-        if(this.isAuthorized()) return (
+        if(this.hasNavigation && this.isAuthorized()) return (
             <Link key={label} to={this.path} replace>
                 <li className="nav-list"> {label} </li>
             </Link>
