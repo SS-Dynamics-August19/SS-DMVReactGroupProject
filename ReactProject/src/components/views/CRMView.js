@@ -266,7 +266,7 @@ export default class CRMView extends React.Component {
     }
 
     needsToLoad() {
-        return (stores[this.props.dataType].data.readState != State.SUCCESS);
+        return (stores[this.props.dataType].data.readState === State.DEFAULT_STATE);
     }
 
     loadFromCRM() {
