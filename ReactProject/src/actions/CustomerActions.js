@@ -99,7 +99,38 @@ const CustomerActions = {
           actionType: "creation_failed"
         });
       });
-  }
+  },
+
+      //just send the guid of the record you want deleted in the function call CustomerActions.deleteCustomer(id)
+      deleteCustomer: (id) => {
+        // notify store that update has started
+        Dispatcher.dispatch({
+            actionType: 'delete_customer_started'
+        });
+        // build uri and headers
+        let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(" + id + ")";
+
+
+        // make axios put call
+
+            axios.delete(uri)
+                .then(res => {
+                    console.log(res.data);
+                    Dispatcher.dispatch({
+                    actionType: 'delete_customer_success'
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    Dispatcher.dispatch({
+                        actionType: 'delete_customer_failure'
+                    });
+                });
+            
+
+    }
+
+
 
 }
 

@@ -50,32 +50,30 @@ export default class Subpage {
     }
 
     isAuthorized() {
+        if(this.requiredPermission === undefined) return true;
         return (stores.user.data.authorization.includes(this.requiredPermission));
     }
 
     authorizedJSX(props) {
         return (
             <Route
-                key={this.label}
+                key={this.path}
                 exact
                 path={this.path}
                 {...this.getRenderObject(props)}
+                {...props}
             />
         );
     }
 
     getRenderObject(props) {
+        let Component = this.component;
         switch (this.type) {
             case Constants.FUNCTIONAL:
                 return { render: this.component.bind(this.component, props) };
             case Constants.REACT_COMPONENT:
-                return { render: this.toReactComponent.bind(this, props) };
+                return { component: Component };
         }
-    }
-
-    toReactComponent(props) {
-        let Component = this.component;
-        return (<Component {...props} />);
     }
 
     toForbiddenJSX() {
