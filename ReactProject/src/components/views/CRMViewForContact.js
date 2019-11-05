@@ -5,8 +5,14 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
+<<<<<<< HEAD
 import CustomerActions from "../../actions/CustomerActions.js";
 
+=======
+import { CustomerDetailsView } from "./CustomerDetailsView.js";
+
+//const DATA_STORE "customerID";
+>>>>>>> upstream/master
 
 export default class CRMViewContact extends React.Component {
     render() {
