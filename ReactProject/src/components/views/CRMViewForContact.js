@@ -52,8 +52,13 @@ export default class CRMViewContact extends React.Component {
         //ApplicationActions.deleteApplication(id) need to be change once have delete contact function
     }
 
-    handleView(obj) {
-        console.log(obj);
+    handleView(id) {
+        console.log(id);
+        //const { match: { params }, history } = this.props;
+        //window.location = 'CustomerDetailsView';
+        //return <Redirect to="./CustomerDetailsView.js" />
+        //this.props.history.push(CustomerDetailsView);
+
     }
 
     getSuccessContent() {
@@ -167,7 +172,7 @@ export default class CRMViewContact extends React.Component {
             obj["detail"] = (
               <button
                 className="btn btn-sm btn-primary"
-                onClick={() => this.handleView(obj)}
+                    onClick={() => this.handleView(obj.madmv_ma_customerid)}
               >
                 Detail Info
               </button>

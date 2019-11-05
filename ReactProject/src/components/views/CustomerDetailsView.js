@@ -28,27 +28,50 @@ class CustomerDetailsView extends React.Component {
 
     */
 
-    /*
-    <div className="detailedHeader">
-                <h1>Customer</h1>
-                <button className="btn btn-primary" onClick={() => console.log(customer.madmv_ma_customerid)} type="button">Update Record</button>
-            </div>
-            <div className="h2Th">
-                <h2>General Information</h2>
-                <h2>Detailed Information</h2>
-            </div>
-            <form className="detailedForm">
-                <table>
-                    <tbody>owninguser
+    //handleClick = () => {
+   //     console.log("clickckck");
+   //     this.setState({ disabled: !this.state.disabled })
+   // }
+    // while user typing, capture values and change the state to display changes
+    handleChange = (event) => {
 
-            </tbody>
-                </table>
-            </form>
+        this.setState({ [event.target.name]: event.target.value })
+        console.log(event.target.value)
+    }
+    // send the updated state to store
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state);
+        //this.props.changeStore(this.state)
+        //CustomerActions.updateCustomer(this.state.madmv_ma_customerid, this.state);  
+        this.setState({ disabled: !this.state.disabled })
 
-        
-
-    */
-
+    }
+    // set state back to original props
+    handleCancel = () => {
+        let customer = this.fetchFromCRM;
+        console.log("cancel");
+        this.setState({
+            madmv_age: customer.madmv_age,
+            madmv_birthdate: customer.madmv_birthdate,
+            madmv_city: customer.madmv_city,
+            madmv_country: customer.madmv_country,
+            madmv_cssn: customer.madmv_cssn,
+            madmv_email: customer.madmv_email,
+            madmv_firstname: customer.madmv_firstname,
+            madmv_fullname: '',
+            madmv_hiddendifday: '',
+            madmv_lastname: customer.madmv_lastname,
+            madmv_ma_customerid: customer.madmv_ma_customerid,
+            madmv_phonenumber: customer.madmv_phonenumber,
+            madmv_stateprovince: customer.madmv_stateprovince,
+            madmv_street1: customer.madmv_street1,
+            madmv_street2: customer.madmv_street2,
+            madmv_zippostalcode: customer.madmv_zippostalcode,
+            owninguser: customer.owninguser,
+            disabled: true,
+        })
+    }
 
     render() {
         let customer = this.fetchFromCRM();
