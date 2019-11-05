@@ -5,6 +5,8 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
+import CustomerActions from "../../actions/CustomerActions.js";
+
 
 export default class CRMViewContact extends React.Component {
     render() {
@@ -46,7 +48,7 @@ export default class CRMViewContact extends React.Component {
 
     handleDelete(id) {
         console.log(id);
-        //ApplicationActions.deleteApplication(id) need to be change once have delete contact function
+        CustomerActions.deleteCustomer(id)
     }
 
     handleView(obj) {
