@@ -56,65 +56,13 @@ export default class CRMViewVehicle extends React.Component {
          
         let content = {columns: [
 
-            {
-    
-                label:'Year Model',
-      
-                field:'madmv_yearmodel',
-      
-              },
-            
-            {
-    
-              label:'Vehicle Make',
-    
-              field:'madmv_vehiclemake',
-    
-            },
-            {
-    
-           
-                label:'Vehicle Identification Number',
-      
-            
-                field:'madmv_vehicleidnumber',
-      
-            },
-            {
-    
-                label:'License Plate Number',
-      
-            
-                field:'madmv_licenseplate',
-      
-            },
-    
-            
-            {
-    
-                label:'Creation Time',
-      
-            
-                field:'createdon',
-      
-            },
-            {
-    
-                label:' ',
-      
-            
-                field:'detail',
-      
-            },
-            {
-    
-                label:' ',
-      
-            
-                field:'delete',
-      
-            }
-          ],
+            {label:'Year Model',  field:'madmv_yearmodel'},
+            {label:'Vehicle Make',field:'madmv_vehiclemake'},
+            {label:'Vehicle Identification Number',field:'madmv_vehicleidnumber' },
+            {label:'License Plate Number', field:'madmv_licenseplate'},
+            {label:'Creation Time', field:'createdon',},
+            {label:' ',field:'detail',},
+            {label:' ',field:'delete',}],
 
     
           rows: this.getTableBodyContent(),

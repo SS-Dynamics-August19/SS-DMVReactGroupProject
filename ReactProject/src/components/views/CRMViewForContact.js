@@ -4,7 +4,7 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
-import ApplicationActions from "../../actions/ApplicationActions.js";
+import CustomerActions from "../../actions/CustomerActions.js";
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
 
 export default class CRMViewContact extends React.Component {
@@ -47,7 +47,7 @@ export default class CRMViewContact extends React.Component {
 
     handleDelete(id) {
         console.log(id);
-        //ApplicationActions.deleteApplication(id) need to be change once have delete contact function
+        //CustomerActions.deleteApplication(id) 
     }
 
     handleView(obj) {
@@ -57,63 +57,15 @@ export default class CRMViewContact extends React.Component {
     getSuccessContent() {
         let content = {
             columns: [
-
-                {
-
-                    label: 'Name',
-
-                    field: 'madmv_fullname',
-
-                },
-
-                {
-
-                    label: 'Age',
-
-                    field: 'madmv_age',
-
-                },
-
-                {
-
-                    label: 'SSN',
-
-                    field: 'madmv_cssn',
-
-                },
-                {
-
-                    label: 'Email',
-
-                    field: 'madmv_email',
-
-                },
-                {
-
-                    label: 'Phone',
-
-                    field: 'madmv_phonenumber',
-
-                },
-                {
-
-                    label: ' ',
-
-                    field: 'detail',
-
-                },
-                {
-
-                    label: ' ',
-
-                    field: 'delete',
-
-                }
+                { label: 'Name',  field: 'madmv_fullname'},
+                { label: 'Age'  , field: 'madmv_age'},
+                { label: 'SSN'  , field: 'madmv_cssn'},
+                { label: 'Email', field: 'madmv_email'},
+                { label: 'Phone', field: 'madmv_phonenumber'},
+                { label: ' '    , field: 'detail'},
+                { label: ' '    , field: 'delete'}
             ],
-
-
             rows: this.getTableBodyContent()
-
         }
         if (stores[this.props.dataType].data.authorization.includes(this.props.dataType)) {
             return (
@@ -196,7 +148,7 @@ export default class CRMViewContact extends React.Component {
             obj["delete"] = (
               <button
                 className="btn btn-sm btn-danger"
-                onClick={() => this.handleDelete(obj.madmv_ma_customerid)}
+                onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(obj.madmv_ma_customerid)}}
               >
                 Delete
               </button>

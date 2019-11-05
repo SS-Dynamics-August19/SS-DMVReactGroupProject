@@ -1,19 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CRMViewContact from "./CRMViewForContact";
+import CRMView from "./CRMView";
+import OptionSetMapping from "./OptionSetMapping.js";
 
 let _DATA_TYPE = "customer";
-let _ROW_KEY = "madmv_ma_customerid";
 let _COLUMNS = [
-  { header: "Name" , key: "madmv_fullname"    },
-  { header: "Age"  , key: "madmv_age"         },
-  { header: "SSN"  , key: "madmv_cssn"        },
-  { header: "Email", key: "madmv_email"       },
-  { header: "Phone", key: "madmv_phonenumber" }
+                { label: 'Name',  field: 'madmv_fullname'},
+                { label: 'Age'  , field: 'madmv_age'},
+                { label: 'SSN'  , field: 'madmv_cssn'},
+                { label: 'Email', field: 'madmv_email'},
+                { label: 'Phone', field: 'madmv_phonenumber'},
+];
+let extrarow =[{ label:' ',     field: 'click' },{ label:' ',    field: 'checkbox' }]
+let _headCOLUMNS=_COLUMNS.concat(extrarow)
+let _OPTION_SET_MAPPINGS = [
 ];
 
 const view = function() {
-  return <CRMViewContact dataType={_DATA_TYPE} rowKey={_ROW_KEY} columns={_COLUMNS} />;
+  return <CRMView 
+      dataType={_DATA_TYPE}
+      columns={_COLUMNS}
+      optionSetMappings={_OPTION_SET_MAPPINGS}
+      headcolumn={_headCOLUMNS}/>;
 };
 
 view.propTypes = {
