@@ -10,16 +10,6 @@ let _COLUMNS = [
   { header: "SSN"  , key: "madmv_cssn"        },
   { header: "Email", key: "madmv_email"       },
   { header: "Phone", key: "madmv_phonenumber" },
-  { header: "Birth Date" , key: "madmv_birthdate"},
-  { header: "First Name"  , key: "madmv_firstname"},
-  { header: "Last Name"  , key: "mmadmv_lastname"},
-  { header: "Street1", key: "madmv_street1"},
-  { header: "Street2", key: "madmv_street2" },
-  { header: "City", key: "madmv_city"},
-  { header: "Country", key: "madmv_country" },
-  { header: "State/Province" , key: "madmv_stateprovince"},
-  { header: "Zip Code", key: "madmv_zippostalcode"},
-  { header: "Owning User"  , key: "owninguser"}
 
 ];
 
