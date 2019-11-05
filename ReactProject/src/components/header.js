@@ -1,6 +1,4 @@
 import React from "react";
-//import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import subpages from "../subpages/subpages.js";
 import stores from "../stores/DataStores.js";
 
@@ -35,20 +33,11 @@ const renderNavItems = function() {
     let ret = [];
     for (let i = 0; i < subpages.length; i++) {
         let subpage = subpages[i];
-        let JSX = toJSX(subpage);
+        let JSX = subpage.toNavJSX();
         ret.push(JSX);
     }
 
     return ret;
-};
-
-const toJSX = function(subpage) {
-    let label = subpage.getLabel();
-    return (
-        <Link key={label} to={subpage.path} replace>
-            <li className="nav-list"> {label} </li>
-        </Link>
-    );
 };
 
 export default header;

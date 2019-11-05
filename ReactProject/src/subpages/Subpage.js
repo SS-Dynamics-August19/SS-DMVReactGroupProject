@@ -1,5 +1,6 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
+import stores from "../stores/dataStores.js";
 import Constants from "../constants/SubpageConstants.js";
 
 /**Usage:
@@ -14,42 +15,67 @@ export default class Subpage {
      * @param {string} path The URL path for this subpage. For example, "/vehicle" would render at "http://localhost:9090/#/vehicle".
      * @param {string} navLabel String for the navbar label. */
     constructor(componentReference, componentType, path, navLabel, requiredPermission) {
-        this.component = componentReference;
-        this.type      = componentType;
-        this.path      = path;
-        this.label     = navLabel;
+        this.component          = componentReference;
+        this.type               = componentType;
+        this.path               = path;
+        this.label              = navLabel;
         this.requiredPermission = requiredPermission;
+        this.hasNavigation      = true;
+    }
+
+    setNoNavigation() {
+        this.hasNavigation = false;
+        return this;
     }
 
     getLabel() {
         return this.label;
     }
 
-    getPermission() {
-        return this.requiredPermission;
+    toNavJSX() {
+        let label = this.getLabel();
+        if(this.hasNavigation && this.isAuthorized()) return (
+            <Link key={label} to={this.path} replace>
+                <li className="nav-list"> {label} </li>
+            </Link>
+        );
     }
 
     toJSX(props) {
-        if (this.type === Constants.FUNCTIONAL) {
-            return (
-                <Route
-                    key={this.label}
-                    exact
-                    path={this.path}
-                    render={this.component.bind(this.component, props)}
-                />
-            );
-        } else if (this.type === Constants.REACT_COMPONENT) {
-            let Component = this.component;
-            return (
-                <Route
-                    key={this.label}
-                    exact
-                    path={this.path}
-                    component={() => <Component {...props} />}
-                />
-            );
+        if (this.isAuthorized()) {
+            return this.authorizedJSX(props);
+        } else {
+            return this.toForbiddenJSX();
         }
+    }
+
+    isAuthorized() {
+        return (stores.user.data.authorization.includes(this.requiredPermission));
+    }
+
+    authorizedJSX(props) {
+        return (
+            <Route
+                key={this.label}
+                exact
+                path={this.path}
+                {...this.getRenderObject(props)}
+            />
+        );
+    }
+
+    getRenderObject(props) {
+        switch (this.type) {
+            case Constants.FUNCTIONAL:
+                return { render: this.component.bind(this.component, props) };
+            case Constants.REACT_COMPONENT:
+                return { render: this.toReactComponent.bind(this, props) };
+        }
+    }
+
+    toReactComponent(props) {
+        let Component = this.component;
+        return (<Component {...props} />);
     }
 
     toForbiddenJSX() {

@@ -4,7 +4,6 @@ import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
-//import ApplicationActions from "../../actions/ApplicationActions.js";
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
 import { CustomerDetailsView } from "./CustomerDetailsView.js";
 
@@ -53,13 +52,8 @@ export default class CRMViewContact extends React.Component {
         //ApplicationActions.deleteApplication(id) need to be change once have delete contact function
     }
 
-    handleView(id) {
-        console.log(id);
-        //this.setState({ information: { [event.currentTarget.name]: event.currentTarget.value, this.data.customerID: id } });
-        //this is where i'll handle redirection with URL parameter i guess?
-        //console.log(this.data.customerID);
-
-        window.location.href = CustomerDetailsView;
+    handleView(obj) {
+        console.log(obj);
     }
 
     getSuccessContent() {
@@ -123,46 +117,23 @@ export default class CRMViewContact extends React.Component {
             rows: this.getTableBodyContent()
 
         }
-        if (stores[this.props.dataType].data.authorization.includes(this.props.dataType)) {
-            return (
-                <div>
-                  <Row className="mb-4">
+        return (
+            <div>
+                <Row className="mb-4">
                     <Col md="12">
-                      <Card>
-                        <CardBody>
-                          <MDBDataTable striped bordered hover data={content} />
-                        </CardBody>
-                      </Card>
+                        <Card>
+                            <CardBody>
+                                <MDBDataTable striped bordered hover data={content} />
+                            </CardBody>
+                        </Card>
                     </Col>
-                  </Row>
-                  <div className="pb-4">
+                </Row>
+                <div className="pb-4">
                     <CustomerCreateModal />
-                  </div>
                 </div>
-              );
+            </div>
+        );
 
-
-
-
-
-            /*  <table className="CRMTable">
-                  <thead>
-                      {this.getTableHeaderContent()}
-                  </thead>
-                  <tbody>
-                      {this.getTableBodyContent()}
-                  </tbody>    
-              </table>*/
-
-        } else {
-
-
-            return (
-                <div>
-                    You are not authorized to view this page
-                </div>
-            );
-        }
 
     }
     /*
@@ -196,8 +167,7 @@ export default class CRMViewContact extends React.Component {
             obj["detail"] = (
               <button
                 className="btn btn-sm btn-primary"
-                    onClick={() => this.handleView(obj.madmv_ma_customerid)}
-
+                onClick={() => this.handleView(obj)}
               >
                 Detail Info
               </button>
