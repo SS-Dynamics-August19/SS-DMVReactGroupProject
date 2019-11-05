@@ -1,68 +1,191 @@
-import React from 'react'
+import React from "react";
+import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
+import DataLoader from "../../actions/DataLoader.js";
+import stores from "../../stores/dataStores.js";
+
 
 /**
- * Create layout for a login page 
+ * Initial login/logout functionality added
+ * Test Info
+ * user1 pass1 (vehicle/application)
+ * user2 pass2 (customer/application)
+ * user3 pass3 (all access)
+ * user4 pass4 (no access)
+ */
+
+
+
+
+/**
+ * (old comments)
+ * Create layout for a login page
  * ? Component's set, but will it take params / What else would be stored outside of the username and password
  * Todo: talk with team about state of the component
  */
 
+const DATA_STORE = "user";
 export default class Login extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            information : {//should change on field change to match user input
-                username : '',
-                password : ''
-            }
-        }
+    render() {
+        return <div>{this.getContent()}</div>;
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            information: {
+                //should change on field change to match user input
+                username: "",
+                password: ""
+            }
+        };
+
+        this.usernameFieldChange = this.usernameFieldChange.bind(this);
+        this.passwordFieldChange = this.passwordFieldChange.bind(this);
+        this.attemptLogin = this.attemptLogin.bind(this);
+        this.logOut = this.logOut.bind(this);
+    }
+
+    getContent() {
+        let state = stores.user.data.readState;
+        switch (state) {
+            case State.DEFAULT:
+                return this.getDefaultContent();
+            case State.STARTED:
+                return this.getStartedContent();
+            case State.SUCCESS:
+                return this.getSuccessContent();
+            case State.FAILURE:
+                return this.getFailureContent();
+        }
+        return this.getStartedContent();
+    }
+
+    getDefaultContent() {
+        return (
+            <div className="alert alert-danger" role="alert">
+                Loading did not start.
+            </div>
+        );
+    }
+
+    getStartedContent() {
+        return (
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
+    }
+
+    getFailureContent() {
+        return (
+            <div className="alert alert-danger" role="alert">
+                Error while loading!
+            </div>
+        );
+    }
+
+    getSuccessContent() {
+        if (stores.user.data.loggedIn == false) {
+            return (
+                <div>
+                    {this.getErrorMessage()}
+                    {this.getForm()}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    {this.getLogOutButton()}
+                </div>
+            );
+        }
+
+    }
+
+
+    componentDidMount() {
+        if (this.needsToLoad())
+            this.loadFromCRM();
+    }
+
+    needsToLoad() {
+        return (stores.user.data.readState !== State.SUCCESS);
+
+    }
 
     /**
      * *Bind the login button to a trigger event
      */
-    submitCredentials() {
-        /***
-         * Will be tied to the login button from the form
-         */
+    attemptLogin() {
+        event.preventDefault();
+        let tableData = stores.user.data.records;
+
+        tableData.forEach(record => {
+            if (this.state.information.username == record.madmv_name) {
+                if (this.state.information.password == record.madmv_password) {
+                    new DataLoader().signalLogIn(record.madmv_securityroles, record.madmv_name); // log in if user and pass are correct and match
+                }
+            }
+        });
     }
 
+    // log out resets authorization string to "user" because that is required to log in and sets loggedin boolen to false
+    logOut() {
+        let loggedOutSignal = {
+            actionType: 'user_Logged_out'
+        };
+        DataLoader.signal(loggedOutSignal);
+    }
+
+    loadFromCRM() {
+        let query = this.generateQuery();
+        new DataLoader(query, DATA_STORE).load();
+    }
+
+    generateQuery() {
+        let rowKey = "madmv_name";
+        let columns = [
+            { header: "Password", key: "madmv_password" },
+            { header: "Security", key: "madmv_securityroles" }];
+
+        let query = ExternalURL.DYNAMICS_PREFIX + DATA_STORE + ExternalURL.DYNAMICS_SUFFIX + rowKey;
+        for (let i = 0; i < columns.length; i++) {
+            let key = columns[i].key;
+            query += "," + key;
+        }
+        return query;
+    }
 
     /**
      * *Bind the input field to information.username
-     * @param event ~ onChangeEvent  
-     * ? Will set state work or should we just mutate state directly 
+     * @param event ~ onChangeEvent
      */
-    usernameFieldChange() {
-        /**
-         * Will set the username in the information object
-         */
+    usernameFieldChange(event) {
+        event.preventDefault();
+        this.setState({ information: { [event.currentTarget.name]: event.currentTarget.value, password: this.state.information.password } });
     }
-
 
     /**
      * *Bind the input field to information.password
-     * @param event ~ onChangeEvent  
-     * ? Will set state work or should we just mutate state directly 
+     * @param event ~ onChangeEvent
      */
-    passwordFieldChange() {
-        /**
-         * Will set the password in the information object
-         */
-    }
-
-
-    render() {
-        return (   
-            <div>
-                {this.getErrorMessage()}
-                {this.getForm()}
-            </div>    
-        );
+    passwordFieldChange(event) {
+        event.preventDefault();
+        this.setState({ information: { [event.currentTarget.name]: event.currentTarget.value, username: this.state.information.username } });
     }
 
     getErrorMessage() {
         return "";
+    }
+
+    getLogOutButton() {
+        return (
+            <button type="button" className="button" onClick={this.logOut}>
+                Logout
+            </button>
+        )
     }
 
     getForm() {
@@ -70,12 +193,22 @@ export default class Login extends React.Component {
             <div className="shrink-wrap">
                 <div className="form">
                     <div className="form-group">
-                        <input type="text" name="username" placeholder="Username" onChange={this.usernameFieldChange.bind(this)}/>
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            onChange={this.usernameFieldChange} />
                     </div>
                     <div className="form-group">
-                        <input type="password" name="password" placeholder="Password" onChange={this.passwordFieldChange.bind(this)}/>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            onChange={this.passwordFieldChange} />
                     </div>
-                    <button type="button" className="button" onClick={this.submitCredentials.bind(this)}>Login</button>
+                    <button type="button" className="button" onClick={this.attemptLogin}>
+                        Login
+                    </button>
                 </div>
             </div>
         );

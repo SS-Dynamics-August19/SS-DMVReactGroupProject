@@ -1,6 +1,6 @@
-import React from 'react';
-import {Route} from 'react-router-dom';
-import Constants from '../constants/SubpageConstants.js';
+import React from "react";
+import { Route } from "react-router-dom";
+import Constants from "../constants/SubpageConstants.js";
 
 /**Usage:
  * 
@@ -12,39 +12,54 @@ export default class Subpage {
     /**@param {React.Component | Function} componentReference The class extending React.Component, or function which renders this Subpage.
      * @param {string} componentType Either constants/SubpageConstants.js:subpageType.REACT_COMPONENT, or FUNCTIONAL, corresponding to the above.
      * @param {string} path The URL path for this subpage. For example, "/vehicle" would render at "http://localhost:9090/#/vehicle".
-     * @param {string | Function} navLabel String or a function(props) which returns a string for the navbar label. */
-    constructor(componentReference, componentType, path, navLabel) {
+     * @param {string} navLabel String for the navbar label. */
+    constructor(componentReference, componentType, path, navLabel, requiredPermission) {
         this.component = componentReference;
         this.type      = componentType;
         this.path      = path;
         this.label     = navLabel;
+        this.requiredPermission = requiredPermission;
     }
 
-    getLabel(props) {
-        if(typeof this.label === "function") {
-            return this.label(props);
-        } else if (typeof this.label === "string") {
-            return this.label;
-        }
-        return "";
+    getLabel() {
+        return this.label;
     }
 
-    isActive(props) {
-        return (props.currentPath == this.path);
+    getPermission() {
+        return this.requiredPermission;
     }
 
     toJSX(props) {
         if (this.type === Constants.FUNCTIONAL) {
             return (
-                <Route key={this.label} exact path={this.path}
-                    render={this.component.bind(this.component, props)} />
+                <Route
+                    key={this.label}
+                    exact
+                    path={this.path}
+                    render={this.component.bind(this.component, props)}
+                />
             );
         } else if (this.type === Constants.REACT_COMPONENT) {
             let Component = this.component;
             return (
-                <Route key={this.label} exact path={this.path}
-                    component={() => <Component {...props} />} />
+                <Route
+                    key={this.label}
+                    exact
+                    path={this.path}
+                    component={() => <Component {...props} />}
+                />
             );
         }
+    }
+
+    toForbiddenJSX() {
+        return (
+            <Route
+                key={this.label}
+                exact
+                path={this.path}
+                render={() => <div> You are not authorized to view this page. </div>}
+            />
+        );
     }
 }

@@ -1,16 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
-import DataLoader             from '../../actions/DataLoader.js';
-import stores                 from '../../stores/dataStores.js';
+import DataLoader from "../../actions/DataLoader.js";
+import stores from "../../stores/dataStores.js";
+import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+
+/** Cleaned up this class of child-specific code.
+ * Please put code that only applies to one of the domains which use CRMView
+ * in their own class, or a child class extending CRMView or something.
+ * 
+ * Input, props containing:
+ *  dataType: string, the table name on the CRM, without the "madmv_" prefix. For example, "users" for table madmv_users.
+ *  columnSet: array of objects, each containing:
+ *      header: string, the text to display in the column header of the displayed table.
+ *      key: string, the field name in the CRM. For example: "madmv_applicationtype" or "createdon".
+ *  optionSetMappings: array of OptionSetMappings objects. See src/components/views/OptionSetMappings.js for details.
+ * 
+ * Renders:
+ *  An interactive table based on the CRM data, as referred to in the props above.
+ * */
 
 export default class CRMView extends React.Component {
     render() {
-        return (
-            <div>
-                {this.getContent()}
-            </div>
-        );
+        return <div> {this.getContent()} </div>;
     }
 
     getContent() {
@@ -20,10 +32,10 @@ export default class CRMView extends React.Component {
                 return this.getDefaultContent();
             case State.STARTED:
                 return this.getStartedContent();
-            case State.SUCCESS:
-                return this.getSuccessContent();
             case State.FAILURE:
                 return this.getFailureContent();
+            case State.SUCCESS:
+                return this.getSuccessContent();
         }
         return this.getStartedContent();
     }
@@ -41,76 +53,9 @@ export default class CRMView extends React.Component {
             <div className="d-flex justify-content-center">
                 <div className="spinner-border" role="status">
                     <span className="sr-only">Loading...</span>
-                </div> 
+                </div>
             </div>
         );
-    }
-    
-    getSuccessContent() {
-        return (
-            <table className="CRMTable">
-                <thead>
-                    {this.getTableHeaderContent()}
-                </thead>
-                <tbody>
-                    {this.getTableBodyContent()}
-                </tbody>    
-            </table>
-        );
-    }
-
-    getTableHeaderContent() {
-        return (
-            <tr className="CRMTable">
-                {this.createHeaderRowCells()}
-            </tr>
-        );
-    }
-
-    createHeaderRowCells() {
-        let columns = this.props.columns;
-        let ret = [];
-
-        columns.forEach(function(column) {
-            ret.push(
-                <th key={column.header} className="CRMTable">
-                    {column.header}
-                </th>
-            );
-        });
-
-        return ret;
-    }
-
-    getTableBodyContent() {
-        let tableData = stores[this.props.dataType].data.records;
-        return tableData.map(this.createTableRow, this);
-    }
-    
-    
-    createTableRow(record) {
-        let key = record[this.props.rowKey];
-
-        return (
-            <tr key={key} className="CRMTable">
-                {this.createTableRowCells(record, key)}
-            </tr>
-        );
-    }
-
-    createTableRowCells(record, keyPrefix) {
-        let columns = this.props.columns;
-        let ret = [];
-
-        columns.forEach( function(column) {
-            ret.push(
-                <td key={keyPrefix + ":" + column.key} className="CRMTable">
-                    { record[column.key] }
-                </td>
-            );
-        });
-
-        return ret;
     }
 
     getFailureContent() {
@@ -121,12 +66,85 @@ export default class CRMView extends React.Component {
         );
     }
 
+    handleClick() {
+        // Placeholder, intended to update in some way so as to call a different click event depending on which record is clicked.
+        console.log("Placeholder CRMView record clicked event.")
+    }
+
+    getSuccessContent() {
+        let content = {
+            columns: [
+                { label: 'ID',            field: 'madmv_appid' },
+                { label: 'Type',          field: 'madmv_applicationtype' },
+                { label: 'Subject',       field: 'madmv_applicationsubject' },
+                { label: 'Creation Time', field: 'createdon' }
+            ],
+            rows: this.getTableBodyContent()
+        }
+
+        return (
+            <Row className="mb-4">
+                <Col md="12">
+                    <Card>
+                        <CardBody>
+                            <MDBDataTable
+                                striped
+                                bordered
+                                hover
+                                data={content}
+                            />
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        );
+    }
+
+    getTableBodyContent() {
+        let records = stores[this.props.dataType].data.records;
+
+        records.forEach(record => {
+            this.cleanup(record);
+            this.addClickEvent(record);
+        });
+
+        return records;
+
+    }
+
+    cleanup(record) {
+        this.applyOptionSetMappings(record);
+        this.cleanupNullFieldValues(record);
+    }
+
+    applyOptionSetMappings(record) {
+        for (const optionSetMap of this.props.optionSetMappings) {
+            let mappedField = optionSetMap.getField();
+            record[mappedField] = optionSetMap.map(record[mappedField]);
+        }
+    }
+
+    cleanupNullFieldValues(record) {
+        for (const field of Object.keys(record)) {
+            if(record[field] === null) record[field] = " ";
+        }
+    }
+
+    addClickEvent(record) {
+        record.clickEvent = function() { this.handleClick() };
+    }
+
+    componentWillMount() {
+        console.log("CRMView debug:");
+        console.log(stores[this.props.dataType]);
+    }
+
     componentDidMount() {
-        if(this.needsToLoad()) this.loadFromCRM();
+        if (this.needsToLoad()) this.loadFromCRM();
     }
 
     needsToLoad() {
-        return (stores[this.props.dataType].data.readState != State.SUCCESS);
+        return (stores[this.props.dataType].data.readState !== State.SUCCESS);
     }
 
     loadFromCRM() {
@@ -137,12 +155,13 @@ export default class CRMView extends React.Component {
 
     generateQuery() {
         let columns = this.props.columns;
-        let rowKey = this.props.rowKey;
+        let rowKey = "madmv_ma_" + this.props.dataType + "id";
 
         let query = ExternalURL.DYNAMICS_PREFIX + this.props.dataType + ExternalURL.DYNAMICS_SUFFIX + rowKey;
         for (let i = 0; i < columns.length; i++) {
             let key = columns[i].key;
             query += "," + key;
+
         }
 
         return query;
@@ -150,7 +169,7 @@ export default class CRMView extends React.Component {
 }
 
 CRMView.propTypes = {
-    dataType:   PropTypes.string.isRequired,
-    rowKey:     PropTypes.string.isRequired,
-    columns:    PropTypes.array.isRequired
+    dataType: PropTypes.string.isRequired,
+    columns: PropTypes.array.isRequired,
+    optionSetMappings: PropTypes.array.isRequired
 };

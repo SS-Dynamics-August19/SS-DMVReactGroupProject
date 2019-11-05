@@ -11,7 +11,10 @@ export default class DataStore extends EventEmitter {
         this.type = dataTypeName;
         this.data = {
             records: [],
-            readState: State.DEFAULT_STATE
+            readState: State.DEFAULT_STATE,
+            loggedIn: false,
+            authorization: "user",
+            user: "Please Log In"
         };
 
         this.registerActionHandler();
@@ -23,11 +26,15 @@ export default class DataStore extends EventEmitter {
 
     actionHandler(action) {
         let dataAction = constant.ACTION_PREFIX + this.type;
+        let updateAction = 'update_' + this.type;
         let started = dataAction + constant.STARTED_SUFFIX;
-        let success = dataAction + constant.SUCCESS_SUFFIX
-        let failure = dataAction + constant.FAILURE_SUFFIX
+        let success = dataAction + constant.SUCCESS_SUFFIX;
+        let failure = dataAction + constant.FAILURE_SUFFIX;
+        let updateStarted = updateAction + '_started';
+        let updateSuccess = updateAction + '_success';
+        let updateFailure = updateAction + '_failure';
 
-        switch(action.actionType) {
+        switch (action.actionType) {
             case success:
                 this.data.readState = State.SUCCESS;
                 this.onSuccess(action);
@@ -40,17 +47,29 @@ export default class DataStore extends EventEmitter {
                 this.data.readState = State.STARTED;
                 this.onStarted(action);
                 break;
+            case updateStarted:
+                break;
+            case updateSuccess:
+                break;
+            case updateFailure:
+                break;
+            case 'user_logged_in':
+                this.userLogIn(action);
+                break;
+            case 'user_Logged_out':
+                this.userLogOut();
+                break;
             default:
                 return;
         }
         this.emitChange();
     }
-    
-    onStarted() {} 
+
+    onStarted() { }
     onSuccess(action) {
         this.data.records = action.data;
     }
-    onFailure() {}
+    onFailure() { }
 
     addChangeListener(cb) {
         this.addListener(CHANGE_EVENT, cb);
@@ -60,10 +79,22 @@ export default class DataStore extends EventEmitter {
         this.removeListener(CHANGE_EVENT, cb);
     }
 
-    emitChange(){
+    emitChange() {
         this.emit(CHANGE_EVENT);
     }
-    
+
+    userLogIn(action) {
+        this.data.authorization = action.data.authorization;
+        this.data.user = "Logged in as " + action.data.user;
+        this.data.loggedIn = true;
+    }
+
+    userLogOut() {
+        this.data.authorization = "user";
+        this.data.user = "Please Log In";
+        this.data.loggedIn = false;
+    }
+
     getData() {
         return this.data;
     }

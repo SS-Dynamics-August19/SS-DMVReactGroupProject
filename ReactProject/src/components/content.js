@@ -1,6 +1,7 @@
-import React from 'react';
-import {Switch} from 'react-router-dom';
-import subpages from '../subpages/subpages.js';
+import React from "react";
+import { Switch } from "react-router-dom";
+import subpages from "../subpages/subpages.js";
+//import stores from "../stores/dataStores.js";
 
 const content = function(props) {
     return (
@@ -10,14 +11,22 @@ const content = function(props) {
             </Switch>
         </div>
     );
-}
+};
 
 const renderRoutes = function(props) {
     let ret = [];
-    for (let i = 0; i < subpages.length; i++) {
-        ret.push(subpages[i].toJSX(props));
+    for (const subpage of subpages) {
+        let JSX;
+
+        //if (stores.user.data.authorization.includes(subpage.getPermission())) {
+            JSX = subpage.toJSX(props);
+        //} else {
+        //    JSX = subpage.toForbiddenJSX();
+        //}
+
+        ret.push(JSX);
     }
     return ret;
-}
+};
 
 export default content;
