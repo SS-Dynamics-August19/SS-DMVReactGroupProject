@@ -12,6 +12,6 @@ const subpages = [
     new Subpage(customersView,    Constants.FUNCTIONAL,      "/Customers",       "Customers",        "customer"),
     new Subpage(vehiclesView,     Constants.FUNCTIONAL,      "/Vehicles",        "Vehicles",         "vehicle"),
     new Subpage(applicationsView, Constants.FUNCTIONAL,      "/Applications",    "Applications",     "application"),
-    new Subpage(CustomerDetails,  Constants.REACT_COMPONENT, "/CustomerDetails", "BUTTON TEXT TO BE DELETED LATER", "customerDetails")
+    new Subpage(CustomerDetails, Constants.REACT_COMPONENT, "/CustomerDetails",  "",                 "customer").setNoNavigation()
 ];
 export default subpages;
