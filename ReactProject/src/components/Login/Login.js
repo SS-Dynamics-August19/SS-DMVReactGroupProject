@@ -24,6 +24,8 @@ import stores from "../../stores/dataStores.js";
  * Todo: talk with team about state of the component
  */
 
+
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -36,15 +38,34 @@ export default class Login extends React.Component {
       dataType: "user"
     };
 
+    //console.log("log in is in beginning of constructor");
+
+    let query = this.generateQuery();
+    //console.log(1);
+    this.mydataloader = new DataLoader(query, this.state.dataType);
+    //console.log(2);
+    if(this.needsToLoad()) {
+    //console.log(2.5);
+
+      this.loadFromCRM();
+    }
+     // console.log(3);
     this.usernameFieldChange = this.usernameFieldChange.bind(this);
+    //console.log(4);
     this.passwordFieldChange = this.passwordFieldChange.bind(this);
+    //console.log(5);
     this.attemptLogin = this.attemptLogin.bind(this);
+    //console.log(6);
     this.logOut = this.logOut.bind(this);
+    //console.log(7);
+    
+    
+    //console.log("log in is in end of constructor");
+
   }
 
   render() {
-    //console.log("Rendering. Login.props:");
-    //console.log(this.props);
+    //console.log("log in is in render");
     return <div>{this.getContent()}</div>;
   }
 
@@ -57,8 +78,6 @@ export default class Login extends React.Component {
         return this.getStartedContent();
       case State.SUCCESS:
         return this.getSuccessContent();
-      case State.FAILURE:
-        return this.getFailureContent();
     }
     return this.getStartedContent();
   }
@@ -106,12 +125,28 @@ export default class Login extends React.Component {
 
 
   componentDidMount() {
-    if(this.needsToLoad()) 
-      this.loadFromCRM();
+    //console.log("log in is in componentDidMount");
   }
 
+  componentWillMount() {
+    //console.log("log in is in componentWillMount");
+  }
+
+
+
+  
+
   needsToLoad() {
-    return (stores[this.state.dataType].data.readState !== State.SUCCESS);
+    //console.log("Should it need to load?");
+    //console.log("I don't even know anymore.");
+    //console.log(stores);
+    //console.log(stores.user);
+    //console.log(stores.user === stores[this.state.dataType]);
+    //console.log(stores.user.data);
+    //console.log(stores.user.data.readState);
+    //console.log(State);
+    //console.log(State.SUCCESS);
+    return (stores[this.state.dataType].data.readState === State.DEFAULT_STATE);
     
   }
 
@@ -128,7 +163,7 @@ export default class Login extends React.Component {
         {
           if (this.state.information.password == obj.madmv_password)
           {
-            new DataLoader().signalLogIn(obj.madmv_securityroles, obj.madmv_name); // log in if user and pass are correct and match
+            this.mydataloader.signalLogIn(obj.madmv_securityroles, obj.madmv_name); // log in if user and pass are correct and match
           }
         }
       })
@@ -137,7 +172,7 @@ export default class Login extends React.Component {
 
   // log out resets authorization string to "user" because that is required to log in and sets loggedin boolen to false
   logOut() {
-    new DataLoader().signalLogOut();
+    this.mydataloader.signalLogOut();
   }
 
   //testDelete() {
@@ -146,8 +181,7 @@ export default class Login extends React.Component {
   //}
 
   loadFromCRM() {
-    let query = this.generateQuery();
-    new DataLoader(query, this.state.dataType).load();
+    this.mydataloader.load();
   }
 
   generateQuery() {

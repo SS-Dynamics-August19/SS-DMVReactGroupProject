@@ -37,6 +37,7 @@ export default class DataStore extends EventEmitter {
 
     switch (action.actionType) {
       case success:
+        //console.log("success action")
         this.data.readState = State.SUCCESS;
         this.onSuccess(action);
         break;
@@ -45,6 +46,7 @@ export default class DataStore extends EventEmitter {
         this.onFailure(action);
         break;
       case started:
+        //console.log("start action")
         this.data.readState = State.STARTED;
         this.onStarted(action);
         break;
@@ -84,7 +86,12 @@ export default class DataStore extends EventEmitter {
   }
 
   emitChange() {
-    this.emit(CHANGE_EVENT);
+    // Hack to duck a bug.
+
+    let self = this
+    setTimeout(function() { // Run after dispatcher has finished
+      self.emit(CHANGE_EVENT);
+    }, 0);
   }
 
   userLogIn(action)
