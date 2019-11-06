@@ -46,7 +46,7 @@ export default class CRMViewContact extends React.Component {
 
     handleDelete(id) {
         console.log(id);
-        CustomerActions.deleteCustomer(id)
+        CustomerActions.deleteCustomer(id);
     }
 
     handleView(obj) {
@@ -66,23 +66,50 @@ export default class CRMViewContact extends React.Component {
             ],
             rows: this.getTableBodyContent()
         };
-        return (
-            <div>
-                <Row className="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable striped bordered hover data={content} />
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-                <div className="pb-4">
-                    <Modal comp="customer" />
-                </div>
-            </div >
-        );
     }
+
+    
+  //   return (
+  //     <div>
+  //       <Row className="mb-4">
+  //         <Col md="12">
+  //           <Card>
+  //             <CardBody>
+  //               <MDBDataTable striped bordered hover data={content} />
+  //             </CardBody>
+  //           </Card>
+  //         </Col>
+  //       </Row>
+  //       <div className="pb-4">
+  //         <Modal comp="customer" />
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  /*
+        getTableHeaderContent() {
+            return (
+                <tr className="CRMTable">
+                    {this.createHeaderRowCells()}
+                </tr>
+            );
+        }
+    
+        createHeaderRowCells() {
+            let columns = this.props.columns;
+            let ret = [];
+    
+            columns.forEach(function(column) {
+                ret.push(
+                    <th key={column.header} className="CRMTable">
+                        {column.header}
+                    </th>
+                );
+            });
+    
+            return ret;
+        }
+    */
 
     getTableBodyContent() {
         let tableData = stores[this.props.dataType].data.records;

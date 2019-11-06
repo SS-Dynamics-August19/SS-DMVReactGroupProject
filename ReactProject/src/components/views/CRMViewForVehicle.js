@@ -31,7 +31,7 @@ export default class CRMViewVehicle extends React.Component {
         return (
             <div className="alert alert-danger" role="alert">
                 Loading did not start.
-      </div>
+            </div>
         );
     }
 
