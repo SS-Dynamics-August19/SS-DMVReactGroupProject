@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CRMView from "./CRMView";
-import OptionSetMapping from "./OptionSetMapping.js";
 
 let _DATA_TYPE = "vehicle";
 
@@ -14,8 +13,7 @@ let _COLUMNS = [
 ];
 let extrarow =[{ label:' ',     field: 'click' },{ label:' ',    field: 'checkbox' }]
 let _headCOLUMNS=_COLUMNS.concat(extrarow)
-let _OPTION_SET_MAPPINGS = [
-];
+let _OPTION_SET_MAPPINGS = [];
 
 const view = function () {
     return <CRMView dataType={_DATA_TYPE}
