@@ -47,8 +47,44 @@ export default class DataLoader {
         Dispatcher.dispatch(signalObj);
     }
 
+    /** Generates an HTTP query string for the team shared MS Dynamics, based on the input parameters.
+     * Will return every record in the table.
+     * 
+     * @param {string} tableDataType Which table to query, without the publisher prefix.
+     *                               For example, "user" will get a record from "madmv_ma_user".
+     * @param {...string} columns The name of each field to include in the result set.
+     *                            For example, ...[ "madmv_name", "madmv_password", "madmv_securityroles" ]
+     *                            would return the Name, Password, and Security Roles fields in the result set.
+     */
     static generateDynamicsQuery(tableDataType, ...columns) {
-        let query = ExternalURL.DYNAMICS_PREFIX + tableDataType + ExternalURL.DYNAMICS_SUFFIX;
+        let query = ExternalURL.DYNAMICS_PREFIX + tableDataType + ExternalURL.DYNAMICS_PLURAL_S + ExternalURL.DYNAMICS_SELECT_SUFFIX;
+
+        let isSecondOrLaterColumnSoUseComma = false;
+        for(let column of columns) {
+            if (isSecondOrLaterColumnSoUseComma) query += ",";
+            isSecondOrLaterColumnSoUseComma = true;
+            query += column;
+        }
+
+        return query;
+    }
+    
+    /** Generates an HTTP query string for the team shared MS Dynamics, based on the input parameters.
+     * Will return one record, specified by GUID.
+     * 
+     * @param {string?} GUID The GUID of the record to retrieve, in the format "12345678-1234-1234-1234-123456789012".
+     * @param {string} tableDataType Which table to query, without the publisher prefix.
+     *                               For example, "user" will get a record from "madmv_ma_user".
+     * @param {...string} columns The name of each field to include in the result set.
+     *                            For example, ...[ "madmv_name", "madmv_password", "madmv_securityroles" ]
+     *                            would return the Name, Password, and Security Roles fields in the result set.
+     */
+    static generateDynamicsQuerySingleRecord(GUID, tableDataType, ...columns) {
+        let query = ExternalURL.DYNAMICS_PREFIX + tableDataType + ExternalURL.DYNAMICS_PLURAL_S;
+
+        if(GUID !== undefined) query += "(" + GUID + ")";
+
+        query += ExternalURL.DYNAMICS_SELECT_SUFFIX;
 
         let isSecondOrLaterColumnSoUseComma = false;
         for(let column of columns) {
