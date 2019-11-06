@@ -7,16 +7,13 @@ const CHANGE = "change";
 //*********FOR CREATOR COMPONENT*********\\
 let _creating = {
   status: {
-    details: [],
-    readState: {
       pending: false,
       success: false,
       failure: false
     },
     error: ""
-  }
 };
-class StoreForCreator extends EventEmitter {
+class StoreForCreators extends EventEmitter {
   addChangeListener(cb) {
     this.on(CHANGE, cb);
   }
@@ -34,14 +31,14 @@ class StoreForCreator extends EventEmitter {
   }
 
   resetReadState() {
-    _creating.status.readState = {
+    _creating.status = {
       pending: false,
       success: false,
       failure: false
     };
   }
 }
-export const ForCreator = new StoreForCreator();
+export const ForCreator = new StoreForCreators();
 //*****************END*************************\\
 
 //***GLOBAL DISPATCHER***\\
@@ -50,18 +47,17 @@ Dispatcher.register(action => {
     //***ACTIONS FOR CREATOR COMPONENT***\\
     case "created_successfully":
       ForCreator.resetReadState();
-      _creating.status.details = action.data;
-      _creating.status.readState.success = true;
+      _creating.status.success = true;
       ForCreator.emitChange();
       break;
     case "creation_failed":
       ForCreator.resetReadState();
-      _creating.status.readState.failure = true;
+      _creating.status.failure = true;
       ForCreator.emitChange();
       break;
     case "creating_record":
       ForCreator.resetReadState();
-      _creating.status.readState.pending = true;
+      _creating.status.pending = true;
       ForCreator.emitChange();
       break;
     //************END************\\
