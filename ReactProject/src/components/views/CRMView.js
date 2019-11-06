@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
-import stores from "../../stores/dataStores.js";
+import stores from "../../stores/stores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
@@ -72,7 +72,6 @@ export default class CRMView extends React.Component {
     }
 
     handleDelete(id){
-        console.log(id)
         let deletetype=this.props.dataType
         if(deletetype == 'application')
             ApplicationActions.deleteApplication(id)
@@ -82,34 +81,12 @@ export default class CRMView extends React.Component {
             VehicleActions.deleteVehicle(id)
     }
 
-    handleView(obj){
-        console.log(obj)
-    }
-
-/*    handleClick(event) {
-        // Placeholder, intended to update in some way so as to call a different click event depending on which record is clicked.
-        console.log("Placeholder CRMView record clicked event.")
-        event.preventDefault();
-    }
-*/
     getSuccessContent() {
-     
-        console.log(this.props.headcolumn)
         let content = {
-            columns:this.props.headcolumn,  
-            /*[
-                { label: 'ID',            field: 'madmv_appid' },
-                { label: 'Type',          field: 'madmv_applicationtype' },
-                { label: 'Subject',       field: 'madmv_applicationsubject' },
-                { label: 'Creation Time', field: 'createdon' },
-                { label:' ',              field: 'click' },
-                { label:' ',              field: 'checkbox' }
-            ],*/
+            columns:this.props.headcolumn,
             rows: this.getTableBodyContent()
         }
-  
-       
-        
+
         return (
             <Row className="mb-4">
                 <Col md="12">
@@ -133,8 +110,6 @@ export default class CRMView extends React.Component {
 
         records.forEach(record => {
             this.cleanup(record);
-            
-            //this.addClickEvent(record);
         });
         return records;
     }
@@ -196,14 +171,9 @@ export default class CRMView extends React.Component {
             >
             Delete
         </button>
-        );
-        
+        );    
     }
 
-/*  addClickEvent(record) {
-        record.clickEvent =  ()=> this.handleClick ;
-    }
-*/
     componentDidMount() {
         if (this.needsToLoad()) this.loadFromCRM();
     }

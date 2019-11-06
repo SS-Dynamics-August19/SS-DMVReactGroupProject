@@ -1,11 +1,11 @@
 import Dispatcher from "../dispatcher/appDispatcher";
 import axios from "axios";
-import constant from "../constants/DataLoaderConstants.js";
+import constant, { ExternalURL } from "../constants/DataLoaderConstants.js";
 
 export default class DataLoader {
-    constructor(URL, prefix) {
+    constructor(URL, eventSignalLabel) {
         this.URL = URL;
-        this.prefix = prefix;
+        this.eventSignalLabel = eventSignalLabel;
     }
 
     load() {
@@ -19,7 +19,7 @@ export default class DataLoader {
 
     signalLoadStarted() {
         let startedSignal = {
-            actionType: constant.ACTION_PREFIX + this.prefix + constant.STARTED_SUFFIX
+            actionType: constant.ACTION_PREFIX + this.eventSignalLabel + constant.STARTED_SUFFIX
         };
         DataLoader.signal(startedSignal);
     }
@@ -27,7 +27,7 @@ export default class DataLoader {
     signalLoadSuccess(result) {
         let successSignal = {
             actionType:
-                constant.ACTION_PREFIX + this.prefix + constant.SUCCESS_SUFFIX,
+                constant.ACTION_PREFIX + this.eventSignalLabel + constant.SUCCESS_SUFFIX,
             data: result.data.value
         };
         DataLoader.signal(successSignal);
@@ -38,20 +38,25 @@ export default class DataLoader {
         console.log(error);
 
         let failureSignal = {
-            actionType: constant.ACTION_PREFIX + this.prefix + constant.FAILURE_SUFFIX
+            actionType: constant.ACTION_PREFIX + this.eventSignalLabel + constant.FAILURE_SUFFIX
         };
         DataLoader.signal(failureSignal);
     }
 
-    signalLogIn(secRoles, username) {
-        let loggedInSignal = {
-            actionType: 'user_logged_in',
-            data: { authorization: secRoles, user: username }
-        };
-        DataLoader.signal(loggedInSignal);
-    }
-
     static signal(signalObj) {
         Dispatcher.dispatch(signalObj);
+    }
+
+    static generateDynamicsQuery(tableDataType, ...columns) {
+        let query = ExternalURL.DYNAMICS_PREFIX + tableDataType + ExternalURL.DYNAMICS_SUFFIX;
+
+        let isSecondOrLaterColumnSoUseComma = false;
+        for(let column of columns) {
+            if (isSecondOrLaterColumnSoUseComma) query += ",";
+            isSecondOrLaterColumnSoUseComma = true;
+            query += column;
+        }
+
+        return query;
     }
 }

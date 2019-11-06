@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
-import stores from "../../stores/dataStores.js";
+import stores from "../../stores/stores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from "mdbreact";
 import { Modal } from "./Modal.js";
 import CustomerActions from "../../actions/CustomerActions.js";
