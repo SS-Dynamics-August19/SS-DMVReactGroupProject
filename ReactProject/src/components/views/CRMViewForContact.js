@@ -27,6 +27,7 @@ export default class CRMViewContact extends React.Component {
       case State.FAILURE:
         return this.getFailureContent();
     }
+  }
 
     getDefaultContent() {
         return (
@@ -68,27 +69,27 @@ export default class CRMViewContact extends React.Component {
             ],
             rows: this.getTableBodyContent()
         }
-      ],
-
       rows: this.getTableBodyContent()
     };
-    return (
-      <div>
-        <Row className="mb-4">
-          <Col md="12">
-            <Card>
-              <CardBody>
-                <MDBDataTable striped bordered hover data={content} />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <div className="pb-4">
-          <Modal comp="customer" />
-        </div>
-      </div>
-    );
-  }
+
+    
+  //   return (
+  //     <div>
+  //       <Row className="mb-4">
+  //         <Col md="12">
+  //           <Card>
+  //             <CardBody>
+  //               <MDBDataTable striped bordered hover data={content} />
+  //             </CardBody>
+  //           </Card>
+  //         </Col>
+  //       </Row>
+  //       <div className="pb-4">
+  //         <Modal comp="customer" />
+  //       </div>
+  //     </div>
+  //   );
+  // }
   /*
         getTableHeaderContent() {
             return (
