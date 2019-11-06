@@ -3,31 +3,29 @@ import PropTypes from "prop-types";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
-import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
-import { CustomerCreateModal } from "./CustomerCreateModal.js";
+import { MDBDataTable, Row, Col, Card, CardBody } from "mdbreact";
+import { Modal } from "./Modal.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import { CustomerDetailsView } from "./CustomerDetailsView.js";
 
 //const DATA_STORE "customerID";
 
 export default class CRMViewContact extends React.Component {
-    render() {
-        return <div>{this.getContent()}</div>;
-    }
+  render() {
+    return <div>{this.getContent()}</div>;
+  }
 
-    getContent() {
-        let state = stores[this.props.dataType].data.readState;
-        switch (state) {
-            case State.DEFAULT:
-                return this.getDefaultContent();
-            case State.STARTED:
-                return this.getStartedContent();
-            case State.SUCCESS:
-                return this.getSuccessContent();
-            case State.FAILURE:
-                return this.getFailureContent();
-        }
+  getContent() {
+    let state = stores[this.props.dataType].data.readState;
+    switch (state) {
+      case State.DEFAULT:
+        return this.getDefaultContent();
+      case State.STARTED:
         return this.getStartedContent();
+      case State.SUCCESS:
+        return this.getSuccessContent();
+      case State.FAILURE:
+        return this.getFailureContent();
     }
 
     getDefaultContent() {
@@ -70,26 +68,28 @@ export default class CRMViewContact extends React.Component {
             ],
             rows: this.getTableBodyContent()
         }
-        return (
-            <div>
-                <Row className="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable striped bordered hover data={content} />
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-                <div className="pb-4">
-                    <CustomerCreateModal />
-                </div>
-            </div>
-        );
+      ],
 
-
-    }
-    /*
+      rows: this.getTableBodyContent()
+    };
+    return (
+      <div>
+        <Row className="mb-4">
+          <Col md="12">
+            <Card>
+              <CardBody>
+                <MDBDataTable striped bordered hover data={content} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <div className="pb-4">
+          <Modal comp="customer" />
+        </div>
+      </div>
+    );
+  }
+  /*
         getTableHeaderContent() {
             return (
                 <tr className="CRMTable">
@@ -175,13 +175,9 @@ export default class CRMViewContact extends React.Component {
             })
         
         } */
+  }
 
-
-
-
-    }
-
-    /* 
+  /* 
      createTableRow(record) {
          let key = record[this.props.rowKey];
  
@@ -207,45 +203,48 @@ export default class CRMViewContact extends React.Component {
          return ret;
      }*/
 
-    getFailureContent() {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Error while loading!
-            </div>
-        );
+  getFailureContent() {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Error while loading!
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    if (this.needsToLoad()) this.loadFromCRM();
+  }
+
+  needsToLoad() {
+    return stores[this.props.dataType].data.readState != State.SUCCESS;
+  }
+
+  loadFromCRM() {
+    let dataType = this.props.dataType;
+    let query = this.generateQuery();
+    new DataLoader(query, dataType).load();
+  }
+
+  generateQuery() {
+    let columns = this.props.columns;
+    let rowKey = this.props.rowKey;
+
+    let query =
+      ExternalURL.DYNAMICS_PREFIX +
+      this.props.dataType +
+      ExternalURL.DYNAMICS_SUFFIX +
+      rowKey;
+    for (let i = 0; i < columns.length; i++) {
+      let key = columns[i].key;
+      query += "," + key;
     }
 
-    componentDidMount() {
-        if (this.needsToLoad()) this.loadFromCRM();
-    }
-
-    needsToLoad() {
-        return (stores[this.props.dataType].data.readState != State.SUCCESS);
-    }
-
-    loadFromCRM() {
-        let dataType = this.props.dataType;
-        let query = this.generateQuery();
-        new DataLoader(query, dataType).load();
-    }
-
-    generateQuery() {
-        let columns = this.props.columns;
-        let rowKey = this.props.rowKey;
-
-        let query = ExternalURL.DYNAMICS_PREFIX + this.props.dataType + ExternalURL.DYNAMICS_SUFFIX + rowKey;
-        for (let i = 0; i < columns.length; i++) {
-            let key = columns[i].key;
-            query += "," + key;
-
-        }
-
-        return query;
-    }
+    return query;
+  }
 }
 
 CRMViewContact.propTypes = {
-    dataType: PropTypes.string.isRequired,
-    rowKey: PropTypes.string.isRequired,
-    columns: PropTypes.array.isRequired
+  dataType: PropTypes.string.isRequired,
+  rowKey: PropTypes.string.isRequired,
+  columns: PropTypes.array.isRequired
 };
