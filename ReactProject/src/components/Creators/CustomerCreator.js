@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 /**
  * *Component with input fields for creating a customer record in the CRM
- * @param props should be the global state ~ actions will dispatch a status of the creation and this component will render success or failure message based on results
+ * @param modal boolean / if true this component renders with a submit button for quick create inside a modal
  */
 export class CustomerCreator extends React.Component {
   constructor(props) {
@@ -41,10 +41,10 @@ export class CustomerCreator extends React.Component {
   //*when the field's value changes the event triggers an event
   //*the event is passed as a param and the targets value is stored in the component's state
   firstNameFieldChange(e) {
-    this.setState({ firstname: capitalize(e.target.value.toLowerCase()) });
+    this.setState({ firstname: capitalize(e.target.value) });
   }
   lastNameFieldChange(e) {
-    this.setState({ lastname: capitalize(e.target.value.toLowerCase()) });
+    this.setState({ lastname: capitalize(e.target.value) });
   }
   bdayFieldChange(e) {
     this.setState({ bday: e.target.value });
@@ -70,9 +70,10 @@ export class CustomerCreator extends React.Component {
   zipFieldChange(e) {
     this.setState({ zip: e.target.value });
   }
-
+  /**
+   * submits the values provided to create a new record
+   */
   startCreation() {
-    //submit values when form is complete
     CustomerActions.createCustomer(this.state); //**! Place Action Method Here and pass the state of this component */
   }
 
@@ -212,13 +213,13 @@ export class CustomerCreator extends React.Component {
         <hr />
       </div>
     );
-    let button = "";
 
-    if (this.props.modal === true) {
+    let button = "";//to render a button
+    if (this.props.modal === true) {//if this form is in a quick create modal, display the submit button
       button = (
         <div>
           <button
-            onClick={this.startCreation} //should trigger the submit action
+            onClick={this.startCreation} //triggers the create action
             className="btn btn-block btn-primary btn-lg"
           >
             SUBMIT
@@ -237,22 +238,26 @@ export class CustomerCreator extends React.Component {
   }
 }
 
-const capitalize = s => {
-  //accepts a string and capitalizes the first char
-  if (typeof s !== "string") {
+/**
+ * *Formats names and labels to capitalize the first letter while lowering the others / also takes multi word strings into consideration
+ * @param name the string to be formatted
+ */
+const capitalize = name => {
+  if (typeof name !== "string") {//check the type of the value to make sure string methods can be applied 
     return "";
   } else {
-    let cappedNames = [];
-    let multiWordNames = s.split(" ");
-    multiWordNames.map(element => {
-      cappedNames.push(element.charAt(0).toUpperCase() + element.slice(1));
+    let lowercased = name.toLowerCase()//lowercase the entire string
+    let capped = [];//array of capitalized words
+    let forMultiWordName = lowercased.split(" ");//will create an array of lowercased words, if its only one word the array will only contain that one word
+    forMultiWordName.map(element => {//will capitalize the first letter of each word in the array and add the word to the capped array
+      capped.push(element.charAt(0).toUpperCase() + element.slice(1));
     });
-    let newName = "";
-    cappedNames.forEach(element => {
+    let newName = "";//the new name
+    capped.forEach(element => {//concatenate the elements, seperating them by a space
       newName += `${element} `;
     });
 
-    return newName.trim();
+    return newName.trim();//delete the space at the end of the string
   }
 };
 
