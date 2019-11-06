@@ -1,19 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CRMViewVehicle from "./CRMViewForVehicle";
+import CRMView from "./CRMView";
+import OptionSetMapping from "./OptionSetMapping.js";
 
 let _DATA_TYPE = "vehicle";
-let _ROW_KEY = "madmv_ma_vehicleid";
+
 let _COLUMNS = [
-    { header: "Year Model", key: "madmv_yearmodel" },
-    { header: "Vehicle Make", key: "madmv_vehiclemake" },
-    { header: "Vehicle Identification Number", key: "madmv_vehicleidnumber" },
-    { header: "License Plate Number", key: "madmv_licenseplate" },
-    { header: "Creation Time", key: "createdon" }
+    {label:'Year Model',  field:'madmv_yearmodel'},
+    {label:'Vehicle Make',field:'madmv_vehiclemake'},
+    {label:'Vehicle Identification Number',field:'madmv_vehicleidnumber' },
+    {label:'License Plate Number', field:'madmv_licenseplate'},
+    {label:'Creation Time', field:'createdon',},
+];
+let extrarow =[{ label:' ',     field: 'click' },{ label:' ',    field: 'checkbox' }]
+let _headCOLUMNS=_COLUMNS.concat(extrarow)
+let _OPTION_SET_MAPPINGS = [
 ];
 
 const view = function () {
-    return <CRMViewVehicle dataType={_DATA_TYPE} rowKey={_ROW_KEY} columns={_COLUMNS} />;
+    return <CRMView dataType={_DATA_TYPE}
+        columns={_COLUMNS}
+        optionSetMappings={_OPTION_SET_MAPPINGS}
+        headcolumn={_headCOLUMNS}/>;
 };
 
 view.propTypes = {

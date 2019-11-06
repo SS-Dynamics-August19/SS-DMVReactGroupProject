@@ -5,7 +5,8 @@ import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/dataStores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
-
+import CustomerActions from "../../actions/CustomerActions.js";
+import VehicleActions from "../../actions/VehicleActions.js";
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -22,11 +23,14 @@ import ApplicationActions from "../../actions/ApplicationActions.js";
  * */
 
 export default class CRMView extends React.Component {
+    
     render() {
+        
         return <div> {this.getContent()} </div>;
     }
 
     getContent() {
+        
         let state = stores[this.props.dataType].data.readState;
         switch (state) {
             case State.DEFAULT:
@@ -69,31 +73,43 @@ export default class CRMView extends React.Component {
 
     handleDelete(id){
         console.log(id)
-        ApplicationActions.deleteApplication(id)
+        let deletetype=this.props.dataType
+        if(deletetype == 'application')
+            ApplicationActions.deleteApplication(id)
+        else if(deletetype == 'customer')
+            CustomerActions.deleteCustomer(id)
+        else if(deletetype == 'vehicle') 
+            VehicleActions.deleteVehicle(id)
     }
 
     handleView(obj){
         console.log(obj)
     }
 
-    handleClick() {
+/*    handleClick(event) {
         // Placeholder, intended to update in some way so as to call a different click event depending on which record is clicked.
         console.log("Placeholder CRMView record clicked event.")
+        event.preventDefault();
     }
-
+*/
     getSuccessContent() {
+     
+        console.log(this.props.headcolumn)
         let content = {
-            columns: [
+            columns:this.props.headcolumn,  
+            /*[
                 { label: 'ID',            field: 'madmv_appid' },
                 { label: 'Type',          field: 'madmv_applicationtype' },
                 { label: 'Subject',       field: 'madmv_applicationsubject' },
                 { label: 'Creation Time', field: 'createdon' },
                 { label:' ',              field: 'click' },
                 { label:' ',              field: 'checkbox' }
-            ],
+            ],*/
             rows: this.getTableBodyContent()
         }
-
+  
+       
+        
         return (
             <Row className="mb-4">
                 <Col md="12">
@@ -117,7 +133,8 @@ export default class CRMView extends React.Component {
 
         records.forEach(record => {
             this.cleanup(record);
-            this.addClickEvent(record);
+            
+            //this.addClickEvent(record);
         });
         return records;
     }
@@ -140,16 +157,53 @@ export default class CRMView extends React.Component {
             if(record[field] === null) record[field] = " ";
         }
     }
-
+    
     addInputs(record) {
-        record.click    = <input type="button" value="Detail Info"  onClick={()=>this.handleView(record)}/>
-        record.checkbox = <input type="button" value="delete"       onClick={()=>this.handleDelete(record.madmv_ma_applicationid)}/>
+       
+        record.click =(
+            <button
+                className="btn btn-sm btn-primary"
+                onClick={() => this.handleView(record)}
+            >
+            Detail Info
+            </button>
+            );
+
+
+
+//base on table type, pass the right id into delete function, also in the delete function, we
+//have to check the type to make sure run the right delete action.
+        if(this.props.dataType == 'application')
+        record.checkbox =(<button
+            className="btn btn-sm btn-danger"
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_applicationid)}}
+            >
+            Delete
+        </button>
+        );
+        else if(this.props.dataType == 'customer')
+        record.checkbox = (<button
+            className="btn btn-sm btn-danger"
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_customerid)}}
+            >
+            Delete
+        </button>
+        );
+        else if(this.props.dataType == 'vehicle')
+        record.checkbox = (<button
+            className="btn btn-sm btn-danger"
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_vehicleid)}}
+            >
+            Delete
+        </button>
+        );
+        
     }
 
-    addClickEvent(record) {
-        record.clickEvent = function() { this.handleClick() };
+/*  addClickEvent(record) {
+        record.clickEvent =  ()=> this.handleClick ;
     }
-
+*/
     componentDidMount() {
         if (this.needsToLoad()) this.loadFromCRM();
     }
@@ -170,7 +224,7 @@ export default class CRMView extends React.Component {
 
         let query = ExternalURL.DYNAMICS_PREFIX + this.props.dataType + ExternalURL.DYNAMICS_SUFFIX + rowKey;
         for (let i = 0; i < columns.length; i++) {
-            let key = columns[i].key;
+            let key = columns[i].field;
             query += "," + key;
         }
         return query;
@@ -180,5 +234,6 @@ export default class CRMView extends React.Component {
 CRMView.propTypes = {
     dataType: PropTypes.string.isRequired,
     columns: PropTypes.array.isRequired,
-    optionSetMappings: PropTypes.array.isRequired
+    optionSetMappings: PropTypes.array.isRequired,
+    headcolumn: PropTypes.array.isRequired,
 };

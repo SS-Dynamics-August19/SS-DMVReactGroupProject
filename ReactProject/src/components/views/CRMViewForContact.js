@@ -27,75 +27,46 @@ export default class CRMViewContact extends React.Component {
       case State.FAILURE:
         return this.getFailureContent();
     }
-    return this.getStartedContent();
-  }
 
-  getDefaultContent() {
-    return (
-      <div className="alert alert-danger" role="alert">
-        Loading did not start.
-      </div>
-    );
-  }
+    getDefaultContent() {
+        return (
+            <div className="alert alert-danger" role="alert">
+                Loading did not start.
+            </div>
+        );
+    }
 
-  getStartedContent() {
-    return (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+    getStartedContent() {
+        return (
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
-  handleDelete(id) {
-    console.log(id);
-    CustomerActions.deleteCustomer(id);
-  }
+    handleDelete(id) {
+        console.log(id);
+        CustomerActions.deleteCustomer(id)
+    }
 
-  handleView(obj) {
-    console.log(obj);
-  }
+    handleView(obj) {
+        console.log(obj);
+    }
 
-  getSuccessContent() {
-    let content = {
-      columns: [
-        {
-          label: "Name",
-
-          field: "madmv_fullname"
-        },
-
-        {
-          label: "Age",
-
-          field: "madmv_age"
-        },
-
-        {
-          label: "SSN",
-
-          field: "madmv_cssn"
-        },
-        {
-          label: "Email",
-
-          field: "madmv_email"
-        },
-        {
-          label: "Phone",
-
-          field: "madmv_phonenumber"
-        },
-        {
-          label: " ",
-
-          field: "detail"
-        },
-        {
-          label: " ",
-
-          field: "delete"
+    getSuccessContent() {
+        let content = {
+            columns: [
+                { label: 'Name',  field: 'madmv_fullname'},
+                { label: 'Age'  , field: 'madmv_age'},
+                { label: 'SSN'  , field: 'madmv_cssn'},
+                { label: 'Email', field: 'madmv_email'},
+                { label: 'Phone', field: 'madmv_phonenumber'},
+                { label: ' '    , field: 'detail'},
+                { label: ' '    , field: 'delete'}
+            ],
+            rows: this.getTableBodyContent()
         }
       ],
 
@@ -142,37 +113,47 @@ export default class CRMViewContact extends React.Component {
             return ret;
         }
     */
-  getTableBodyContent() {
-    let tableData = stores[this.props.dataType].data.records;
+    getTableBodyContent() {
+        let tableData = stores[this.props.dataType].data.records;
 
-    tableData.forEach(obj => {
-      obj["detail"] = (
-        <button
-          className="btn btn-sm btn-primary"
-          onClick={() => this.handleView(obj)}
-        >
-          Detail Info
-        </button>
-      );
-      obj["delete"] = (
-        <button
-          className="btn btn-sm btn-danger"
-          onClick={() => this.handleDelete(obj.madmv_ma_customerid)}
-        >
-          Delete
-        </button>
-      );
+        tableData.forEach(obj => {
+            obj["detail"] = (
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => this.handleView(obj)}
+              >
+                Detail Info
+              </button>
+            );
+            obj["delete"] = (
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(obj.madmv_ma_customerid)}}
+              >
+                Delete
+              </button>
+            );
+            
+            if (obj.madmv_fullname === null)
+                obj.madmv_fullname = " ";
+            if (obj.madmv_age === null)
+                obj.madmv_age = " ";
+            if (obj.madmv_cssn === null)
+                obj.madmv_cssn = " ";
+            if (obj.madmv_email === null)
+                obj.madmv_email = " ";
+            if (obj.madmv_phonenumber === null)
+                obj.madmv_phonenumber = " ";
 
-      if (obj.madmv_fullname === null) obj.madmv_fullname = " ";
-      if (obj.madmv_age === null) obj.madmv_age = " ";
-      if (obj.madmv_cssn === null) obj.madmv_cssn = " ";
-      if (obj.madmv_email === null) obj.madmv_email = " ";
-      if (obj.madmv_phonenumber === null) obj.madmv_phonenumber = " ";
-    });
 
-    return tableData;
 
-    /* //obsolete code.
+        })
+
+
+
+        return tableData
+
+        /* //obsolete code.
         // check if tableData contains application info & replace appl.type digits with label
         if (tableData.some(ob => ob.madmv_applicationtype)) {
             tableData.forEach(obj => {
