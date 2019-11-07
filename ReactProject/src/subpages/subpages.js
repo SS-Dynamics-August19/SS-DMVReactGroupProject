@@ -2,6 +2,7 @@ import Subpage from "./Subpage.js";
 import Constants from "../constants/SubpageConstants.js";
 
 import Login             from "../components/Login/Login.js";
+import Activities        from "../components/ActivitiesHome.js";
 import customersView     from "../components/views/CustomersView.js";
 import applicationsView  from "../components/views/ApplicationsView.js";
 import vehiclesView      from "../components/views/VehiclesView.js";
@@ -22,6 +23,7 @@ const subpages = [
     //                                                                              (optional)         (optional)
     //          Component Reference, Type of reference,         URL route to use,   Label for nav tab, login permission required
     new Subpage(Login,               Constants.REACT_COMPONENT, "/",                "Log In/Out"),
+    new Subpage(Activities,          Constants.REACT_COMPONENT,      "/Activities",       "Activities"),
     new Subpage(customersView,       Constants.FUNCTIONAL,      "/Customers",       "Customers",       "customer"),
     new Subpage(vehiclesView,        Constants.FUNCTIONAL,      "/Vehicles",        "Vehicles",        "vehicle"),
     new Subpage(applicationsView,    Constants.FUNCTIONAL,      "/Applications",    "Applications",    "application"),
