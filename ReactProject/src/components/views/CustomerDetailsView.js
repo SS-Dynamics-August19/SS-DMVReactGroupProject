@@ -4,11 +4,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 class CustomerDetailsView extends React.Component {
-    super(props)
-    constructor(object) {
-    this.object = object;
-    
-}
 
     /*
     state = {
@@ -185,4 +180,3 @@ class CustomerDetailsView extends React.Component {
 }
 
 export default CustomerDetailsView;
-
