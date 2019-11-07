@@ -110,11 +110,13 @@ export default class CRMViewVehicle extends React.Component {
           </Col>
         </Row>
         <div className="pb-4">
-          <Modal comp="vehicle" />
+          <Modal comp= {this.props.dataType} />
         </div>
       </div>
     );
   }
+
+  // 
   /*
     getTableHeaderContent() {
         return (

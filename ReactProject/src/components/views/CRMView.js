@@ -7,6 +7,7 @@ import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
+import CustomerDetailsView from "./CustomerDetailsView"
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -83,7 +84,7 @@ export default class CRMView extends React.Component {
     }
 
     handleView(obj){
-        console.log(obj)
+        <CustomerDetailsView object={obj} />
     }
 
 /*    handleClick(event) {
@@ -111,6 +112,7 @@ export default class CRMView extends React.Component {
        
         
         return (
+            <div>
             <Row className="mb-4">
                 <Col md="12">
                     <Card>
@@ -125,6 +127,10 @@ export default class CRMView extends React.Component {
                     </Card>
                 </Col>
             </Row>
+            <div className="pb-4">
+            <Modal comp= {this.props.dataType} />
+          </div>
+        </div>
         );
     }
 
