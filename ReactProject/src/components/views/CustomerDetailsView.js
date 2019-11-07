@@ -1,6 +1,13 @@
 import React from "react";
 
 class CustomerDetailsView extends React.Component {
+    constructor(props) {
+        super(props)
+        console.log(props);
+    }
+
+
+
     render() {
         let customer = this.fetchFromCRM();
 
@@ -109,7 +116,9 @@ class CustomerDetailsView extends React.Component {
     }
 
     fetchFromCRM() {
-        let customer = {
+        let customer = this.props
+            /*    
+        {
             madmv_firstname:    "John",
             madmv_lastname:     "Doe",
             madmv_cssn:         "111111111",
@@ -124,7 +133,9 @@ class CustomerDetailsView extends React.Component {
             madmv_zippostalcode:"000000",
             madmv_country:      "US",
             owninguser:         "jack smith"
+            
         };
+        */
         return customer;
     }
 
