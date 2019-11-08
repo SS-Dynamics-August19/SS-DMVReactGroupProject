@@ -190,7 +190,7 @@ export default class CRMView extends React.Component {
     }
 
     componentDidMount() {
-        if (this.needsToLoad()) this.loadFromCRM();
+        /*if (this.needsToLoad()) */this.loadFromCRM();
     }
 
     needsToLoad() {
