@@ -1,6 +1,6 @@
 import React from "react";
 import subpages from "../subpages/subpages.js";
-import stores from "../stores/DataStores.js";
+import stores from "../stores/stores.js";
 
 let header = function() {
     let logoutButton = "";

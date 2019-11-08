@@ -1,53 +1,11 @@
-//import React from 'react'
 import React from "react";
-//import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 
 class CustomerDetailsView extends React.Component {
+    constructor(props) {
+        super(props)
+        console.log(props);
+    }
 
-    /*
-    state = {
-        madmv_age: '',
-        madmv_birthdate: '',
-        madmv_city: '',
-        madmv_country: '',
-        madmv_cssn: '',
-        madmv_email: '',
-        madmv_firstname: '',
-        madmv_fullname: '',
-        madmv_hiddendifday: '',
-        madmv_lastname: '',
-        madmv_ma_customerid: '',
-        madmv_phonenumber: '',
-        madmv_stateprovince: '',
-        madmv_street1: '',
-        madmv_street2: '',
-        madmv_zippostalcode: '',
-        owninguser: ''
-    }   
-
-    */
-
-    /*
-    <div className="detailedHeader">
-                <h1>Customer</h1>
-                <button className="btn btn-primary" onClick={() => console.log(customer.madmv_ma_customerid)} type="button">Update Record</button>
-            </div>
-            <div className="h2Th">
-                <h2>General Information</h2>
-                <h2>Detailed Information</h2>
-            </div>
-            <form className="detailedForm">
-                <table>
-                    <tbody>owninguser
-
-            </tbody>
-                </table>
-            </form>
-
-        
-
-    */
 
 
     render() {
@@ -158,7 +116,9 @@ class CustomerDetailsView extends React.Component {
     }
 
     fetchFromCRM() {
-        let customer = {
+        let customer = this.props
+            /*    
+        {
             madmv_firstname:    "John",
             madmv_lastname:     "Doe",
             madmv_cssn:         "111111111",
@@ -173,7 +133,9 @@ class CustomerDetailsView extends React.Component {
             madmv_zippostalcode:"000000",
             madmv_country:      "US",
             owninguser:         "jack smith"
+            
         };
+        */
         return customer;
     }
 
