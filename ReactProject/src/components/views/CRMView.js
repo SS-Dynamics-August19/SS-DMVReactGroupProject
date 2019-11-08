@@ -82,8 +82,9 @@ export default class CRMView extends React.Component {
             VehicleActions.deleteVehicle(id)
     }
 
-    handleView(obj){
-        console.log(obj)
+    handleView(id){
+        console.log(id);
+        window.location.href = "/#/CustomerDetails/:"+id;
     }
 
 /*    handleClick(event) {
@@ -163,7 +164,7 @@ export default class CRMView extends React.Component {
         record.click =(
             <button
                 className="btn btn-sm btn-primary"
-                onClick={() => this.handleView(record)}
+                onClick={() => this.handleView(record.madmv_ma_customerid)}
             >
             Detail Info
             </button>

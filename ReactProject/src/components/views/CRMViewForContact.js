@@ -7,6 +7,9 @@ import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import { CustomerCreateModal } from "./CustomerCreateModal.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import { CustomerDetailsView } from "./CustomerDetailsView.js";
+import { Button } from 'semantic-ui-react';
+import { Link } from 'semantic-ui-react';
+import { withRouter } from 'react-router';
 
 //const DATA_STORE "customerID";
 
@@ -123,12 +126,15 @@ export default class CRMViewContact extends React.Component {
 
         tableData.forEach(obj => {
             obj["detail"] = (
-              <button
-                className="btn btn-sm btn-primary"
-                    onClick={() => this.handleView(obj.madmv_ma_customerid)}
-              >
-                Detail Info
-              </button>
+            <Link to="/CustomerDetails">
+                <button
+                    className="btn btn-sm btn-primary"
+                        onClick={() => this.handleView(obj.madmv_ma_customerid) /*{ this.props.history.replace('/CustomerDetails') }*/}
+                    >
+                    Detail Info
+                </button>
+            </Link>
+                /*<Button variant="link">'/CustomerDetails'</Button>*/
             );
             obj["delete"] = (
               <button

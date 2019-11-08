@@ -28,27 +28,27 @@ class CustomerDetailsView extends React.Component {
 
     */
 
-    //handleClick = () => {
-   //     console.log("clickckck");
-   //     this.setState({ disabled: !this.state.disabled })
-   // }
+    /*handleClick = () => {
+        console.log("clickckck");
+        this.setState({ disabled: !this.state.disabled })
+    }*/
     // while user typing, capture values and change the state to display changes
-    handleChange = (event) => {
+    /*handleChange = (event) => {
 
         this.setState({ [event.target.name]: event.target.value })
         console.log(event.target.value)
-    }
+    }*/
     // send the updated state to store
-    handleSubmit = (event) => {
+    /*handleSubmit = (event) => {
         event.preventDefault();
         console.log(this.state);
         //this.props.changeStore(this.state)
-        //CustomerActions.updateCustomer(this.state.madmv_ma_customerid, this.state);  
+        CustomerActions.updateCustomer(this.state.customerid, this.state);  
         this.setState({ disabled: !this.state.disabled })
 
-    }
+    }*/
     // set state back to original props
-    handleCancel = () => {
+    /*handleCancel = () => {
         let customer = this.fetchFromCRM;
         console.log("cancel");
         this.setState({
@@ -71,7 +71,7 @@ class CustomerDetailsView extends React.Component {
             owninguser: customer.owninguser,
             disabled: true,
         })
-    }
+    }*/
 
     render() {
         let customer = this.fetchFromCRM();
