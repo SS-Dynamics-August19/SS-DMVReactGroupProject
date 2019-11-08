@@ -1,6 +1,6 @@
 import React from "react";
-// import {CustomerActions} from '../../actions/CustomerActions'
-// import PropTypes from "prop-types";
+import CustomerActions from "../../actions/CustomerActions";
+import PropTypes from 'prop-types'
 
 /**
  * *Component with input fields for creating a customer record in the CRM
@@ -70,38 +70,14 @@ export class CustomerCreator extends React.Component {
   zipFieldChange(e) {
     this.setState({ zip: e.target.value });
   }
+
   startCreation() {
     //submit values when form is complete
-    // CustomerActions.createCustomer(this.state); //**! Place Action Method Here and pass the state of this component */
+    CustomerActions.createCustomer(this.state); //**! Place Action Method Here and pass the state of this component */
   }
 
   render() {
-    let display = ""; //changes based on state of the app
-
-    // if (this.props.creationStatus.readState.success) {
-    //   display = ( //shows success message if the creation was successful
-    //     <div className="alert alert-success" role="alert">
-    //       <h1 className="alert-heading">Success!!</h1>
-    //       <hr />
-    //       <h6 className="mb-0">
-    //         Created account for {this.state.firstname} {this.state.lastname},
-    //         successfully.
-    //       </h6>
-    //     </div>
-    //   );
-    // } else if (this.props.creationStatus.readState.failure) {
-    //   display = ( //shows failure message if the create encountered any errors
-    //     <div className="alert alert-danger" role="alert">
-    //       <h1 className="alert-heading">Uh oh!</h1>
-    //       <hr />
-    //       <h6 className="mb-0">
-    //         Could not create account for {this.state.firstname} {this.state.lastname}.
-    //       </h6>
-    //       <p>Refresh and try again..</p>
-    //     </div>
-    //   );
-    // } else {
-    display = ( //display's the form since creationStatus didn't return success or failure / default (no change in global state)
+    let display = ( //display's the form
       <div className="">
         <div className="input-group mb-3">
           <input
@@ -233,26 +209,54 @@ export class CustomerCreator extends React.Component {
             </span>
           </div>
         </div>
-        {/* <button
-            onClick={this.startCreation} //should trigger the submit action
-            className="btn btn-block btn-success btn-lg"
-          >
-            CLICK HERE TO SUBMIT
-          </button> */}
+        <hr />
       </div>
     );
-    // }
-    return <div className="">{display}</div>;
+    let button = "";
+
+    if (this.props.modal === true) {
+      button = (
+        <div>
+          <button
+            onClick={this.startCreation} //should trigger the submit action
+            className="btn btn-block btn-primary btn-lg"
+          >
+            SUBMIT
+          </button>
+          <hr />
+        </div>
+      );
+    }
+
+    return (
+      <div className="">
+        {display}
+        {button}
+      </div>
+    );
   }
 }
 
 const capitalize = s => {
   //accepts a string and capitalizes the first char
-  if (typeof s !== "string") return "";
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  if (typeof s !== "string") {
+    return "";
+  } else {
+    let cappedNames = [];
+    let multiWordNames = s.split(" ");
+    multiWordNames.map(element => {
+      cappedNames.push(element.charAt(0).toUpperCase() + element.slice(1));
+    });
+    let newName = "";
+    cappedNames.forEach(element => {
+      newName += `${element} `;
+    });
+
+    return newName.trim();
+  }
 };
 
-//validate proptypes
-// CustomerCreator.propTypes = {
-//   creationStatus: PropTypes.object.isRequired
-// };
+
+CustomerCreator.propTypes = {
+  modal:PropTypes.bool.isRequired
+};
