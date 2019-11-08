@@ -9,11 +9,23 @@ export default class DataLoader {
     }
 
     load() {
-        this.signalLoadStarted();
+        axios.get('https://localhost:44311/DMVOAuth', config)
+            .then(res => {
+                this.signalLoadStarted();
 
-        axios
-            .get(this.URL)
-            .then(this.signalLoadSuccess.bind(this))
+                let config = {
+                    'Authorization' : 'Bearer:'
+                    'OData-MaxVersion': 4.0,
+                    'OData-Version': 4.0,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+
+                axios
+                    .get(this.URL)
+                    .then(this.signalLoadSuccess.bind(this))
+                    .catch(this.signalLoadFailure.bind(this));
+            })
             .catch(this.signalLoadFailure.bind(this));
     }
 

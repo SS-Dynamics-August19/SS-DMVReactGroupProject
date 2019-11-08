@@ -34,7 +34,7 @@ const CustomerActions = {
 
         CustomerActions.updateCustomer("f7407fa0-81fd-e911-a811-000d3a36857d", customer);    // function call
     */
-  updateCustomer: (id, customer) => {
+  updateCustomer: (id, updateObj) => {
     // notify store that update has started
     Dispatcher.dispatch({
       actionType: "update_customer_started"
