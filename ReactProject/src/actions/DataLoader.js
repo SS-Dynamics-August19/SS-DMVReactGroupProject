@@ -1,6 +1,8 @@
 import Dispatcher from "../dispatcher/appDispatcher";
 import axios from "axios";
 import constant, { ExternalURL } from "../constants/DataLoaderConstants.js";
+import { adalApiFetch } from '../adalConfig.js';
+
 
 export default class DataLoader {
     constructor(URL, eventSignalLabel) {
@@ -9,24 +11,29 @@ export default class DataLoader {
     }
 
     load() {
-        axios.get('https://localhost:44311/DMVOAuth', config)
+        /*axios.get('https://localhost:44311/api/DMVOAuth')
             .then(res => {
                 this.signalLoadStarted();
 
+                console.log(res.data);
+                */
                 let config = {
-                    'Authorization' : 'Bearer:'
+                    'method': 'get',
                     'OData-MaxVersion': 4.0,
                     'OData-Version': 4.0,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json; charset=utf-8'
-                }
-
-                axios
-                    .get(this.URL)
+                };
+//*/                 
+                adalApiFetch(axios, this.URL, config)
                     .then(this.signalLoadSuccess.bind(this))
                     .catch(this.signalLoadFailure.bind(this));
-            })
-            .catch(this.signalLoadFailure.bind(this));
+                //axios
+                //    .get(this.URL)
+                //    .then(this.signalLoadSuccess.bind(this))
+                //    .catch(this.signalLoadFailure.bind(this));
+ //           })
+   //         .catch(this.signalLoadFailure.bind(this));
     }
 
     signalLoadStarted() {
