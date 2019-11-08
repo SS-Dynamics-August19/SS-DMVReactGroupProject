@@ -50,7 +50,7 @@ export default class ActivityActions {
 
     static generateDynamicsQuery(tableDataType, ...columns) {
         let query = ''
-        console.log(columns.length);
+        //console.log(columns.length);
         if (tableDataType == "task")
         {
             return "https://sstack.crm.dynamics.com/api/data/v9.1/" + tableDataType + ExternalURL.DYNAMICS_PLURAL_S;

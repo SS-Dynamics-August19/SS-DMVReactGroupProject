@@ -2,7 +2,7 @@ import Subpage from "./Subpage.js";
 import Constants from "../constants/SubpageConstants.js";
 
 import Login             from "../components/Login/Login.js";
-import Activities        from "../components/ActivitiesHome.js";
+import Activities        from "../components/views/ActivitiesHome.js";
 import customersView     from "../components/views/CustomersView.js";
 import applicationsView  from "../components/views/ApplicationsView.js";
 import vehiclesView      from "../components/views/VehiclesView.js";

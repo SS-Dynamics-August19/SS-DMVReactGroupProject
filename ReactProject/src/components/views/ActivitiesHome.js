@@ -3,11 +3,11 @@ import React from "react";
 //import { State, ExternalURL } from "../constants/DataLoaderConstants.js";
 //import DataLoader from "../actions/DataLoader.js";
 //import Activitystore from "../stores/ActivityStore.js";
-import ActivityActions from "../actions/ActivityActions.js";
+import ActivityActions from "../../actions/ActivityActions.js";
 import { Pie } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
-import { State } from "../constants/DataLoaderConstants.js";
-import stores from "../stores/stores.js";
+import { State } from "../../constants/DataLoaderConstants.js";
+import stores from "../../stores/stores.js";
 
 const DATE_OPTIONS = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
