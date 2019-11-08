@@ -4,18 +4,20 @@ import React from "react";
 //import DataLoader from "../actions/DataLoader.js";
 //import Activitystore from "../stores/ActivityStore.js";
 import ActivityActions from "../actions/ActivityActions.js";
-
-import DataLoader from "../actions/DataLoader.js";
-//import ActivityStore from "../stores/ActivityStore.js";
+import { Pie } from "react-chartjs-2";
+import { MDBContainer } from "mdbreact";
 import { State } from "../constants/DataLoaderConstants.js";
 import stores from "../stores/stores.js";
 
 const DATE_OPTIONS = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
+
 //const DATA_STORE = "user";
 export default class ActivitiesHome extends React.Component {
 
+
     render() {
+        
         
         return <div> {this.getContent()} </div>;
     }
@@ -23,7 +25,6 @@ export default class ActivitiesHome extends React.Component {
     getContent() {
         
         let state = stores.activity.data.readState;
-        //console.log(stores.activity.data);
         switch (state) {
             case State.DEFAULT:
                 return this.getDefaultContent();
@@ -70,11 +71,6 @@ export default class ActivitiesHome extends React.Component {
         let cusRecords = stores.customer.data.records;
         let vehRecords = stores.vehicle.data.records;
         let appValidDates = [], cusValidDates = [], vehValidDates = [];
-        //let appCounter = 0;
-       
-        console.log(records);
-        console.log(appRecords);
-
 
         appRecords.forEach(appRecord => {
             this.checkDate(appRecord, appValidDates);
@@ -85,9 +81,23 @@ export default class ActivitiesHome extends React.Component {
         vehRecords.forEach(vehRecord => {
             this.checkDate(vehRecord, vehValidDates);
         });
-        console.log(appValidDates.length)
-        console.log(cusValidDates.length)
-        console.log(vehValidDates.length)
+
+        let pieData = {
+                  labels: ["Vehicle Registration", "Address Change"],
+                  datasets: [
+                    {
+                      data: this.appTypeCounter(appRecords),
+                      backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD"
+                      ],
+                      hoverBackgroundColor: [
+                        "#FF5A5E",
+                        "#5AD3D1"
+                      ]
+                    }
+                  ]
+            };
 
 
         return (
@@ -128,10 +138,41 @@ export default class ActivitiesHome extends React.Component {
                             <p className="card-text">Created this week</p>
                         </div>
                     </div>
+                     <div className="col-12">
+                    <MDBContainer>
+                        <h3 className="">Application Types</h3>
+                        <Pie data={pieData} options={{ responsive: true }} />
+                    </MDBContainer>
+                    </div>
                 </div>
             </div>
         );
     }
+
+    appTypeCounter(appRecords) {
+        let appTypes = [0,0,0,0];
+        for (let i = 0; i < appRecords.length; i++)
+        {
+            switch(appRecords[i].madmv_applicationtype) {
+                
+                case 876570000:
+                    appTypes[0]++;
+                    break;
+                case 876570001:
+                    appTypes[1]++;
+                    break;
+                case 876570002:
+                    appTypes[2]++;
+                    break;
+                case 876570003:
+                    appTypes[3]++;
+                    break;
+            }
+        }
+        return appTypes;
+    }
+        
+    
 
     checkDate(appRecord, validDates) {
         let currentDate = new Date(Date.now());
@@ -146,41 +187,26 @@ export default class ActivitiesHome extends React.Component {
     }
 
     componentDidMount(){
-        //if (this.needsToLoad()) 
-        //console.log("component did mount");
         this.loadFromCRM();
     }
 
     needsToLoad() {
-        //console.log(stores.activity.data.readState);
         return (stores.activity.data.readState === State.DEFAULT_STATE);
     }
 
     loadFromCRM() {
-        //let query = this.generateQuery();
-        new ActivityActions().load();
-        let dataType = "application";
-        new DataLoader(DataLoader.generateDynamicsQuery("application", ["madmv_appid", "createdon"]), dataType).load();
-        dataType = "customer";
-        new DataLoader(DataLoader.generateDynamicsQuery("customer", ["madmv_fullname", "createdon"]), dataType).load();
-        dataType = "vehicle";
-        new DataLoader(DataLoader.generateDynamicsQuery("vehicle", ["madmv_vehicleidnumber", "createdon"]), dataType).load();
+        let dataType = "activity";
+        let query = ActivityActions.generateDynamicsQuery("task");
+        new ActivityActions(query, dataType).load();
         
+        dataType = "application";
+        query = ActivityActions.generateDynamicsQuery("application", ["madmv_applicationtype" ,"createdon"]);
+        new ActivityActions(query, dataType).load();
+        dataType = "customer";
+        query = ActivityActions.generateDynamicsQuery("customer", ["createdon"]);
+        new ActivityActions(query, dataType).load();
+        dataType = "vehicle";
+        query = ActivityActions.generateDynamicsQuery("vehicle", ["createdon"]);
+        new ActivityActions(query, dataType).load();
     }
-
-/*
-    getFieldList() {
-        let keyField = "madmv_ma_" + this.props.dataType + "id";
-        let ret = [keyField];
-
-        for (let column of this.props.columns) {
-            ret.push(column.field);
-        }
-
-        return ret;
-    }
-    */
 }
-
-
-
