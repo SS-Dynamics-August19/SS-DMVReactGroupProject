@@ -1,20 +1,18 @@
 import React from "react";
 import DataLoader from "../../actions/DataLoader.js";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 class CustomerDetailsView extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-
         this.state = {
             loaded: false,
             data: undefined
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchFromCRM();
     }
 
@@ -154,5 +152,8 @@ class CustomerDetailsView extends React.Component {
             }.bind(this));
     }
 }
+CustomerDetailsView.propTypes = {
+    match: PropTypes.object.isRequired
+};
 
 export default CustomerDetailsView;
