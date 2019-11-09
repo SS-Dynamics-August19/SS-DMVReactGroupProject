@@ -7,7 +7,7 @@ import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
-import CustomerDetailsView from "./CustomerDetailsView.js";
+//import CustomerDetailsView from "./CustomerDetailsView.js";
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -141,7 +141,7 @@ export default class CRMView extends React.Component {
         new CustomerDetailsView(record);
     }*/
 
-        handleView(id){
+    handleView(id){
         console.log(id);
         window.location.href = "/#/CustomerDetails/"+id;
     }
