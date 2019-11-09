@@ -7,15 +7,11 @@ import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
-<<<<<<< HEAD
 import CustomerDetailsView from "./CustomerDetailsView.js";
 import {Modal} from './Modal'
 
 import { Link } from "react-router-dom";
 
-=======
-//import CustomerDetailsView from "./CustomerDetailsView.js";
->>>>>>> 800fce8d1bd988c6535095913f10e84beac7c262
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -142,66 +138,37 @@ export default class CRMView extends React.Component {
         }
     }
 
-<<<<<<< HEAD
-   
-=======
     /*handleView(record) {
         new CustomerDetailsView(record);
     }*/
 
     handleView(id){
         //console.log(id);
-        window.location.href = "/#/CustomerDetails/"+id;
+        window.location.href = "/#/" + this.props.dataType + "Details/"+id;
     }
->>>>>>> 800fce8d1bd988c6535095913f10e84beac7c262
 
     
     addInputs(record) {
-       
+        //console.log(record);
         record.click =(
-<<<<<<< HEAD
-            <Modal comp="customerdetail" rec={record} text="Detail Info"/>    
-=======
             <button
                 className="btn btn-sm btn-primary"
                 //onClick={() => this.handleView(record)}
-                onClick={() => this.handleView(record.madmv_ma_customerid)}
+                onClick={() => this.handleView(record["madmv_ma_" + this.props.dataType + "id"])}
             >
             Detail Info
             </button>
->>>>>>> 800fce8d1bd988c6535095913f10e84beac7c262
-            );
-
-
-
-//base on table type, pass the right id into delete function, also in the delete function, we
-//have to check the type to make sure run the right delete action.
-        if(this.props.dataType == 'application')
+        );
+ //base on table type, pass the right id into delete function, also in the delete function, we
+ //have to check the type to make sure run the right delete action.
         record.checkbox =(<button
             className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_applicationid)}}
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record["madmv_ma_" + this.props.dataType + "id"])}}
             >
             Delete
         </button>
         );
-        else if(this.props.dataType == 'customer')
-        record.checkbox = (<button
-            className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_customerid)}}
-            >
-            Delete
-        </button>
-        );
-        else if(this.props.dataType == 'vehicle')
-        record.checkbox = (<button
-            className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_vehicleid)}}
-            >
-            Delete
-        </button>
-        );    
     }
-
 
 
     componentDidMount() {
