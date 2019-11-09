@@ -43,7 +43,7 @@ class VehicleDetailsView extends React.Component {
             madmv_vehicleidnumber: this.state.olddata.madmv_vehicleidnumber,
             madmv_vehiclemake: this.state.olddata.madmv_vehiclemake,
             madmv_yearmodel: this.state.olddata.madmv_yearmodel,
-            disabled: true,
+            disabled: !this.state.disabled,
         })
       }
 
@@ -74,7 +74,7 @@ class VehicleDetailsView extends React.Component {
 
             <div className="detailedHeader">
                 <h1>Vehicle</h1>
-                <button className="btn btn-primary" onClick={this.handleClick} type="button">Update Record</button>
+                <button  className={(!this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
                 <h2>Detailed Information</h2>
@@ -85,16 +85,6 @@ class VehicleDetailsView extends React.Component {
                         <tbody>
 
                             <tr className="trDetailedView">
-
-                                <th className="thDetailedView">
-
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>Owner:</label>
-                                        <select className="form-control">
-                                            <option>No Owner</option>
-                                        </select>
-                                    </div>
-                                </th>
 
                                 <th className="thDetailedView">
 
