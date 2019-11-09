@@ -49,7 +49,7 @@ class CustomerDetailsView extends React.Component {
           madmv_street2: this.state.olddata.madmv_street2,
           madmv_zippostalcode: this.state.olddata.madmv_zippostalcode,
           owninguser: this.state.olddata.owninguser,
-          disabled: true,
+          disabled: !this.state.disabled,
         })
       }
 
@@ -80,7 +80,7 @@ class CustomerDetailsView extends React.Component {
 
             <div className="detailedHeader">
                 <h1>Customer</h1>
-                <button className="btn btn-primary" onClick={this.handleClick} type="button">Update Record</button>
+                <button className={(!this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
                 <h2>Detailed Information</h2>
@@ -92,28 +92,7 @@ class CustomerDetailsView extends React.Component {
 
                             <tr className="trDetailedView">
 
-                                <th className="thDetailedView">
-
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>Owner:</label>
-                                        <select className="form-control">
-                                            <option>{customer.owninguser}</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>Vehicle 1:</label>
-                                        <select className="form-control">
-                                            <option>BMW 3 Series</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>Vehicle 2:</label>
-                                        <select className="form-control">
-                                            <option>Lexus</option>
-                                        </select>
-                                    </div>
-                                </th>
-
+                            
                                 <th className="thDetailedView">
 
                                     <div className="form-group fieldDetailed form-inline">
