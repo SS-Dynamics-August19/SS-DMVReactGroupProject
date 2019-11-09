@@ -84,7 +84,6 @@ class CustomerDetailsView extends React.Component {
                 <button className="btn btn-primary" onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
-                <h2>General Information</h2>
                 <h2>Detailed Information</h2>
             </div>
             <form onSubmit={this.handleSubmit} className="detailedForm">
