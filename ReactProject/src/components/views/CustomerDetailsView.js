@@ -2,6 +2,7 @@ import React from "react";
 import DataLoader from "../../actions/DataLoader.js";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { adalApiFetch } from '../../adalConfig.js';
 import CustomerActions from "../../actions/CustomerActions.js";
 
 class CustomerDetailsView extends React.Component {
@@ -21,15 +22,15 @@ class CustomerDetailsView extends React.Component {
         this.fetchFromCRM();
     }
     handleClick() {
-        console.log("clickckck");
+        //console.log("clickckck");
         this.setState({ disabled: !this.state.disabled })
     }
     handleChange(event) {
         this.setState({ [event.target.name]: event.target.value })
-        console.log(event.target.value)
+        //console.log(event.target.value)
     }
     handleCancel  () {
-        console.log("cancel");
+        //console.log("cancel");
 
         this.setState({
           madmv_age: this.state.olddata.madmv_age,
@@ -55,7 +56,7 @@ class CustomerDetailsView extends React.Component {
 
       handleSubmit (event)  {
         event.preventDefault();
-        console.log(this.state);
+        //console.log(this.state);
         CustomerActions.updateCustomer(this.state.olddata.madmv_ma_customerid,this.state)
         //this.props.changeStore(this.state)
         this.setState({disabled: !this.state.disabled})
@@ -184,7 +185,16 @@ class CustomerDetailsView extends React.Component {
             "madmv_birthdate", "madmv_age", "madmv_phonenumber", "madmv_email", "madmv_street1", "madmv_street2", "madmv_city",
             "madmv_stateprovince", "madmv_zippostalcode", "madmv_country");
 
-        axios.get(cosQuery)
+        //console.log(cosQuery);
+        let config = {
+            'method': 'get',
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        };
+
+        adalApiFetch(axios, cosQuery, config)
             .then(function (response) {
                 console.log(response);
                 
