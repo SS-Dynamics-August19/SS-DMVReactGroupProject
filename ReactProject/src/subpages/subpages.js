@@ -27,7 +27,7 @@ const subpages = [
     new Subpage(customersView,       Constants.FUNCTIONAL,      "/Customers",       "Customers",       "customer"),
     new Subpage(vehiclesView,        Constants.FUNCTIONAL,      "/Vehicles",        "Vehicles",        "vehicle"),
     new Subpage(applicationsView,    Constants.FUNCTIONAL,      "/Applications",    "Applications",    "application"),
-    new Subpage(CustomerDetails,     Constants.REACT_COMPONENT, "/CustomerDetails", null,              "customer").setNoNavigation(),
+    new Subpage(CustomerDetails,     Constants.REACT_COMPONENT, "/CustomerDetails/:id",  null,             "customer").setNoNavigation(),
     new Subpage(URLParamsEchoDemo,   Constants.REACT_COMPONENT, "/Echo/:echoText").setNoNavigation()
 ];
 export default subpages;

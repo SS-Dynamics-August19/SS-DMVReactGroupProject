@@ -1,16 +1,41 @@
 import React from "react";
+import DataLoader from "../../actions/DataLoader.js";
+import axios from "axios";
 
 class CustomerDetailsView extends React.Component {
     constructor(props) {
-        super(props)
-        //console.log(props);
+        super(props);
     }
 
 
+        this.state = {
+            loaded: false,
+            data: undefined
+        };
+    }
+
+    componentWillMount() {
+        this.fetchFromCRM();
+    }
 
     render() {
-        let customer = this.fetchFromCRM();
+        if (!this.state.loaded) {
+            return (
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            );
+        }
 
+        let customer = this.state.data;
+        
+
+        console.log(customer.madmv_lastname);
+        
+        console.log(customer);
+ 
 
         return <div className="detailedDiv">
 
@@ -49,8 +74,6 @@ class CustomerDetailsView extends React.Component {
                                     </select>
                                 </div>
                             </th>
-
-                            <pre>                                       </pre>
 
                             <th className="thDetailedView">
 
@@ -116,29 +139,20 @@ class CustomerDetailsView extends React.Component {
     }
 
     fetchFromCRM() {
-        let customer = this.props
-            /*    
-        {
-            madmv_firstname:    "John",
-            madmv_lastname:     "Doe",
-            madmv_cssn:         "111111111",
-            madmv_birthdate:    "July 4",
-            madmv_age:          "34",
-            madmv_phonenumber:  "1234567890",
-            madmv_email:        "a@a.a",
-            madmv_street1:      "sit street",
-            madmv_street2:      "",
-            madmv_city:         "townsville",
-            madmv_stateprovince:"West Virginia",
-            madmv_zippostalcode:"000000",
-            madmv_country:      "US",
-            owninguser:         "jack smith"
-            
-        };
-        */
-        return customer;
-    }
+        let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "customer", "madmv_firstname", "madmv_lastname", "madmv_cssn",
+            "madmv_birthdate", "madmv_age", "madmv_phonenumber", "madmv_email", "madmv_street1", "madmv_street2", "madmv_city",
+            "madmv_stateprovince", "madmv_zippostalcode", "madmv_country");
 
+        axios.get(cosQuery)
+            .then(function (response) {
+                console.log(response);
+                let newState = {};
+                newState.data = response.data;
+                newState.owninguser = "Example User";
+                newState.loaded = true;
+                this.setState(newState);
+            }.bind(this));
+    }
 }
 
 export default CustomerDetailsView;
