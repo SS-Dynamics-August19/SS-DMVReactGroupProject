@@ -65,6 +65,7 @@ export default class ActivitiesHome extends React.Component {
         //console.log(stores.userHome.data);
 
         let actRecords = stores.activityHome.data.records;
+        console.log(actRecords);
         let appRecords = stores.applicationHome.data.records;
         let cusRecords = stores.customerHome.data.records;
         let vehRecords = stores.vehicleHome.data.records;
@@ -110,7 +111,13 @@ export default class ActivitiesHome extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{value.subject}</h5>
                                         <p className="card-text">{value.description}</p>
-                                        <a href="#" className="btn btn-primary">Regarding Record</a>
+                                        <button
+                                            className="btn btn-sm btn-primary"
+                                            //onClick={() => this.handleView(record)}
+                                            onClick={() => this.handleView(value._regardingobjectid_value, value.category)}
+                                        >
+                                            Detail Info
+                                        </button>
                                     </div>
                                 </div>
                             )
@@ -154,6 +161,12 @@ export default class ActivitiesHome extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    handleView(id, category){
+        //console.log(id);
+        var res = category.substring(9);
+        window.location.href = "/#/" + res + "Details/"+id;
     }
 
     appTypeCounter(appRecords) {
