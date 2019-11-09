@@ -3,6 +3,7 @@ import DataLoader from "../../actions/DataLoader.js";
 import PropTypes from "prop-types";
 import axios from "axios";
 import VehicleActions from "../../actions/VehicleActions.js";
+import { adalApiFetch } from '../../adalConfig.js';
 
 class VehicleDetailsView extends React.Component {
     constructor(props) {
@@ -150,8 +151,15 @@ class VehicleDetailsView extends React.Component {
         let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "vehicle",  "madmv_bodytypemodel",
         "madmv_fueltype", "madmv_lengthtrailer", "madmv_licenseplate", "madmv_ma_vehicleid", "madmv_modelorseries", "madmv_typeofvehicle","madmv_vehicleidnumber","madmv_vehiclemake","madmv_yearmodel");
            
+        let config = {
+            'method': 'get',
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        };
 
-        axios.get(cosQuery)
+        adalApiFetch(axios, cosQuery, config)
             .then(function (response) {
                 console.log(response);
                 

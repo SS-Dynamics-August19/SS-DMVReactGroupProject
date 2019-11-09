@@ -69,8 +69,11 @@ export default class ActivitiesHome extends React.Component {
         let appRecords = stores.applicationHome.data.records;
         let cusRecords = stores.customerHome.data.records;
         let vehRecords = stores.vehicleHome.data.records;
-        let appValidDates = [], cusValidDates = [], vehValidDates = [];
+        let appValidDates = [], cusValidDates = [], vehValidDates = [], actValidCategory = [];
 
+        actRecords.forEach(actRecord => {
+            this.checkActCategory(actRecord, actValidCategory);
+        });
         appRecords.forEach(appRecord => {
             this.checkDate(appRecord, appValidDates);
         });
@@ -80,6 +83,7 @@ export default class ActivitiesHome extends React.Component {
         vehRecords.forEach(vehRecord => {
             this.checkDate(vehRecord, vehValidDates);
         });
+        
 
         let pieData = {
                   labels: ["Vehicle Registration", "Address Change"],
@@ -102,7 +106,7 @@ export default class ActivitiesHome extends React.Component {
         return (
             <div className="row">
                 <div className="cardActContainer col-4">
-                   {actRecords.map((value, index) => {
+                   {actValidCategory.map((value, index) => {
                        let cdate = (new Date(value.createdon)).toLocaleDateString('en-US', DATE_OPTIONS);
                        
                             return (
@@ -121,7 +125,7 @@ export default class ActivitiesHome extends React.Component {
                                     </div>
                                 </div>
                             )
-                            })}
+                        })}
                 </div>
                 <div className="cardCounterContainer col-8">
                 <div className="row">
@@ -203,7 +207,13 @@ export default class ActivitiesHome extends React.Component {
             validDates.push(recordDate)
         }
         return validDates;
+    }
 
+    checkActCategory(actRecord, actValidCategory) {
+        if (actRecord.category != null && actRecord.category != "") {
+            actValidCategory.push(actRecord)
+        }
+        return actValidCategory;
     }
 
     componentDidMount(){

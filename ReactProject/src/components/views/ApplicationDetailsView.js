@@ -5,6 +5,7 @@ import axios from "axios";
 import { adalApiFetch } from '../../adalConfig.js';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 
+
 class ApplicationDetailsView extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +36,14 @@ class ApplicationDetailsView extends React.Component {
         this.setState({
             
           madmv_applicationsubject: this.state.olddata.madmv_applicationsubject,
+          madmv_applicationtype:   this.state.olddata.madmv_applicationtype,
+          madmv_describeother:   this.state.olddata.madmv_describeother,
+          madmv_insurancecompany:   this.state.olddata.madmv_insurancecompany,
+          madmv_newcity:   this.state.olddata.madmv_newcity,
+          madmv_newcountry:   this.state.olddata.madmv_newcountry,
+          madmv_newstate:   this.state.olddata.madmv_newstate,
+          madmv_newstreet1:   this.state.olddata.madmv_newstreet1,
+          madmv_newstreet2:   this.state.olddata.madmv_newstreet2,
           /*
           madmv_birthdate: this.state.olddata.madmv_birthdate,
           madmv_city: this.state.olddata.madmv_city,
@@ -101,8 +110,24 @@ class ApplicationDetailsView extends React.Component {
                                 <th className="thDetailedView">
 
                                     <div className="form-group fieldDetailed form-inline">
-                                        <label>First Name:</label>
+                                        <label>Application Subject:</label>
                                         <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_applicationsubject} />
+                                    </div>
+                                    <div className="form-group fieldDetailed form-inline">
+                                        <label>First Name:</label>
+                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_applicationtype} />
+                                    </div>
+                                    <div className="form-group fieldDetailed form-inline">
+                                        <label>First Name:</label>
+                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_insurancecompany} />
+                                    </div>
+                                    <div className="form-group fieldDetailed form-inline">
+                                        <label>First Name:</label>
+                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_fee} />
+                                    </div>
+                                    <div className="form-group fieldDetailed form-inline">
+                                        <label>First Name:</label>
+                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcity} />
                                     </div>
                                 </th>
                             </tr>
@@ -120,9 +145,9 @@ class ApplicationDetailsView extends React.Component {
     }
 
     fetchFromCRM() {
-        let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "application", "madmv_firstname", "madmv_lastname", "madmv_cssn",
-            "madmv_birthdate", "madmv_age", "madmv_phonenumber", "madmv_email", "madmv_street1", "madmv_street2", "madmv_city",
-            "madmv_stateprovince", "madmv_zippostalcode", "madmv_country");
+        let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "application", "madmv_applicationsubject"
+        , "madmv_applicationtype", "madmv_describeother", "madmv_fee", "madmv_insurancecompany"
+        , "madmv_newcity", "madmv_newcountry", "madmv_newstate", "madmv_newstreet1");
 
         //console.log(cosQuery);
         let config = {
@@ -141,6 +166,14 @@ class ApplicationDetailsView extends React.Component {
                     
                     olddata:                    response.data,
                     madmv_applicationsubject:   response.data.madmv_applicationsubject,
+                    madmv_applicationtype:   response.data.madmv_applicationtype,
+                    madmv_describeother:   response.data.madmv_describeother,
+                    madmv_insurancecompany:   response.data.madmv_insurancecompany,
+                    madmv_newcity:   response.data.madmv_newcity,
+                    madmv_newcountry:   response.data.madmv_newcountry,
+                    madmv_newstate:   response.data.madmv_newstate,
+                    madmv_newstreet1:   response.data.madmv_newstreet1,
+                    madmv_newstreet2:   response.data.madmv_newstreet2,
                     /*
                     madmv_birthdate:     response.data.madmv_birthdate,
                     madmv_city:          response.data.madmv_city,
