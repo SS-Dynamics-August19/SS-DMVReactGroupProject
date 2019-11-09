@@ -42,26 +42,6 @@ export default class ActivityActions extends DataLoader {
         new ActivityActions(query, dataType).load();
     }
 
-    static generateDynamicsQuery(tableDataType, ...columns) {
-        let query = ''
-        if (tableDataType == "task")
-        {
-            return ExternalURL.DYNAMICS_OOB_PREFIX + tableDataType + ExternalURL.DYNAMICS_PLURAL_S;
-        } else 
-        {
-            query = ExternalURL.DYNAMICS_PREFIX + tableDataType + ExternalURL.DYNAMICS_PLURAL_S + ExternalURL.DYNAMICS_SELECT_SUFFIX;
-        }
-
-        let isSecondOrLaterColumnSoUseComma = false;
-        for(let column of columns) {
-            if (isSecondOrLaterColumnSoUseComma) query += ",";
-            isSecondOrLaterColumnSoUseComma = true;
-            query += column;
-        }
-
-        return query;
-    }
-
     static generateDynamicsTaskQuery(tableDataType, userGuid) {
         return ExternalURL.DYNAMICS_OOB_PREFIX + tableDataType + ExternalURL.DYNAMICS_PLURAL_S +  
             ExternalURL.DYNAMICS_FILTER_SUFFIX + "_createdby_value%20eq%20" + userGuid;
