@@ -7,7 +7,11 @@ import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
-//import CustomerDetailsView from "./CustomerDetailsView.js";
+import CustomerDetailsView from "./CustomerDetailsView.js";
+import {Modal} from './Modal'
+
+import { Link } from "react-router-dom";
+
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -34,26 +38,18 @@ export default class CRMView extends React.Component {
         
         let state = stores[this.props.dataType].data.readState;
         switch (state) {
-            case State.DEFAULT:
-                return this.getDefaultContent();
-            case State.STARTED:
-                return this.getStartedContent();
-            case State.FAILURE:
-                return this.getFailureContent();
-            case State.SUCCESS:
-                return this.getSuccessContent();
+          case State.DEFAULT:
+            return this.getDefaultContent();
+          case State.STARTED:
+            return this.getStartedContent();
+          case State.SUCCESS:
+            return this.getSuccessContent();
+          case State.FAILURE:
+            return this.getFailureContent();
         }
         return this.getStartedContent();
-    }
-
-    getDefaultContent() {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Loading did not start.
-            </div>
-        );
-    }
-
+        }
+    
     getStartedContent() {
         return (
             <div className="d-flex justify-content-center">
@@ -92,6 +88,7 @@ export default class CRMView extends React.Component {
         }
 
         return (
+            <div>
             <Row className="mb-4">
                 <Col md="12">
                     <Card>
@@ -106,6 +103,10 @@ export default class CRMView extends React.Component {
                     </Card>
                 </Col>
             </Row>
+            <div className="pb-4">
+            <Modal comp= {this.props.dataType} text="Create New"/>
+          </div>
+        </div>
         );
     }
 
@@ -143,52 +144,31 @@ export default class CRMView extends React.Component {
 
     handleView(id){
         //console.log(id);
-        window.location.href = "/#/CustomerDetails/"+id;
+        window.location.href = "/#/" + this.props.dataType + "Details/"+id;
     }
 
     
     addInputs(record) {
-       
+        //console.log(record);
         record.click =(
             <button
                 className="btn btn-sm btn-primary"
                 //onClick={() => this.handleView(record)}
-                onClick={() => this.handleView(record.madmv_ma_customerid)}
+                onClick={() => this.handleView(record["madmv_ma_" + this.props.dataType + "id"])}
             >
             Detail Info
             </button>
-            );
-
-
-
-//base on table type, pass the right id into delete function, also in the delete function, we
-//have to check the type to make sure run the right delete action.
-        if(this.props.dataType == 'application')
+        );
+ //base on table type, pass the right id into delete function, also in the delete function, we
+ //have to check the type to make sure run the right delete action.
         record.checkbox =(<button
             className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_applicationid)}}
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record["madmv_ma_" + this.props.dataType + "id"])}}
             >
             Delete
         </button>
         );
-        else if(this.props.dataType == 'customer')
-        record.checkbox = (<button
-            className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_customerid)}}
-            >
-            Delete
-        </button>
-        );
-        else if(this.props.dataType == 'vehicle')
-        record.checkbox = (<button
-            className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_vehicleid)}}
-            >
-            Delete
-        </button>
-        );    
     }
-
 
 
     componentDidMount() {
