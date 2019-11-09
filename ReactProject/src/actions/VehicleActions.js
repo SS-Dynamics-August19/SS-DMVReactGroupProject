@@ -45,11 +45,26 @@ const VehicleActions = {
      * Output: action sent to dispatcher
      * Return: none
      **********************************************/
-    updateVehicle: (id, vehicle) => {
+    updateVehicle: (id, updateObj) => {
+        console.log(id, updateObj);
         // notify store that update has started
         Dispatcher.dispatch({
             actionType: 'update_vehicle_started'
         });
+
+       let vehicle = {
+            madmv_bodytypemodel: updateObj.madmv_bodytypemodel,
+            madmv_fueltype: updateObj.madmv_fueltype,
+            madmv_lengthtrailer: updateObj.madmv_lengthtrailer,
+            madmv_licenseplate: updateObj.madmv_licenseplate,
+            madmv_ma_vehicleid: updateObj.madmv_ma_vehicleid,
+            madmv_modelorseries: updateObj.madmv_modelorseries,
+            madmv_typeofvehicle: updateObj.madmv_typeofvehicle,
+            madmv_vehicleidnumber: updateObj.madmv_vehicleidnumber,
+            madmv_vehiclemake: updateObj.madmv_vehiclemake,
+            madmv_yearmodel: updateObj.madmv_yearmodel
+        }
+        console.log(vehicle);
         // build uri and headers
         let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles(" + id + ")";
         let config = {
