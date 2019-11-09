@@ -2,6 +2,7 @@ import React from "react";
 import DataLoader from "../../actions/DataLoader.js";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { adalApiFetch } from '../../adalConfig.js';
 
 class CustomerDetailsView extends React.Component {
     constructor(props) {
@@ -30,16 +31,16 @@ class CustomerDetailsView extends React.Component {
         let customer = this.state.data;
         
 
-        console.log(customer.madmv_lastname);
+        //console.log(customer.madmv_lastname);
         
-        console.log(customer);
+        //console.log(customer);
  
 
         return <div className="detailedDiv">
 
             <div className="detailedHeader">
                 <h1>Customer</h1>
-                <button className="btn btn-primary" onClick={() => console.log(customer.madmv_ma_customerid)} type="button">Update Record</button>
+                <button className="btn btn-primary" onClick={() => console.log("ignore this"/*customer.madmv_ma_customerid*/)} type="button">Update Record</button>
             </div>
             <div className="h2Th">
                 <h2>General Information</h2>
@@ -141,9 +142,18 @@ class CustomerDetailsView extends React.Component {
             "madmv_birthdate", "madmv_age", "madmv_phonenumber", "madmv_email", "madmv_street1", "madmv_street2", "madmv_city",
             "madmv_stateprovince", "madmv_zippostalcode", "madmv_country");
 
-        axios.get(cosQuery)
+        //console.log(cosQuery);
+        let config = {
+            'method': 'get',
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        };
+
+        adalApiFetch(axios, cosQuery, config)
             .then(function (response) {
-                console.log(response);
+                //console.log(response);
                 let newState = {};
                 newState.data = response.data;
                 newState.owninguser = "Example User";

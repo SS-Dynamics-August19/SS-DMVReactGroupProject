@@ -143,50 +143,32 @@ export default class CRMView extends React.Component {
 
     handleView(id){
         //console.log(id);
-        window.location.href = "/#/CustomerDetails/"+id;
+        window.location.href = "/#/" + this.props.dataType + "Details/"+id;
     }
 
     
     addInputs(record) {
+        console.log(record);
        
         record.click =(
             <button
                 className="btn btn-sm btn-primary"
                 //onClick={() => this.handleView(record)}
-                onClick={() => this.handleView(record.madmv_ma_customerid)}
+                onClick={() => this.handleView(record["madmv_ma_" + this.props.dataType + "id"])}
             >
             Detail Info
             </button>
-            );
-
-
-
+        );
 //base on table type, pass the right id into delete function, also in the delete function, we
 //have to check the type to make sure run the right delete action.
-        if(this.props.dataType == 'application')
+
         record.checkbox =(<button
             className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_applicationid)}}
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record["madmv_ma_" + this.props.dataType + "id"])}}
             >
             Delete
         </button>
         );
-        else if(this.props.dataType == 'customer')
-        record.checkbox = (<button
-            className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_customerid)}}
-            >
-            Delete
-        </button>
-        );
-        else if(this.props.dataType == 'vehicle')
-        record.checkbox = (<button
-            className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_vehicleid)}}
-            >
-            Delete
-        </button>
-        );    
     }
 
 
