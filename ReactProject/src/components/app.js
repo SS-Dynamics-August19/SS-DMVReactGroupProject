@@ -6,7 +6,7 @@ import Header from "./header.js";
 import Content from "./content.js";
 import Footer from "./footer.js";
 import {ForCreator} from '../stores/StoreForCreators'
-import stores from "../stores/DataStores.js";
+import stores from "../stores/stores.js";
 
 export default class App extends React.Component {
     render() {
@@ -26,7 +26,7 @@ export default class App extends React.Component {
     componentDidMount() {
         for (let type in stores) {
             let store = stores[type];
-            store.addChangeListener(this._onStoreChange.bind(this, store.type));
+            store.setOnChanged(this._onStoreChange.bind(this));
         }
         ForCreator.addChangeListener(this._createRecord.bind(this));
     }
@@ -34,9 +34,9 @@ export default class App extends React.Component {
     componentWillUnmount() {
         for (let type in stores) {
             let store = stores[type];
-            store.removeChangeListener(this._onStoreChange.bind(this, store.type));
-            ForCreator.removeChangeListener(this._createRecord.bind(this));
+            store.removeOnChanged();
         }
+        ForCreator.removeChangeListener(this._createRecord.bind(this));
     }
 
     _createRecord(){

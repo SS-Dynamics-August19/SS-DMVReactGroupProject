@@ -1,7 +1,7 @@
 import React from "react";
 import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
-import stores from "../../stores/dataStores.js";
+import stores from "../../stores/stores.js";
 //import ApplicationActions from "../../actions/ApplicationActions.js";
 
 
@@ -24,7 +24,8 @@ import stores from "../../stores/dataStores.js";
  * Todo: talk with team about state of the component
  */
 
-const DATA_STORE = "user";
+const CRM_DATA_TYPE = "user";
+const QUERY_COLUMNS = [ "madmv_name", "madmv_password", "madmv_securityroles" ];
 export default class Login extends React.Component {
     render() {
         return <div>{this.getContent()}</div>;
@@ -34,15 +35,15 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             information: {
-                //should change on field change to match user input
                 username: "",
                 password: ""
             }
         };
         
-        let query = this.generateQuery();
-        this.mydataloader = new DataLoader(query, this.state.dataType);
-        if(this.needsToLoad()) this.loadFromCRM();
+        let query = DataLoader.generateDynamicsQuery(CRM_DATA_TYPE, ...QUERY_COLUMNS);
+        this.myDataLoader = new DataLoader(query, CRM_DATA_TYPE);
+        if(this.needsToLoad()) 
+            this.myDataLoader.load();
 
         this.usernameFieldChange = this.usernameFieldChange.bind(this);
         this.passwordFieldChange = this.passwordFieldChange.bind(this);
@@ -92,7 +93,7 @@ export default class Login extends React.Component {
     }
 
     getSuccessContent() {
-        if (stores.user.data.loggedIn == false) {
+        if (stores.login.data.loggedIn == false) {
             return (
                 <div>
                     {this.getErrorMessage()}
@@ -119,40 +120,38 @@ export default class Login extends React.Component {
         event.preventDefault();
         let tableData = stores.user.data.records;
 
-        tableData.forEach(record => {
-            if (this.state.information.username == record.madmv_name) {
-                if (this.state.information.password == record.madmv_password) {
-                    new DataLoader().signalLogIn(record.madmv_securityroles, record.madmv_name); // log in if user and pass are correct and match
-                }
+        for(let record of tableData) {
+            if(this.credentialsMatch(record)) {
+                this.signalLogin(record);
+                return;
             }
-        });
+        }
     }
 
-    // log out resets authorization string to "user" because that is required to log in and sets loggedin boolen to false
-    logOut() {
-        let loggedOutSignal = {
-            actionType: 'user_Logged_out'
+    credentialsMatch(record) {
+        let attempt = this.state.information;
+        return (
+            attempt.username == record.madmv_name &&
+            attempt.password == record.madmv_password
+        );
+    }
+
+    signalLogin(record) {
+        let loggedInSignal = {
+            actionType: 'user_logged_in',
+            data: { authorization: record.madmv_securityroles, user: record.madmv_name }
         };
+        DataLoader.signal(loggedInSignal);
+    }
+
+    // log out resets authorization string to "" and sets loggedin boolen to false
+    logOut() {
+        let loggedOutSignal = { actionType: 'user_logged_out' };
         DataLoader.signal(loggedOutSignal);
     }
-
-    loadFromCRM() {
-        let query = this.generateQuery();
-        new DataLoader(query, DATA_STORE).load();
-    }
-
+    
     generateQuery() {
-        let rowKey = "madmv_name";
-        let columns = [
-            { header: "Password", key: "madmv_password" },
-            { header: "Security", key: "madmv_securityroles" }];
-
-        let query = ExternalURL.DYNAMICS_PREFIX + DATA_STORE + ExternalURL.DYNAMICS_SUFFIX + rowKey;
-        for (let i = 0; i < columns.length; i++) {
-            let key = columns[i].key;
-            query += "," + key;
-        }
-        return query;
+        return ExternalURL.generateDynamicsQuery(CRM_DATA_TYPE, ...QUERY_COLUMNS);
     }
 
     /**

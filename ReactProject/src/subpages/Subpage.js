@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Link } from "react-router-dom";
-import stores from "../stores/dataStores.js";
+import stores from "../stores/stores.js";
 import Constants from "../constants/SubpageConstants.js";
 
 /**Usage:
@@ -51,7 +51,7 @@ export default class Subpage {
 
     isAuthorized() {
         if(this.requiredPermission === undefined) return true;
-        return (stores.user.data.authorization.includes(this.requiredPermission));
+        return (stores.login.data.authorization.includes(this.requiredPermission));
     }
 
     authorizedJSX(props) {

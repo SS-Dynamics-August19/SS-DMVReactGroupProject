@@ -151,13 +151,13 @@ input {
   -webkit-overflow-scrolling: touch;
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 1200px) {
   .c-modal {
     left: 50%;
     top: 50%;
     height: auto;
     transform: translate(-50%, -50%);
-    max-width: 30em;
+    max-width: 80em;
     max-height: calc(100% - 1em);
   }
 }
@@ -206,4 +206,30 @@ input {
 pre {
     border: 0;
     background-color: inherit;
+}
+
+.card {
+  width: 100%;
+  margin: 15px;
+}
+
+.cardContainer {
+  float: left;
+}
+
+.cardCounter {
+  width: 30%;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  margin-left:8px;
+  margin-right:8px;
+  float:left;
+}
+
+.cardCounterContainer {
+  width: 100%;
+  height: 350px;
+  margin-top: 15px;
+  margin-right: 0px;
+  margin-left: 0px;
 }

@@ -1,12 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { State, ExternalURL } from "../../constants/DataLoaderConstants.js";
+import { State } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
-import stores from "../../stores/dataStores.js";
+import stores from "../../stores/stores.js";
 import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
+import CustomerDetailsView from "./CustomerDetailsView.js";
+import {Modal} from './Modal'
+
+import { Link } from "react-router-dom";
+
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
  * in their own class, or a child class extending CRMView or something.
@@ -14,8 +19,8 @@ import VehicleActions from "../../actions/VehicleActions.js";
  * Input, props containing:
  *  dataType: string, the table name on the CRM, without the "madmv_" prefix. For example, "users" for table madmv_users.
  *  columnSet: array of objects, each containing:
- *      header: string, the text to display in the column header of the displayed table.
- *      key: string, the field name in the CRM. For example: "madmv_applicationtype" or "createdon".
+ *      label: string, the text to display in the column header of the displayed table.
+ *      field: string, the field name in the CRM. For example: "madmv_applicationtype" or "createdon".
  *  optionSetMappings: array of OptionSetMappings objects. See src/components/views/OptionSetMappings.js for details.
  * 
  * Renders:
@@ -33,26 +38,18 @@ export default class CRMView extends React.Component {
         
         let state = stores[this.props.dataType].data.readState;
         switch (state) {
-            case State.DEFAULT:
-                return this.getDefaultContent();
-            case State.STARTED:
-                return this.getStartedContent();
-            case State.FAILURE:
-                return this.getFailureContent();
-            case State.SUCCESS:
-                return this.getSuccessContent();
+          case State.DEFAULT:
+            return this.getDefaultContent();
+          case State.STARTED:
+            return this.getStartedContent();
+          case State.SUCCESS:
+            return this.getSuccessContent();
+          case State.FAILURE:
+            return this.getFailureContent();
         }
         return this.getStartedContent();
-    }
-
-    getDefaultContent() {
-        return (
-            <div className="alert alert-danger" role="alert">
-                Loading did not start.
-            </div>
-        );
-    }
-
+        }
+    
     getStartedContent() {
         return (
             <div className="d-flex justify-content-center">
@@ -72,7 +69,6 @@ export default class CRMView extends React.Component {
     }
 
     handleDelete(id){
-        console.log(id)
         let deletetype=this.props.dataType
         if(deletetype == 'application')
             ApplicationActions.deleteApplication(id)
@@ -82,34 +78,12 @@ export default class CRMView extends React.Component {
             VehicleActions.deleteVehicle(id)
     }
 
-    handleView(obj){
-        console.log(obj)
-    }
-
-/*    handleClick(event) {
-        // Placeholder, intended to update in some way so as to call a different click event depending on which record is clicked.
-        console.log("Placeholder CRMView record clicked event.")
-        event.preventDefault();
-    }
-*/
     getSuccessContent() {
-     
-        console.log(this.props.headcolumn)
         let content = {
-            columns:this.props.headcolumn,  
-            /*[
-                { label: 'ID',            field: 'madmv_appid' },
-                { label: 'Type',          field: 'madmv_applicationtype' },
-                { label: 'Subject',       field: 'madmv_applicationsubject' },
-                { label: 'Creation Time', field: 'createdon' },
-                { label:' ',              field: 'click' },
-                { label:' ',              field: 'checkbox' }
-            ],*/
+            columns:this.props.headcolumn,
             rows: this.getTableBodyContent()
         }
-  
-       
-        
+
         return (
             <div>
             <Row className="mb-4">
@@ -127,7 +101,7 @@ export default class CRMView extends React.Component {
                 </Col>
             </Row>
             <div className="pb-4">
-            <Modal comp= {this.props.dataType} />
+            <Modal comp= {this.props.dataType} text="Create New"/>
           </div>
         </div>
         );
@@ -138,8 +112,6 @@ export default class CRMView extends React.Component {
 
         records.forEach(record => {
             this.cleanup(record);
-            
-            //this.addClickEvent(record);
         });
         return records;
     }
@@ -162,16 +134,14 @@ export default class CRMView extends React.Component {
             if(record[field] === null) record[field] = " ";
         }
     }
+
+   
+
     
     addInputs(record) {
        
         record.click =(
-            <button
-                className="btn btn-sm btn-primary"
-                onClick={() => this.handleView(record)}
-            >
-            Detail Info
-            </button>
+            <Modal comp="customerdetail" rec={record} text="Detail Info"/>    
             );
 
 
@@ -201,14 +171,9 @@ export default class CRMView extends React.Component {
             >
             Delete
         </button>
-        );
-        
+        );    
     }
 
-/*  addClickEvent(record) {
-        record.clickEvent =  ()=> this.handleClick ;
-    }
-*/
     componentDidMount() {
         if (this.needsToLoad()) this.loadFromCRM();
     }
@@ -224,15 +189,21 @@ export default class CRMView extends React.Component {
     }
 
     generateQuery() {
-        let columns = this.props.columns;
-        let rowKey = "madmv_ma_" + this.props.dataType + "id";
+        let table = this.props.dataType;
+        let fields = this.getFieldList();
 
-        let query = ExternalURL.DYNAMICS_PREFIX + this.props.dataType + ExternalURL.DYNAMICS_SUFFIX + rowKey;
-        for (let i = 0; i < columns.length; i++) {
-            let key = columns[i].field;
-            query += "," + key;
+        return DataLoader.generateDynamicsQuery(table, ...fields);
+    }
+
+    getFieldList() {
+        let keyField = "madmv_ma_" + this.props.dataType + "id";
+        let ret = [keyField];
+
+        for (let column of this.props.columns) {
+            ret.push(column.field);
         }
-        return query;
+
+        return ret;
     }
 }
 

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { CustomerCreator } from "../Creators/CustomerCreator";
 import { VehicleCreator } from "../Creators/VehicleCreator";
+import CustomerDetailsView from "./CustomerDetailsView.js";
 
 export class Modal extends Component {
   constructor(props) {
@@ -25,9 +26,9 @@ export class Modal extends Component {
     const { isOpen } = this.state;
     return (
       <Fragment>
-        <ModalTrigger onOpen={this.onOpen} text="Create New" />
+        <ModalTrigger onOpen={this.onOpen} text={this.props.text} />
         {isOpen && (
-          <ModalContent onClose={this.onClose} comp={this.props.comp} />
+          <ModalContent onClose={this.onClose} comp={this.props.comp} record={this.props.rec}/>
         )}
       </Fragment>
     );
@@ -39,7 +40,7 @@ const ModalTrigger = ({ onOpen, text }) => (
     {text}
   </button>
 );
-const ModalContent = ({ onClose, comp }) => {
+const ModalContent = ({ onClose, comp, record }) => {
   //Display data
   let componentType = "";
   switch (comp) {
@@ -48,6 +49,9 @@ const ModalContent = ({ onClose, comp }) => {
       break;
     case "vehicle":
       componentType = <VehicleCreator modal={true} />;
+      break;
+    case "customerdetail":
+      componentType = <CustomerDetailsView customer={record} />;
       break;
   }
 
