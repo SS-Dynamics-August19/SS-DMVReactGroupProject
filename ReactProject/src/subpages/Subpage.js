@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Link } from "react-router-dom";
-import stores from "../stores/dataStores.js";
+//import stores from "../stores/stores.js";
 import Constants from "../constants/SubpageConstants.js";
 
 /**Usage:
@@ -50,32 +50,31 @@ export default class Subpage {
     }
 
     isAuthorized() {
-        return (stores.user.data.authorization.includes(this.requiredPermission));
+        //if(this.requiredPermission === undefined) return true;
+        //return (stores.login.data.authorization.includes(this.requiredPermission));
+        return true;
     }
 
     authorizedJSX(props) {
         return (
             <Route
-                key={this.label}
+                key={this.path}
                 exact
                 path={this.path}
                 {...this.getRenderObject(props)}
+                {...props}
             />
         );
     }
 
     getRenderObject(props) {
+        let Component = this.component;
         switch (this.type) {
             case Constants.FUNCTIONAL:
                 return { render: this.component.bind(this.component, props) };
             case Constants.REACT_COMPONENT:
-                return { render: this.toReactComponent.bind(this, props) };
+                return { component: Component };
         }
-    }
-
-    toReactComponent(props) {
-        let Component = this.component;
-        return (<Component {...props} />);
     }
 
     toForbiddenJSX() {

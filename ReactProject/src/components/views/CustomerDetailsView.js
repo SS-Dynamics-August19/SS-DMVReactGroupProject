@@ -1,58 +1,39 @@
-//import React from 'react'
 import React from "react";
-//import ReactDOM from "react-dom";
+import DataLoader from "../../actions/DataLoader.js";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 class CustomerDetailsView extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loaded: false,
+            data: undefined
+        };
+    }
 
-    /*
-    state = {
-        madmv_age: '',
-        madmv_birthdate: '',
-        madmv_city: '',
-        madmv_country: '',
-        madmv_cssn: '',
-        madmv_email: '',
-        madmv_firstname: '',
-        madmv_fullname: '',
-        madmv_hiddendifday: '',
-        madmv_lastname: '',
-        madmv_ma_customerid: '',
-        madmv_phonenumber: '',
-        madmv_stateprovince: '',
-        madmv_street1: '',
-        madmv_street2: '',
-        madmv_zippostalcode: '',
-        owninguser: ''
-    }   
-
-    */
-
-    /*
-    <div className="detailedHeader">
-                <h1>Customer</h1>
-                <button className="btn btn-primary" onClick={() => console.log(customer.madmv_ma_customerid)} type="button">Update Record</button>
-            </div>
-            <div className="h2Th">
-                <h2>General Information</h2>
-                <h2>Detailed Information</h2>
-            </div>
-            <form className="detailedForm">
-                <table>
-                    <tbody>owninguser
-
-            </tbody>
-                </table>
-            </form>
-
-        
-
-    */
-
+    componentDidMount() {
+        this.fetchFromCRM();
+    }
 
     render() {
-        let customer = this.fetchFromCRM();
+        if (!this.state.loaded) {
+            return (
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            );
+        }
 
+        let customer = this.state.data;
+        
+
+        console.log(customer.madmv_lastname);
+        
+        console.log(customer);
+ 
 
         return <div className="detailedDiv">
 
@@ -61,7 +42,6 @@ class CustomerDetailsView extends React.Component {
                 <button className="btn btn-primary" onClick={() => console.log(customer.madmv_ma_customerid)} type="button">Update Record</button>
             </div>
             <div className="h2Th">
-                <h2>General Information</h2>
                 <h2>Detailed Information</h2>
             </div>
             <form className="detailedForm">
@@ -78,21 +58,8 @@ class CustomerDetailsView extends React.Component {
                                         <option>{customer.owninguser}</option>
                                     </select>
                                 </div>
-                                <div className="form-group fieldDetailed form-inline">
-                                    <label>Vehicle 1:</label>
-                                    <select disabled className="form-control">
-                                        <option>BMW 3 Series</option>
-                                    </select>
-                                </div>
-                                <div className="form-group fieldDetailed form-inline">
-                                    <label>Vehicle 2:</label>
-                                    <select disabled className="form-control">
-                                        <option>Lexus</option>
-                                    </select>
-                                </div>
+                              
                             </th>
-
-                            <pre>                                       </pre>
 
                             <th className="thDetailedView">
 
@@ -158,25 +125,23 @@ class CustomerDetailsView extends React.Component {
     }
 
     fetchFromCRM() {
-        let customer = {
-            madmv_firstname:    "John",
-            madmv_lastname:     "Doe",
-            madmv_cssn:         "111111111",
-            madmv_birthdate:    "July 4",
-            madmv_age:          "34",
-            madmv_phonenumber:  "1234567890",
-            madmv_email:        "a@a.a",
-            madmv_street1:      "sit street",
-            madmv_street2:      "",
-            madmv_city:         "townsville",
-            madmv_stateprovince:"West Virginia",
-            madmv_zippostalcode:"000000",
-            madmv_country:      "US",
-            owninguser:         "jack smith"
-        };
-        return customer;
-    }
+        let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "customer", "madmv_firstname", "madmv_lastname", "madmv_cssn",
+            "madmv_birthdate", "madmv_age", "madmv_phonenumber", "madmv_email", "madmv_street1", "madmv_street2", "madmv_city",
+            "madmv_stateprovince", "madmv_zippostalcode", "madmv_country");
 
+        axios.get(cosQuery)
+            .then(function (response) {
+                console.log(response);
+                let newState = {};
+                newState.data = response.data;
+                newState.owninguser = "Example User";
+                newState.loaded = true;
+                this.setState(newState);
+            }.bind(this));
+    }
 }
+CustomerDetailsView.propTypes = {
+    match: PropTypes.object.isRequired
+};
 
 export default CustomerDetailsView;

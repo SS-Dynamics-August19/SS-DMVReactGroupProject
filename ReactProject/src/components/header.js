@@ -1,16 +1,17 @@
 import React from "react";
 import subpages from "../subpages/subpages.js";
-import stores from "../stores/DataStores.js";
+import stores from "../stores/stores.js";
+import { authContext } from '../adalConfig.js';
 
 let header = function() {
     let logoutButton = "";
-    if (stores.user.data.loggedIn === true) {
+    //if (stores.user.data.loggedIn === true) {
         logoutButton = (
-            <button type="button" className="button">
+            <button type="button" className="button" onClick={() => authContext.logOut()}>
                 Logout
             </button>
         );
-    }
+    //}
 
     return (
         <div>
