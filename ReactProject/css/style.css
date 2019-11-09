@@ -214,7 +214,13 @@ pre {
 }
 
 .cardContainer {
+  float: left;   
+}
+
+.cardActContainer {
   float: left;
+  height: 600px;       /* Just for the demo          */
+  overflow-y: auto;   
 }
 
 .cardCounter {
@@ -232,4 +238,17 @@ pre {
   margin-top: 15px;
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.pieContainer {
+  width: 100%;
+  height: 350px;
+  margin-top: 15px;
+  margin-right: 0px;
+  margin-left: 0px;
+  float:right;
+}
+
+.cardSpacer {
+  height:50px;
 }
