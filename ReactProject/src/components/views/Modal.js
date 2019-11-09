@@ -95,5 +95,7 @@ ModalTrigger.propTypes = {
 
 
 Modal.propTypes = {
-  comp:PropTypes.string.isRequired
+  comp:PropTypes.string.isRequired,
+  text:PropTypes.string.isRequired,
+  rec:PropTypes.string.isRequired
 };
