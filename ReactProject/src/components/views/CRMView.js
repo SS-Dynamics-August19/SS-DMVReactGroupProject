@@ -142,7 +142,7 @@ export default class CRMView extends React.Component {
     }*/
 
     handleView(id){
-        console.log(id);
+        //console.log(id);
         window.location.href = "/#/CustomerDetails/"+id;
     }
 
@@ -189,8 +189,10 @@ export default class CRMView extends React.Component {
         );    
     }
 
+
+
     componentDidMount() {
-        /*if (this.needsToLoad()) */this.loadFromCRM();
+        if (this.needsToLoad()) this.loadFromCRM();
     }
 
     needsToLoad() {
