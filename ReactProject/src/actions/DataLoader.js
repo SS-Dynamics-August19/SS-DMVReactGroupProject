@@ -13,9 +13,6 @@ export default class DataLoader {
     load() {
         /*axios.get('https://localhost:44311/api/DMVOAuth')
             .then(res => {
-                
-
-                console.log(res.data);
                 */
         this.signalLoadStarted();
 

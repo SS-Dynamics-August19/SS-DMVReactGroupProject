@@ -16,6 +16,9 @@ export const State = {
 
 export const ExternalURL = {
     DYNAMICS_PREFIX: "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_",
+    DYNAMICS_OOB_PREFIX: "https://sstack.crm.dynamics.com/api/data/v9.1/",
+    DYNAMICS_USERID_SUFFIX: "WhoAmI",
     DYNAMICS_PLURAL_S: "s",
-    DYNAMICS_SELECT_SUFFIX: "?$select="
+    DYNAMICS_SELECT_SUFFIX: "?$select=",
+    DYNAMICS_FILTER_SUFFIX: "?$filter="
 };

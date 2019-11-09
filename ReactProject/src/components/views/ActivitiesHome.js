@@ -1,8 +1,4 @@
 import React from "react";
-//import PropTypes from "prop-types";
-//import { State, ExternalURL } from "../constants/DataLoaderConstants.js";
-//import DataLoader from "../actions/DataLoader.js";
-//import Activitystore from "../stores/ActivityStore.js";
 import ActivityActions from "../../actions/ActivityActions.js";
 import { Pie } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
@@ -24,7 +20,7 @@ export default class ActivitiesHome extends React.Component {
 
     getContent() {
         
-        let state = stores.activity.data.readState;
+        let state = stores.activityHome.data.readState;
         switch (state) {
             case State.DEFAULT:
                 return this.getDefaultContent();
@@ -65,11 +61,13 @@ export default class ActivitiesHome extends React.Component {
     }
 
     getSuccessContent() {
+        //let userId = stores.userHome.data.records.UserId;
+        //console.log(stores.userHome.data);
 
-        let records = stores.activity.data.records;
-        let appRecords = stores.application.data.records;
-        let cusRecords = stores.customer.data.records;
-        let vehRecords = stores.vehicle.data.records;
+        let actRecords = stores.activityHome.data.records;
+        let appRecords = stores.applicationHome.data.records;
+        let cusRecords = stores.customerHome.data.records;
+        let vehRecords = stores.vehicleHome.data.records;
         let appValidDates = [], cusValidDates = [], vehValidDates = [];
 
         appRecords.forEach(appRecord => {
@@ -102,21 +100,24 @@ export default class ActivitiesHome extends React.Component {
 
         return (
             <div className="row">
-                <div className="cardContainer col-4">
-                   {records.map((value, index) => {
+                <div className="cardActContainer col-4">
+                   {actRecords.map((value, index) => {
                        let cdate = (new Date(value.createdon)).toLocaleDateString('en-US', DATE_OPTIONS);
                        
-                                return (<div key={index} className="card">
-                                <h5 className="card-header">Activity - {cdate}</h5>
-                                <div className="card-body">
-                                    <h5 className="card-title">{value.subject}</h5>
-                                    <p className="card-text">{value.description}</p>
-                                    <a href="#" className="btn btn-primary">Regarding Record</a>
+                            return (
+                                <div key={index} className="card">
+                                    <h5 className="card-header">Activity - {cdate}</h5>
+                                    <div className="card-body">
+                                        <h5 className="card-title">{value.subject}</h5>
+                                        <p className="card-text">{value.description}</p>
+                                        <a href="#" className="btn btn-primary">Regarding Record</a>
+                                    </div>
                                 </div>
-                            </div>)
+                            )
                             })}
                 </div>
                 <div className="cardCounterContainer col-8">
+                <div className="row">
                     <div className="cardCounter">
                         <h5 className="card-header">Applications</h5>
                         <div className="card-body">
@@ -138,11 +139,17 @@ export default class ActivitiesHome extends React.Component {
                             <p className="card-text">Created this week</p>
                         </div>
                     </div>
+                    </div>
+                    <div className="row">
+                    <div className="cardSpacer"><hr /></div>
+                    </div>
+                    <div className="row">
                      <div className="col-12">
                     <MDBContainer>
                         <h3 className="">Application Types</h3>
                         <Pie data={pieData} options={{ responsive: true }} />
                     </MDBContainer>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -187,26 +194,28 @@ export default class ActivitiesHome extends React.Component {
     }
 
     componentDidMount(){
-        this.loadFromCRM();
+        if (this.needsToLoad()) this.loadFromCRM();
     }
 
     needsToLoad() {
-        return (stores.activity.data.readState === State.DEFAULT_STATE);
+        return (stores.activityHome.data.readState === State.DEFAULT_STATE);
     }
 
     loadFromCRM() {
-        let dataType = "activity";
-        let query = ActivityActions.generateDynamicsQuery("task");
-        new ActivityActions(query, dataType).load();
-        
-        dataType = "application";
+
+        //console.log(stores.userHome.data);
+        let query = ActivityActions.generateFindUserQuery();
+        let dataType = "userHome";
+        new ActivityActions(query, dataType).getCurrentUser();
+        dataType = "applicationHome";
         query = ActivityActions.generateDynamicsQuery("application", ["madmv_applicationtype" ,"createdon"]);
         new ActivityActions(query, dataType).load();
-        dataType = "customer";
+        dataType = "customerHome";
         query = ActivityActions.generateDynamicsQuery("customer", ["createdon"]);
         new ActivityActions(query, dataType).load();
-        dataType = "vehicle";
+        dataType = "vehicleHome";
         query = ActivityActions.generateDynamicsQuery("vehicle", ["createdon"]);
         new ActivityActions(query, dataType).load();
+
     }
 }
