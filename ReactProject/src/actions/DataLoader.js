@@ -13,21 +13,20 @@ export default class DataLoader {
     load() {
         /*axios.get('https://localhost:44311/api/DMVOAuth')
             .then(res => {
-                this.signalLoadStarted();
-
-                console.log(res.data);
                 */
-                let config = {
-                    'method': 'get',
-                    'OData-MaxVersion': 4.0,
-                    'OData-Version': 4.0,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json; charset=utf-8'
-                };
+        this.signalLoadStarted();
+
+        let config = {
+            'method': 'get',
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        };
 //*/                 
-                adalApiFetch(axios, this.URL, config)
-                    .then(this.signalLoadSuccess.bind(this))
-                    .catch(this.signalLoadFailure.bind(this));
+        adalApiFetch(axios, this.URL, config)
+            .then(this.signalLoadSuccess.bind(this))
+            .catch(this.signalLoadFailure.bind(this));
                 //axios
                 //    .get(this.URL)
                 //    .then(this.signalLoadSuccess.bind(this))

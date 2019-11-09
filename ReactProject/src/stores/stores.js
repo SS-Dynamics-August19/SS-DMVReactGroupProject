@@ -20,7 +20,11 @@ const loginEventHandlers = {
 };
 
 const stores = {
-    activity:    new CRMQueryListenerDataStore("activity"),
+    activityHome:    new CRMQueryListenerDataStore("activityHome"),
+    userHome:    new CRMQueryListenerDataStore("userHome"),
+    customerHome:    new CRMQueryListenerDataStore("customerHome"),
+    applicationHome: new CRMQueryListenerDataStore("applicationHome"),
+    vehicleHome:     new CRMQueryListenerDataStore("vehicleHome"),
     customer:    new CRMQueryListenerDataStore("customer"),
     application: new CRMQueryListenerDataStore("application"),
     vehicle:     new CRMQueryListenerDataStore("vehicle"),
