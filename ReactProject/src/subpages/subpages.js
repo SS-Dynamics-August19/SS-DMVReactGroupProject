@@ -7,6 +7,7 @@ import customersView     from "../components/views/CustomersView.js";
 import applicationsView  from "../components/views/ApplicationsView.js";
 import vehiclesView      from "../components/views/VehiclesView.js";
 import CustomerDetails   from "../components/views/CustomerDetailsView.js";
+import ApplicationDetails   from "../components/views/ApplicationDetailsView.js";
 import VehicleDetails    from "../components/views/VehicleDetailsView.js";
 import URLParamsEchoDemo from "../components/Test or Demo/URLParamsEchoDemo.js";
 
@@ -28,6 +29,7 @@ const subpages = [
     new Subpage(vehiclesView,        Constants.FUNCTIONAL,      "/Vehicles",        "Vehicles"),
     new Subpage(applicationsView,    Constants.FUNCTIONAL,      "/Applications",    "Applications"),
     new Subpage(CustomerDetails,     Constants.REACT_COMPONENT, "/CustomerDetails/:id").setNoNavigation(),
+    new Subpage(ApplicationDetails,      Constants.REACT_COMPONENT, "/ApplicationDetails/:id").setNoNavigation(),
     new Subpage(VehicleDetails,      Constants.REACT_COMPONENT, "/VehicleDetails/:id").setNoNavigation(),
     new Subpage(URLParamsEchoDemo,   Constants.REACT_COMPONENT, "/Echo/:echoText").setNoNavigation()
 ];

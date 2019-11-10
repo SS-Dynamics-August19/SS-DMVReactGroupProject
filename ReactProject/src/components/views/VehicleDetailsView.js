@@ -3,6 +3,7 @@ import DataLoader from "../../actions/DataLoader.js";
 import PropTypes from "prop-types";
 import axios from "axios";
 import VehicleActions from "../../actions/VehicleActions.js";
+import { adalApiFetch } from '../../adalConfig.js';
 
 class VehicleDetailsView extends React.Component {
     constructor(props) {
@@ -42,7 +43,7 @@ class VehicleDetailsView extends React.Component {
             madmv_vehicleidnumber: this.state.olddata.madmv_vehicleidnumber,
             madmv_vehiclemake: this.state.olddata.madmv_vehiclemake,
             madmv_yearmodel: this.state.olddata.madmv_yearmodel,
-            disabled: true,
+            disabled: !this.state.disabled,
         })
       }
 
@@ -73,7 +74,7 @@ class VehicleDetailsView extends React.Component {
 
             <div className="detailedHeader">
                 <h1>Vehicle</h1>
-                <button className="btn btn-primary" onClick={this.handleClick} type="button">Update Record</button>
+                <button  className={(!this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
                 <h2>Detailed Information</h2>
@@ -84,16 +85,6 @@ class VehicleDetailsView extends React.Component {
                         <tbody>
 
                             <tr className="trDetailedView">
-
-                                <th className="thDetailedView">
-
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>Owner:</label>
-                                        <select className="form-control">
-                                            <option>No Owner</option>
-                                        </select>
-                                    </div>
-                                </th>
 
                                 <th className="thDetailedView">
 
@@ -150,8 +141,15 @@ class VehicleDetailsView extends React.Component {
         let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "vehicle",  "madmv_bodytypemodel",
         "madmv_fueltype", "madmv_lengthtrailer", "madmv_licenseplate", "madmv_ma_vehicleid", "madmv_modelorseries", "madmv_typeofvehicle","madmv_vehicleidnumber","madmv_vehiclemake","madmv_yearmodel");
            
+        let config = {
+            'method': 'get',
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        };
 
-        axios.get(cosQuery)
+        adalApiFetch(axios, cosQuery, config)
             .then(function (response) {
                 console.log(response);
                 
