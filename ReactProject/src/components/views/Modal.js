@@ -54,9 +54,9 @@ export class Modal extends Component {
  * @param text text to be displayed on the button
  */
 const ModalTrigger = ({ onOpen, text }) => (
-  <button className="btn btn-sm btn-outline-primary" onClick={onOpen}>
-    {text}
-  </button>
+    <button className="btn btn-sm btn-outline-primary" onClick={onOpen}>
+        {text}
+    </button>
 );
 const ModalContent = ({ onClose, comp, record }) => {
   //Display data
@@ -73,29 +73,29 @@ const ModalContent = ({ onClose, comp, record }) => {
       break;
   }
 
-  return ReactDOM.createPortal(
-    <aside className="c-modal-cover">
-      <div className="c-modal">
-        <div className="c-modal__body card-header">
-          {componentType}
-          <button type="button" onClick={onClose} className="btn btn-danger">
-            CANCEL
+    return ReactDOM.createPortal(
+        <aside className="c-modal-cover">
+            <div className="c-modal">
+                <div className="c-modal__body card-header">
+                    {componentType}
+                    <button type="button" onClick={onClose} className="btn btn-danger">
+                        CANCEL
           </button>
-        </div>
-      </div>
-    </aside>,
-    document.body
-  );
+                </div>
+            </div>
+        </aside>,
+        document.body
+    );
 };
 
 ModalTrigger.propTypes = {
-  onOpen: PropTypes.func,
-  text: PropTypes.string
+    onOpen: PropTypes.func,
+    text: PropTypes.string
 };
 
 
 Modal.propTypes = {
-  comp:PropTypes.string.isRequired,
-  text:PropTypes.string.isRequired,
-  rec:PropTypes.string.isRequired
+    comp: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    rec:  PropTypes.string.isRequired
 };
