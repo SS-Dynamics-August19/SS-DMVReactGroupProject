@@ -1,15 +1,6 @@
 import Subpage from "./Subpage.js";
 import Constants from "../constants/SubpageConstants.js";
 
-<<<<<<< HEAD
-import Activities            from "../components/views/ActivitiesHome.js";
-import customersView         from "../components/views/CustomersView.js";
-import applicationsView      from "../components/views/ApplicationsView.js";
-import vehiclesView          from "../components/views/VehiclesView.js";
-import CustomerDetails       from "../components/views/CustomerDetailsView.js";
-import URLParamsEchoDemo     from "../components/Test or Demo/URLParamsEchoDemo.js";
-import testLookupFormControl from "../components/Test or Demo/TestLookupFormControl.js"
-=======
 //import Login             from "../components/Login/Login.js";
 import Activities        from "../components/views/ActivitiesHome.js";
 import customersView     from "../components/views/CustomersView.js";
@@ -19,7 +10,8 @@ import CustomerDetails   from "../components/views/CustomerDetailsView.js";
 import ApplicationDetails   from "../components/views/ApplicationDetailsView.js";
 import VehicleDetails    from "../components/views/VehicleDetailsView.js";
 import URLParamsEchoDemo from "../components/Test or Demo/URLParamsEchoDemo.js";
->>>>>>> upstream/master
+import testLookupFormControl from "../components/Test or Demo/TestLookupFormControl.js"
+
 
 const subpages = [
     // Using params in URL route:
