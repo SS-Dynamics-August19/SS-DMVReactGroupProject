@@ -7,10 +7,7 @@ import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
-import CustomerDetailsView from "./CustomerDetailsView.js";
-import {Modal} from './Modal'
-
-import { Link } from "react-router-dom";
+import { Modal } from './Modal'
 
 /** Cleaned up this class of child-specific code.
  * Please put code that only applies to one of the domains which use CRMView
@@ -28,28 +25,25 @@ import { Link } from "react-router-dom";
  * */
 
 export default class CRMView extends React.Component {
-    
     render() {
-        
         return <div> {this.getContent()} </div>;
     }
 
     getContent() {
-        
         let state = stores[this.props.dataType].data.readState;
         switch (state) {
-          case State.DEFAULT:
-            return this.getDefaultContent();
-          case State.STARTED:
-            return this.getStartedContent();
-          case State.SUCCESS:
-            return this.getSuccessContent();
-          case State.FAILURE:
-            return this.getFailureContent();
+            case State.DEFAULT:
+                return this.getDefaultContent();
+            case State.STARTED:
+                return this.getStartedContent();
+            case State.SUCCESS:
+                return this.getSuccessContent();
+            case State.FAILURE:
+                return this.getFailureContent();
         }
         return this.getStartedContent();
-        }
-    
+    }
+
     getStartedContent() {
         return (
             <div className="d-flex justify-content-center">
@@ -68,45 +62,42 @@ export default class CRMView extends React.Component {
         );
     }
 
-    handleDelete(id){
-        let deletetype=this.props.dataType
-        if(deletetype == 'application')
+    handleDelete(id) {
+        let deletetype = this.props.dataType
+        if (deletetype == 'application')
             ApplicationActions.deleteApplication(id)
-        else if(deletetype == 'customer')
+        else if (deletetype == 'customer')
             CustomerActions.deleteCustomer(id)
-        else if(deletetype == 'vehicle') 
+        else if (deletetype == 'vehicle')
             VehicleActions.deleteVehicle(id)
     }
 
-
-
-
     getSuccessContent() {
         let content = {
-            columns:this.props.headcolumn,
+            columns: this.props.headcolumn,
             rows: this.getTableBodyContent()
         }
 
         return (
             <div>
-            <Row className="mb-4">
-                <Col md="12">
-                    <Card>
-                        <CardBody>
-                            <MDBDataTable
-                                striped
-                                bordered
-                                hover
-                                data={content}
-                            />
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row>
-            <div className="pb-4">
-            <Modal comp= {this.props.dataType} text="Create New"/>
-          </div>
-        </div>
+                <Row className="mb-4">
+                    <Col md="12">
+                        <Card>
+                            <CardBody>
+                                <MDBDataTable
+                                    striped
+                                    bordered
+                                    hover
+                                    data={content}
+                                />
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+                <div className="pb-4">
+                    <Modal comp={this.props.dataType} text="Create New" />
+                </div>
+            </div>
         );
     }
 
@@ -134,37 +125,32 @@ export default class CRMView extends React.Component {
 
     cleanupNullFieldValues(record) {
         for (const field of Object.keys(record)) {
-            if(record[field] === null) record[field] = " ";
+            if (record[field] === null) record[field] = " ";
         }
     }
 
-    /*handleView(record) {
-        new CustomerDetailsView(record);
-    }*/
-
-    handleView(id){
-        //console.log(id);
-        window.location.href = "/#/" + this.props.dataType + "Details/"+id;
+    handleView(id) {
+        window.location.href = "/#/" + this.props.dataType + "Details/" + id;
     }
 
-    
+
     addInputs(record) {
         //console.log(record);
-        record.click =(
+        record.click = (
             <button
                 className="btn btn-sm btn-primary"
                 //onClick={() => this.handleView(record)}
                 onClick={() => this.handleView(record["madmv_ma_" + this.props.dataType + "id"])}
             >
-            Detail Info
+                Detail Info
             </button>
         );
- //base on table type, pass the right id into delete function, also in the delete function, we
- //have to check the type to make sure run the right delete action.
-        record.checkbox =(<button
+        //base on table type, pass the right id into delete function, also in the delete function, we
+        //have to check the type to make sure run the right delete action.
+        record.checkbox = (<button
             className="btn btn-sm btn-danger"
-            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record["madmv_ma_" + this.props.dataType + "id"])}}
-            >
+            onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record["madmv_ma_" + this.props.dataType + "id"]) }}
+        >
             Delete
         </button>
         );
