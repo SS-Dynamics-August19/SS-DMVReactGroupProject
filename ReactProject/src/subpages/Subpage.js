@@ -14,18 +14,11 @@ export default class Subpage {
      * @param {string} componentType Either constants/SubpageConstants.js:subpageType.REACT_COMPONENT, or FUNCTIONAL, corresponding to the above.
      * @param {string} path The URL path for this subpage. For example, "/vehicle" would render at "http://localhost:9090/#/vehicle".
      * @param {string} navLabel String for the navbar label. */
-    constructor(componentReference, componentType, path, navLabel, requiredPermission) {
+    constructor(componentReference, componentType, path, navLabel) {
         this.component          = componentReference;
         this.type               = componentType;
         this.path               = path;
         this.label              = navLabel;
-        this.requiredPermission = requiredPermission;
-        this.hasNavigation      = true;
-    }
-
-    setNoNavigation() {
-        this.hasNavigation = false;
-        return this;
     }
 
     getLabel() {
@@ -33,29 +26,14 @@ export default class Subpage {
     }
 
     toNavJSX() {
-        let label = this.getLabel();
-        if(this.hasNavigation && this.isAuthorized()) return (
-            <Link key={label} to={this.path} replace>
-                <li className="nav-list"> {label} </li>
+        if(this.label !== undefined) return (
+            <Link key={this.label} to={this.path} replace>
+                <li className="nav-list"> {this.label} </li>
             </Link>
         );
     }
 
     toJSX(props) {
-        if (this.isAuthorized()) {
-            return this.authorizedJSX(props);
-        } else {
-            return this.toForbiddenJSX();
-        }
-    }
-
-    isAuthorized() {
-        //if(this.requiredPermission === undefined) return true;
-        //return (stores.login.data.authorization.includes(this.requiredPermission));
-        return true;
-    }
-
-    authorizedJSX(props) {
         return (
             <Route
                 key={this.path}
@@ -75,16 +53,5 @@ export default class Subpage {
             case Constants.REACT_COMPONENT:
                 return { component: Component };
         }
-    }
-
-    toForbiddenJSX() {
-        return (
-            <Route
-                key={this.label}
-                exact
-                path={this.path}
-                render={() => <div> You are not authorized to view this page. </div>}
-            />
-        );
     }
 }
