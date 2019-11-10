@@ -1,6 +1,7 @@
 import Subpage from "./Subpage.js";
 import Constants from "../constants/SubpageConstants.js";
 
+<<<<<<< HEAD
 import Activities            from "../components/views/ActivitiesHome.js";
 import customersView         from "../components/views/CustomersView.js";
 import applicationsView      from "../components/views/ApplicationsView.js";
@@ -8,6 +9,17 @@ import vehiclesView          from "../components/views/VehiclesView.js";
 import CustomerDetails       from "../components/views/CustomerDetailsView.js";
 import URLParamsEchoDemo     from "../components/Test or Demo/URLParamsEchoDemo.js";
 import testLookupFormControl from "../components/Test or Demo/TestLookupFormControl.js"
+=======
+//import Login             from "../components/Login/Login.js";
+import Activities        from "../components/views/ActivitiesHome.js";
+import customersView     from "../components/views/CustomersView.js";
+import applicationsView  from "../components/views/ApplicationsView.js";
+import vehiclesView      from "../components/views/VehiclesView.js";
+import CustomerDetails   from "../components/views/CustomerDetailsView.js";
+import ApplicationDetails   from "../components/views/ApplicationDetailsView.js";
+import VehicleDetails    from "../components/views/VehicleDetailsView.js";
+import URLParamsEchoDemo from "../components/Test or Demo/URLParamsEchoDemo.js";
+>>>>>>> upstream/master
 
 const subpages = [
     // Using params in URL route:
@@ -24,6 +36,8 @@ const subpages = [
     new Subpage(vehiclesView,          Constants.FUNCTIONAL,      "/Vehicles",           "Vehicles"),
     new Subpage(applicationsView,      Constants.FUNCTIONAL,      "/Applications",       "Applications"),
     new Subpage(CustomerDetails,       Constants.REACT_COMPONENT, "/CustomerDetails/:id"),
+    new Subpage(ApplicationDetails,    Constants.REACT_COMPONENT, "/ApplicationDetails/:id"),
+    new Subpage(VehicleDetails,        Constants.REACT_COMPONENT, "/VehicleDetails/:id"),
     new Subpage(URLParamsEchoDemo,     Constants.REACT_COMPONENT, "/Echo/:echoText"),
     new Subpage(testLookupFormControl, Constants.FUNCTIONAL,      "/TestLookup"),
 ];
