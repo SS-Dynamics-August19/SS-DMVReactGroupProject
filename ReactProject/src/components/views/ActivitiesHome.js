@@ -65,11 +65,15 @@ export default class ActivitiesHome extends React.Component {
         //console.log(stores.userHome.data);
 
         let actRecords = stores.activityHome.data.records;
+        console.log(actRecords);
         let appRecords = stores.applicationHome.data.records;
         let cusRecords = stores.customerHome.data.records;
         let vehRecords = stores.vehicleHome.data.records;
-        let appValidDates = [], cusValidDates = [], vehValidDates = [];
+        let appValidDates = [], cusValidDates = [], vehValidDates = [], actValidCategory = [];
 
+        actRecords.forEach(actRecord => {
+            this.checkActCategory(actRecord, actValidCategory);
+        });
         appRecords.forEach(appRecord => {
             this.checkDate(appRecord, appValidDates);
         });
@@ -79,6 +83,7 @@ export default class ActivitiesHome extends React.Component {
         vehRecords.forEach(vehRecord => {
             this.checkDate(vehRecord, vehValidDates);
         });
+        
 
         let pieData = {
                   labels: ["Vehicle Registration", "Address Change"],
@@ -101,7 +106,7 @@ export default class ActivitiesHome extends React.Component {
         return (
             <div className="row">
                 <div className="cardActContainer col-4">
-                   {actRecords.map((value, index) => {
+                   {actValidCategory.map((value, index) => {
                        let cdate = (new Date(value.createdon)).toLocaleDateString('en-US', DATE_OPTIONS);
                        
                             return (
@@ -110,11 +115,17 @@ export default class ActivitiesHome extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{value.subject}</h5>
                                         <p className="card-text">{value.description}</p>
-                                        <a href="#" className="btn btn-primary">Regarding Record</a>
+                                        <button
+                                            className="btn btn-sm btn-primary"
+                                            //onClick={() => this.handleView(record)}
+                                            onClick={() => this.handleView(value._regardingobjectid_value, value.category)}
+                                        >
+                                            Detail Info
+                                        </button>
                                     </div>
                                 </div>
                             )
-                            })}
+                        })}
                 </div>
                 <div className="cardCounterContainer col-8">
                 <div className="row">
@@ -156,6 +167,12 @@ export default class ActivitiesHome extends React.Component {
         );
     }
 
+    handleView(id, category){
+        //console.log(id);
+        var res = category.substring(9);
+        window.location.href = "/#/" + res + "Details/"+id;
+    }
+
     appTypeCounter(appRecords) {
         let appTypes = [0,0,0,0];
         for (let i = 0; i < appRecords.length; i++)
@@ -190,7 +207,13 @@ export default class ActivitiesHome extends React.Component {
             validDates.push(recordDate)
         }
         return validDates;
+    }
 
+    checkActCategory(actRecord, actValidCategory) {
+        if (actRecord.category != null && actRecord.category != "") {
+            actValidCategory.push(actRecord)
+        }
+        return actValidCategory;
     }
 
     componentDidMount(){
