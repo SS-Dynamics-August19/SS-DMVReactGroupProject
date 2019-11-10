@@ -54,34 +54,17 @@ class ApplicationDetailsView extends React.Component {
           madmv_reissuedplates:             this.state.olddata.madmv_reissuedplates,
           madmv_ssn:                        this.state.olddata.madmv_ssn,
           madmv_vehicledetails:             this.state.olddata.madmv_vehicledetails,
-          /*
-          madmv_birthdate: this.state.olddata.madmv_birthdate,
-          madmv_city: this.state.olddata.madmv_city,
-          madmv_country: this.state.olddata.madmv_country,
-          madmv_cssn: this.state.olddata.madmv_cssn,
-          madmv_email: this.state.olddata.madmv_email,
-          madmv_firstname: this.state.olddata.madmv_firstname,
-          madmv_fullname: '',
-          madmv_hiddendifday: '',
-          madmv_lastname: this.state.olddata.madmv_lastname,
-          madmv_ma_applicationid: this.state.olddata.madmv_ma_applicationid,
-          madmv_phonenumber: this.state.olddata.madmv_phonenumber,
-          madmv_stateprovince: this.state.olddata.madmv_stateprovince,
-          madmv_street1: this.state.olddata.madmv_street1,
-          madmv_street2: this.state.olddata.madmv_street2,
-          madmv_zippostalcode: this.state.olddata.madmv_zippostalcode,
-          owninguser: this.state.olddata.owninguser,
-          */
           disabled: true,
         })
       }
 
-      handleSubmit (event)  {
+    handleSubmit (event)  {
         event.preventDefault();
         //console.log(this.state);
         ApplicationActions.updateApplication(this.state.olddata.madmv_ma_applicationid,this.state)
         //this.props.changeStore(this.state)
         this.setState({disabled: !this.state.disabled})
+        
 
       }
 
@@ -96,7 +79,78 @@ class ApplicationDetailsView extends React.Component {
             );
         }
 
+        let appSubject = "";
+        let content = "";
+
         let application = this.state;
+        if (application.madmv_applicationtype == 876570000)
+        {
+            appSubject = "Vehicle Registration"
+            content = (
+                <div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>Vehicle:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_vehicledetails} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>insurancecompany:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_insurancecompany} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>platetype:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_platetype} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>registrationperiod:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationperiod} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>registrationtype:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationtype} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>reissuedplates:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reissuedplates} />
+                    </div>
+                </div>
+            );
+
+        } else 
+        {
+            appSubject = "Address Change";
+            content = (
+                <div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>reasonforaddresschange:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reasonforaddresschange} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>newcity:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcity} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>newcountry:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcountry} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>newstate:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstate} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>newstreet1:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet1} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>newstreet2:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet2} />
+                    </div>
+                    <div className="form-group fieldDetailed form-inline">
+                        <label>newzip:</label>
+                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newzip} />
+                    </div>
+                </div>
+            );
+        }
 
 
         return <div className="detailedDiv">
@@ -118,6 +172,7 @@ class ApplicationDetailsView extends React.Component {
 
 
                                 <th className="thDetailedView">
+                                    
 
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>Application Subject:</label>
@@ -125,72 +180,23 @@ class ApplicationDetailsView extends React.Component {
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>applicationtype:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_applicationtype} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>insurancecompany:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_insurancecompany} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>fee:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_fee} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>newcity:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcity} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>newcountry:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcountry} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>newstate:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstate} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>newstreet1:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet1} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>newstreet2:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet2} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>newzip:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newzip} />
+                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={appSubject} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>ownerinfo:</label>
                                         <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_ownerinfo} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
-                                        <label>platetype:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_platetype} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>reasonforaddresschange:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reasonforaddresschange} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>registrationperiod:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationperiod} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>registrationtype:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationtype} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>reissuedplates:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reissuedplates} />
-                                    </div>
-                                    <div className="form-group fieldDetailed form-inline">
                                         <label>ssn:</label>
                                         <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_ssn} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
-                                        <label>Vehicle:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_vehicledetails} />
+                                        <label>fee:</label>
+                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_fee} />
                                     </div>
+
+                                    {content}
+
                                 </th>
                             </tr>
                         </tbody>
@@ -246,23 +252,6 @@ class ApplicationDetailsView extends React.Component {
                     madmv_reissuedplates:   response.data.madmv_reissuedplates,
                     madmv_ssn:   response.data.madmv_ssn,
                     madmv_vehicledetails:   response.data.madmv_vehicledetails,
-                    /*
-                    madmv_birthdate:     response.data.madmv_birthdate,
-                    madmv_city:          response.data.madmv_city,
-                    madmv_country:       response.data.madmv_country,
-                    madmv_cssn:          response.data.madmv_cssn,
-                    madmv_email:         response.data.madmv_email,
-                    madmv_firstname:     response.data.madmv_firstname,
-                    madmv_fullname:      '',
-                    madmv_hiddendifday:  '',
-                    madmv_lastname:      response.data.madmv_lastname,
-                    madmv_ma_applicationid: response.data.madmv_ma_applicationid,
-                    madmv_phonenumber:   response.data.madmv_phonenumber,
-                    madmv_stateprovince: response.data.madmv_stateprovince,
-                    madmv_street1:       response.data.madmv_street1,
-                    madmv_street2:       response.data.madmv_street2,
-                    madmv_zippostalcode: response.data.madmv_zippostalcode,
-                    */
                     loaded: true
                 });
             }.bind(this));
