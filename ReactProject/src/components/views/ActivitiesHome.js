@@ -5,19 +5,15 @@ import { MDBContainer } from "mdbreact";
 import { State } from "../../constants/DataLoaderConstants.js";
 import stores from "../../stores/stores.js";
 
+//used when checking what records were created in the last week.
 const DATE_OPTIONS = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
-
-//const DATA_STORE = "user";
 export default class ActivitiesHome extends React.Component {
-
-
     render() {
-        
-        
         return <div> {this.getContent()} </div>;
     }
 
+    //check the stte of the load to determine what content to render
     getContent() {
         
         let state = stores.activityHome.data.readState;
@@ -34,6 +30,7 @@ export default class ActivitiesHome extends React.Component {
         return this.getStartedContent();
     }
 
+    //shows if no state was set so probably an error before api call returned
     getDefaultContent() {
         return (
             <div className="alert alert-danger" role="alert">
@@ -42,6 +39,7 @@ export default class ActivitiesHome extends React.Component {
         );
     }
 
+    //loading spinner
     getStartedContent() {
         return (
             <div className="d-flex justify-content-center">
@@ -52,6 +50,7 @@ export default class ActivitiesHome extends React.Component {
         );
     }
 
+    //api call failed
     getFailureContent() {
         return (
             <div className="alert alert-danger" role="alert">
@@ -61,15 +60,20 @@ export default class ActivitiesHome extends React.Component {
     }
 
     getSuccessContent() {
-        //let userId = stores.userHome.data.records.UserId;
-        //console.log(stores.userHome.data);
-
+        //get the data from the corresponding stores
         let actRecords = stores.activityHome.data.records;
         let appRecords = stores.applicationHome.data.records;
         let cusRecords = stores.customerHome.data.records;
         let vehRecords = stores.vehicleHome.data.records;
-        let appValidDates = [], cusValidDates = [], vehValidDates = [];
+        let appValidDates = [], cusValidDates = [], vehValidDates = [], actValidCategory = [];
 
+        //generates a list of activities by only including those with categories. 
+        //task created by plugins have categories and therefore will work for redirect while others wont
+        actRecords.forEach(actRecord => {
+            this.checkActCategory(actRecord, actValidCategory);
+        });
+
+        //retrieve array of records for each app/cus/veh entities that were created within the last week
         appRecords.forEach(appRecord => {
             this.checkDate(appRecord, appValidDates);
         });
@@ -79,29 +83,29 @@ export default class ActivitiesHome extends React.Component {
         vehRecords.forEach(vehRecord => {
             this.checkDate(vehRecord, vehValidDates);
         });
+        
 
+        //generate the data for the pie chart.
         let pieData = {
-                  labels: ["Vehicle Registration", "Address Change"],
+                  labels: ["Vehicle Registration", "Address Change", "New License", "License Renewal"],
                   datasets: [
                     {
                       data: this.appTypeCounter(appRecords),
                       backgroundColor: [
-                        "#F7464A",
-                        "#46BFBD"
+                        "#F7464A", "#46BFBD", "#FDB45C", "#949FB1"
                       ],
                       hoverBackgroundColor: [
-                        "#FF5A5E",
-                        "#5AD3D1"
+                        "#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5"
                       ]
                     }
                   ]
             };
 
-
+        //display all the stuff and things
         return (
             <div className="row">
                 <div className="cardActContainer col-4">
-                   {actRecords.map((value, index) => {
+                   {actValidCategory.map((value, index) => {
                        let cdate = (new Date(value.createdon)).toLocaleDateString('en-US', DATE_OPTIONS);
                        
                             return (
@@ -110,11 +114,17 @@ export default class ActivitiesHome extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{value.subject}</h5>
                                         <p className="card-text">{value.description}</p>
-                                        <a href="#" className="btn btn-primary">Regarding Record</a>
+                                        <button
+                                            className="btn btn-sm btn-primary"
+                                            //onClick={() => this.handleView(record)}
+                                            onClick={() => this.handleView(value._regardingobjectid_value, value.category)}
+                                        >
+                                            Detail Info
+                                        </button>
                                     </div>
                                 </div>
                             )
-                            })}
+                        })}
                 </div>
                 <div className="cardCounterContainer col-8">
                 <div className="row">
@@ -156,6 +166,13 @@ export default class ActivitiesHome extends React.Component {
         );
     }
 
+    //redirects to the details view page for the record related to the activity
+    handleView(id, category){
+        var res = category.substring(9);
+        window.location.href = "/#/" + res + "Details/"+id;
+    }
+
+    // creates arry with number of each type of activity for pie chart
     appTypeCounter(appRecords) {
         let appTypes = [0,0,0,0];
         for (let i = 0; i < appRecords.length; i++)
@@ -179,8 +196,7 @@ export default class ActivitiesHome extends React.Component {
         return appTypes;
     }
         
-    
-
+    //gets records created in the last week
     checkDate(appRecord, validDates) {
         let currentDate = new Date(Date.now());
         let dateWeekAgo = new Date(currentDate - 7 * 24 * 60 * 60 * 1000); 
@@ -190,9 +206,17 @@ export default class ActivitiesHome extends React.Component {
             validDates.push(recordDate)
         }
         return validDates;
-
     }
 
+    // only pushes the activities that have a category value set
+    checkActCategory(actRecord, actValidCategory) {
+        if (actRecord.category != null && actRecord.category != "") {
+            actValidCategory.push(actRecord)
+        }
+        return actValidCategory;
+    }
+
+    //triggers when component is loaded
     componentDidMount(){
         if (this.needsToLoad()) this.loadFromCRM();
     }
@@ -201,9 +225,9 @@ export default class ActivitiesHome extends React.Component {
         return (stores.activityHome.data.readState === State.DEFAULT_STATE);
     }
 
+    //create the datastores and make the api calls. loading takes time because i have to get user id before
+    //i can generate list of activities. TODO: find a quicker way to load like loading part of the content.
     loadFromCRM() {
-
-        //console.log(stores.userHome.data);
         let query = ActivityActions.generateFindUserQuery();
         let dataType = "userHome";
         new ActivityActions(query, dataType).getCurrentUser();
@@ -216,6 +240,5 @@ export default class ActivitiesHome extends React.Component {
         dataType = "vehicleHome";
         query = ActivityActions.generateDynamicsQuery("vehicle", ["createdon"]);
         new ActivityActions(query, dataType).load();
-
     }
 }
