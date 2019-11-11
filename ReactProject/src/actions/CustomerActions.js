@@ -8,12 +8,6 @@
 import Dispatcher from "../dispatcher/appDispatcher.js";
 import axios from "axios";
 import { adalApiFetch } from '../adalConfig.js';
-const config = {
-  "OData-MaxVersion": 4.0,
-  "OData-Version": 4.0,
-  Accept: "application/json",
-  "Content-Type": "application/json; charset=utf-8"
-};
 
 /*
 Functions included in file
@@ -123,14 +117,22 @@ const CustomerActions = {
     }
     customer.madmv_fullname = `${person.firstname} ${person.lastname}`
 
+    let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers";
+
     Dispatcher.dispatch({
       actionType: "creating_record"
     });
-    axios.post(
-        "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers",
-        customer,
-        config
-      )
+    let config = {
+      method: 'post',
+      'OData-MaxVersion': 4.0,
+      'OData-Version': 4.0,
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
+      data: customer
+    };
+
+    // send the api call
+    adalApiFetch(axios, uri, config)
       .then(res => {
         Dispatcher.dispatch({
           actionType: "created_successfully",

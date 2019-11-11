@@ -8,12 +8,6 @@
 import Dispatcher from '../dispatcher/appDispatcher.js';
 import axios from 'axios';
 import { adalApiFetch } from '../adalConfig.js';
-const config = {
-    'OData-MaxVersion': 4.0,
-    'OData-Version': 4.0,
-    'Accept': 'application/json',
-    'Content-Type': 'application/json; charset=utf-8'
-  }
 
 /*
 Functions included in file
@@ -163,10 +157,22 @@ const VehicleActions = {
     vehicle.madmv_modelorseries = description.model;
     vehicle.madmv_vehicleidnumber = description.vin;
 
+    let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles";
+
     Dispatcher.dispatch({
       actionType: "creating_record"
     });
-    axios.post("https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles",vehicle,config)
+    let config = {
+        method: 'post',
+        'OData-MaxVersion': 4.0,
+        'OData-Version': 4.0,
+        Accept: 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
+        data: vehicle
+      };
+  
+    // send the api call
+    adalApiFetch(axios, uri, config)
       .then(res => {
         Dispatcher.dispatch({
           actionType: "created_successfully",
