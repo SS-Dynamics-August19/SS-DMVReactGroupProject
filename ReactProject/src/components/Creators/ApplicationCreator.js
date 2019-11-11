@@ -18,26 +18,28 @@ export class CreateApplication extends React.Component {
       street1: "",
       street2: "",
       city: "",
-      state: "",
+      stateProv: "",
       zip: "",
       year: "",
       make: "",
       model: "",
-      vin: ""
+      vin: "",
+      update_successful: false,
+      application_successful: false
     };
     //||||||||||DISPLAY METHODS||||||||||\\
     this.applicationTypeOption = this.applicationTypeOption.bind(this);
     this.existingUserOption = this.existingUserOption.bind(this);
     this.showExisting = this.showExisting.bind(this);
-    this.applicationCustomerDisplay = this.applicationCustomerDisplay.bind(
-      this
-    );
+    this.applicationCustomerDisplay = this.applicationCustomerDisplay.bind(this);
     this.applicationVehicleDisplay = this.applicationVehicleDisplay.bind(this);
     this.addressChangeDisplay = this.addressChangeDisplay.bind(this);
+    this.updateUserAddress = this.updateUserAddress.bind(this);
     this.renewLicenseDisplay = this.renewLicenseDisplay.bind(this);
     this.vehicleRegDisplay = this.vehicleRegDisplay.bind(this);
     this.newDriverDisplay = this.newDriverDisplay.bind(this);
     this.showSubmitBtn = this.showSubmitBtn.bind(this);
+    this.createNewApplication = this.createNewApplication.bind(this);
     //||||||||||CUSTOMER FILED CHANGE METHODS||||||||||\\
     this.createNewCustomer = this.createNewCustomer.bind(this);
     this.ssnFieldChange = this.ssnFieldChange.bind(this);
@@ -84,7 +86,7 @@ export class CreateApplication extends React.Component {
     this.setState({ city: e.target.value.toUpperCase() });
   }
   stateFieldChange(e) {
-    this.setState({ state: e.target.value.toUpperCase() });
+    this.setState({ stateProv: e.target.value.toUpperCase() });
   }
   zipFieldChange(e) {
     this.setState({ zip: e.target.value });
@@ -103,7 +105,7 @@ export class CreateApplication extends React.Component {
   vinFieldChange(e) {
     this.setState({ vin: e.target.value });
   }
-  //||||||||||||||||||||CREATE AND RETRIEVE ID||||||||||||||||||||||||||||||||||||||\\
+  //||||||||||||||||||||CREATE METHODS||||||||||||||||||||||||||||||||||||||\\
   /**
    * submits the values provided to create a new customer record and returns the id
    */
@@ -133,14 +135,14 @@ export class CreateApplication extends React.Component {
     if (this.state.city !== "" && this.state.city !== null) {
       customer.madmv_city = this.state.city;
     }
-    if (this.state.state !== "" && this.state.state !== null) {
+    if (this.state.stateProv !== "" && this.state.stateProv !== null) {
       customer.madmv_stateprovince = this.state.state;
     }
     if (this.state.zip !== "" && this.state.zip !== null) {
       customer.madmv_zippostalcode = this.state.zip;
     }
     customer.madmv_fullname = `${this.state.firstname} ${this.state.lastname}`;
-    const config = {
+    let config = {
       "OData-MaxVersion": 4.0,
       "OData-Version": 4.0,
       Accept: "application/json",
@@ -165,7 +167,7 @@ export class CreateApplication extends React.Component {
   }
   /**
    * submits the values provided to create a new vehicle record and returns the id
- */
+   */
   createNewVehicle() {
     //build record object (vehicle) for CRM from parameter object (description)
     var vehicle = {};
@@ -173,7 +175,7 @@ export class CreateApplication extends React.Component {
     vehicle.madmv_vehiclemake = this.state.make;
     vehicle.madmv_modelorseries = this.state.model;
     vehicle.madmv_vehicleidnumber = this.state.vin;
-    const config = {
+    let config = {
       "OData-MaxVersion": 4.0,
       "OData-Version": 4.0,
       Accept: "application/json",
@@ -192,6 +194,95 @@ export class CreateApplication extends React.Component {
         });
       })
       .then(() => alert("created successfully"))
+      .catch(e => {
+        alert("creation failed");
+        console.log(e);
+      });
+  }
+  createNewApplication(appType, uId, vId) {
+    var application = {};
+
+    switch (appType) {
+      case "vehicle_reg":
+        application.madmv_applicationtype = 876570000;
+        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        application["madmv_vehicledetails@odata.bind"] = `/madmv_ma_vehicles(${vId})`;
+        break;
+      case "address_change":
+        application.madmv_applicationtype = 876570001;
+        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        application.madmv_newstreet1 = this.state.street1;
+        if (this.state.street2 !== "" || this.state.street2 !== null) {
+          application.madmv_newstreet2 = this.state.street2;
+        }
+        application.madmv_newcity = this.state.city;
+        application.madmv_newstate = this.state.stateProv;
+        application.madmv_newzip = this.state.zip;
+        break;
+      case "new_license":
+        application.madmv_applicationtype = 876570002;
+        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        break;
+      case "renew_license":
+        application.madmv_applicationtype = 876570003;
+        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        break;
+    }
+
+    let config = {
+      "OData-MaxVersion": 4.0,
+      "OData-Version": 4.0,
+      Accept: "application/json",
+      "Content-Type": "application/json; charset=utf-8"
+    };
+    axios
+      .post(
+        "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications",
+        application,
+        config
+      )
+      .then(() => {
+        this.setState({
+          application_successful: true
+        });
+      })
+      .then(() => alert("submitted successfully"))
+      .catch(e => {
+        alert("creation failed");
+        console.log(e);
+      });
+  }
+  updateUserAddress() {
+    var customer = {};
+    customer.madmv_street1 = this.state.street1;
+    alert("made it here");
+    if (this.state.street2 !== "" || this.state.street2 !== null) {
+      customer.madmv_street2 = this.state.street2;
+    }
+    customer.madmv_city = this.state.city;
+    customer.madmv_stateprovince = this.state.stateProv;
+    customer.madmv_zippostalcode = this.state.zip;
+
+    let config = {
+      "OData-MaxVersion": 4.0,
+      "OData-Version": 4.0,
+      Accept: "application/json",
+      "Content-Type": "application/json; charset=utf-8"
+    };
+
+    // make axios put call
+    axios
+      .patch(
+        `https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(${this.state.userId})`,
+        customer,
+        config
+      )
+      .then(() => alert("updated successfully"))
+      .then(() => {
+        this.setState({
+          update_successful: true
+        });
+      })
       .catch(e => {
         alert("creation failed");
         console.log(e);
@@ -248,7 +339,7 @@ export class CreateApplication extends React.Component {
   }
   //|||||||||||||||||||DISPLAY BY CONDITIONS|||||||||||||||||||||||||||||||||||||||\\
   /**
-   * returns a customer creation view / for if customer isn't an existing user 
+   * returns a customer creation view / for if customer isn't an existing user
    */
   createCustomerView() {
     return (
@@ -401,7 +492,7 @@ export class CreateApplication extends React.Component {
   applicationCustomerDisplay(appType, existing) {
     if (existing === "" && appType === "") {
       return "";
-    } else if (this.state.userId !== "") {
+    } else if (this.state.userId !== "" && appType == "renew_license") {
       return (
         <div>
           ID Applied..
@@ -505,75 +596,118 @@ export class CreateApplication extends React.Component {
    * returns an update address view in the customer section
    */
   addressChangeDisplay() {
+    let updateView = "";
+    let updateBtn = "";
+
+    if (this.state.update_successful === false) {
+      updateView = (
+        <div>
+          <LookupFieldFormControl
+            storeName="testLookup"
+            crmTableName="customer"
+            valueCRMColumn="madmv_ma_customerid"
+            labelCRMColumns={["madmv_fullname", "madmv_cssn"]}
+            onChange={e => this.setState({ userId: e.target.value })}
+          />
+          <br />
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.street1FieldChange}
+              className="form-control"
+              placeholder="Enter line 1 of new street address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Street 1
+              </span>
+            </div>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.street2FieldChange}
+              className="form-control"
+              placeholder="Enter line 2 of new street address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Street 2
+              </span>
+            </div>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.cityFieldChange}
+              className="form-control"
+              placeholder="Enter city of new address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                City
+              </span>
+            </div>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.stateFieldChange}
+              className="form-control"
+              maxLength="2"
+              placeholder="Enter state abbreviation of new address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                State
+              </span>
+            </div>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.zipFieldChange}
+              className="form-control"
+              placeholder="Enter zip code of new address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Zip Code
+              </span>
+            </div>
+          </div>
+          <hr />
+        </div>
+      );
+    } else {
+      updateView = (
+        <div>
+          <p>Customer successfully updated. You can submit the application.</p>
+        </div>
+      );
+    }
+
+    if (
+      this.state.street1 !== "" &&
+      this.state.city !== "" &&
+      this.state.stateProv !== "" &&
+      this.state.zip !== "" &&
+      this.state.update_successful === false
+    ) {
+      updateBtn = (
+        <button
+          onClick={this.updateUserAddress} //triggers the create action
+          className="btn btn-primary btn-lg"
+        >
+          Update Customer&apos;s Address
+        </button>
+      );
+    }
+
     return (
       <div className="">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.street1FieldChange}
-            className="form-control"
-            placeholder="Enter line 1 of new street address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Street 1
-            </span>
-          </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.street2FieldChange}
-            className="form-control"
-            placeholder="Enter line 2 of new street address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Street 2
-            </span>
-          </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.cityFieldChange}
-            className="form-control"
-            placeholder="Enter city of new address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              City
-            </span>
-          </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.stateFieldChange}
-            className="form-control"
-            maxLength="2"
-            placeholder="Enter state abbreviation of new address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              State
-            </span>
-          </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.zipFieldChange}
-            className="form-control"
-            placeholder="Enter zip code of new address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Zip Code
-            </span>
-          </div>
-        </div>
-        <hr />
+        {updateView}
+        {updateBtn}
       </div>
     );
   }
@@ -583,45 +717,14 @@ export class CreateApplication extends React.Component {
   renewLicenseDisplay() {
     return (
       <div className="">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.firstNameFieldChange}
-            className="form-control"
-            placeholder="Enter first name.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              First Name
-            </span>
-          </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.lastNameFieldChange}
-            className="form-control"
-            placeholder="Enter last name.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Last Name
-            </span>
-          </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.ssnFieldChange}
-            className="form-control"
-            placeholder="Enter Social Security Number"
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Social Security Number
-            </span>
-          </div>
-        </div>
+        <LookupFieldFormControl
+          storeName="testLookup"
+          crmTableName="customer"
+          valueCRMColumn="madmv_ma_customerid"
+          labelCRMColumns={["madmv_fullname", "madmv_cssn"]}
+          onChange={e => this.setState({ userId: e.target.value })}
+        />
+        <br />
       </div>
     );
   }
@@ -637,7 +740,7 @@ export class CreateApplication extends React.Component {
             storeName="testLookup"
             crmTableName="customer"
             valueCRMColumn="madmv_ma_customerid"
-            labelCRMColumns={["madmv_fullname", "madmv_birthdate"]}
+            labelCRMColumns={["madmv_fullname", "madmv_cssn"]}
             onChange={e => this.setState({ userId: e.target.value })}
           />
           <br />
@@ -649,7 +752,7 @@ export class CreateApplication extends React.Component {
     }
   }
   /**
-   * returns display for new driver's license in customer section 
+   * returns display for new driver's license in customer section
    */
   newDriverDisplay() {
     return this.createCustomerView();
@@ -661,21 +764,29 @@ export class CreateApplication extends React.Component {
    * @param vId is there a vehicle connected to the application? / value from this.state.vehicleId
    */
   showSubmitBtn(appType, uId, vId) {
-    if ((appType === "", uId === "", vId === "")) {
+    if (appType === "" && uId === "" && vId === "") {
       return "";
     } else if (appType === "vehicle_reg" && uId !== "" && vId !== "") {
       return (
         <button
-          onClick={this.startCreation} //triggers the create action
+          onClick={this.createNewApplication} //triggers the create action
           className="btn btn-block btn-primary btn-lg"
         >
           SUBMIT APPLICATION
         </button>
       );
-    } else if (appType === "address_change" && uId !== "") {
+    } else if (
+      appType === "address_change" &&
+      uId !== "" &&
+      this.state.street1 !== "" &&
+      this.state.city !== "" &&
+      this.state.stateProv !== "" &&
+      this.state.zip !== "" &&
+      this.state.update_successful === true
+    ) {
       return (
         <button
-          onClick={this.startCreation} //triggers the create action
+          onClick={this.createNewApplication} //triggers the create action
           className="btn btn-block btn-primary btn-lg"
         >
           SUBMIT APPLICATION
@@ -684,7 +795,7 @@ export class CreateApplication extends React.Component {
     } else if (appType === "renew_license" && uId !== "") {
       return (
         <button
-          onClick={this.startCreation} //triggers the create action
+          onClick={this.createNewApplication} //triggers the create action
           className="btn btn-block btn-primary btn-lg"
         >
           SUBMIT APPLICATION
@@ -693,7 +804,7 @@ export class CreateApplication extends React.Component {
     } else if (appType === "new_license" && uId !== "") {
       return (
         <button
-          onClick={this.startCreation} //triggers the create action
+          onClick={this.createNewApplication} //triggers the create action
           className="btn btn-block btn-primary btn-lg"
         >
           SUBMIT APPLICATION
@@ -703,47 +814,73 @@ export class CreateApplication extends React.Component {
   }
   //||||||||||||||||||||||RENDER||||||||||||||||||||||||||||||||||||\\
   render() {
-    const appTypeSelector = (//what type of application is it?
-      <div className="input-group mb-3">
-        <select
-          className="custom-select"
-          id="appType"
-          onChange={this.applicationTypeOption}
-          value={this.state.applicationType}
-        >
-          <option defaultValue="">Choose appliction type..</option>
-          <option value="vehicle_reg">Vehicle Registration</option>
-          <option value="address_change">Address Change</option>
-          <option value="renew_license">Renew Driver&apos;s License</option>
-          <option value="new_license">New Driver&apos;s License</option>
-        </select>
-        <div className="input-group-append">
-          <label className="input-group-text" htmlFor="appType">
-            Application Type
-          </label>
+    var appTypeSelector = "";
+    var existingUserSelect = "";
+    var customerDisplay = "";
+    var vehicleDisplay = "";
+    var submitAppBtn = "";
+    var successful_msg = "";
+
+    if (this.state.application_successful === false) {
+      appTypeSelector = ( //what type of application is it?
+        <div className="input-group mb-3">
+          <select
+            className="custom-select"
+            id="appType"
+            onChange={this.applicationTypeOption}
+            value={this.state.applicationType}
+          >
+            <option defaultValue="">Choose appliction type..</option>
+            <option value="vehicle_reg">Vehicle Registration</option>
+            <option value="address_change">Address Change</option>
+            <option value="renew_license">Renew Driver&apos;s License</option>
+            <option value="new_license">New Driver&apos;s License</option>
+          </select>
+          <div className="input-group-append">
+            <label className="input-group-text" htmlFor="appType">
+              Application Type
+            </label>
+          </div>
         </div>
-      </div>
-    );
-    const existingUserSelect = this.showExisting(//is this user an existing user / for if this is a vehicle registration
-      this.state.applicationType,
-      this.state.userId
-    );
+      );
+    }
+    if (this.state.application_successful === false) {
+      existingUserSelect = this.showExisting(
+        //is this user an existing user / for if this is a vehicle registration
+        this.state.applicationType,
+        this.state.userId
+      );
+    }
+    if (this.state.application_successful === false) {
+      customerDisplay = this.applicationCustomerDisplay(
+        //who is this application for?
+        this.state.applicationType,
+        this.state.existingUser
+      );
+    }
+    if (this.state.application_successful === false) {
+      vehicleDisplay = this.applicationVehicleDisplay(
+        //is this a vehicle registration?
+        this.state.applicationType,
+        this.state.vehicleId
+      );
+    }
+    if (this.state.application_successful === false) {
+      submitAppBtn = this.showSubmitBtn(
+        //submit the application
+        this.state.applicationType,
+        this.state.userId,
+        this.state.vehicleId
+      );
+    }
+    if (this.state.application_successful === true) {
+      successful_msg = (
+        <div>
+          <h1>Application Successfully Submitted!!</h1>
+        </div>
+      );
+    }
 
-    const customerDisplay = this.applicationCustomerDisplay(//who is this application for?
-      this.state.applicationType,
-      this.state.existingUser
-    );
-
-    const vehicleDisplay = this.applicationVehicleDisplay(//is this a vehicle registration?
-      this.state.applicationType,
-      this.state.vehicleId
-    );
-
-    const submitAppBtn = this.showSubmitBtn(//submit the application
-      this.state.applicationType,
-      this.state.userId,
-      this.state.vehicleId
-    );
     //||||||||||||||||||||||RETURN||||||||||||||||||||||||||||||\\
     return (
       <div>
@@ -752,6 +889,7 @@ export class CreateApplication extends React.Component {
         {customerDisplay}
         {vehicleDisplay}
         {submitAppBtn}
+        {successful_msg}
       </div>
     );
   }
@@ -789,10 +927,11 @@ const capitalize = name => {
  * @param responseString the string that contains the id
  */
 const extractId = responseString => {
-  let newStr1 = responseString.replace(//remove the following from the url
+  let newStr1 = responseString.replace(
+    //remove the following from the url
     "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(",
     ""
   );
-  let newStr2 = newStr1.replace(")", "");//remove the the closing paren from the url
-  return newStr2;//return the extracted id
+  let newStr2 = newStr1.replace(")", ""); //remove the the closing paren from the url
+  return newStr2; //return the extracted id
 };
