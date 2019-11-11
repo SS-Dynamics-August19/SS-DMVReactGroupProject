@@ -129,7 +129,7 @@ class VehicleDetailsView extends React.Component {
                 </fieldset>
                 <div className="divCancelSave">
 
-                <button className={(this.state.disabled)?"invisible":"btn btn-primary cancel-submit btn-lg"}   onClick={this.handleCancel} type="button">Cancel</button>
+                <button className={(this.state.disabled)?"invisible":"btn btn-primary btn-danger cancel-submit btn-lg"}   onClick={this.handleCancel} type="button">Cancel</button>
                 <button className={(this.state.disabled)?"invisible":"btn btn-primary cancel-submit btn-lg"}   type="submit">Save</button>
                 </div>
             </form>
