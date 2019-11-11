@@ -211,16 +211,16 @@ export class CreateApplication extends React.Component {
       case "vehicle_reg":
         newApp.madmv_applicationtype = 876570000;
         newApp[
-          "madmv_ownerinfo@odata.bind"
+          "madmv_OwnerInfo@odata.bind"
         ] = `/madmv_ma_customers(${this.state.userId})`;
         newApp[
-          "madmv_vehicledetails@odata.bind"
+          "madmv_VehicleDetails@odata.bind"
         ] = `/madmv_ma_vehicles(${this.state.vehicleId})`;
         break;
 
       case "address_change":
         newApp.madmv_applicationtype = 876570001;
-        newApp["madmv_ownerinfo@odata.bind"] =
+        newApp["madmv_OwnerInfo@odata.bind"] =
           "/madmv_ma_customers(" + this.state.userId + ")";
         newApp.madmv_newstreet1 = this.state.street1;
         if (this.state.street2 !== "" || this.state.street2 !== null) {
@@ -234,14 +234,14 @@ export class CreateApplication extends React.Component {
       case "new_license":
         newApp.madmv_applicationtype = 876570002;
         newApp[
-          "madmv_ownerinfo@odata.bind"
+          "madmv_OwnerInfo@odata.bind"
         ] = `/madmv_ma_customers(${this.state.userId})`;
         break;
 
       case "renew_license":
         newApp.madmv_applicationtype = 876570003;
         newApp[
-          "madmv_ownerinfo@odata.bind"
+          "madmv_OwnerInfo@odata.bind"
         ] = `/madmv_ma_customers(${this.state.userId})`;
         console.log(newApp);
         break;
