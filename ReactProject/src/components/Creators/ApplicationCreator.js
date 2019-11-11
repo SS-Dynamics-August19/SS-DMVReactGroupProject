@@ -204,42 +204,46 @@ export class CreateApplication extends React.Component {
         console.log(e);
       });
   }
-  createNewApplication(appType, uId, vId) {
-    var application = {};
+  createNewApplication() {
+    let newApp = {};
 
-    switch (appType) {
+    switch (this.state.applicationType) {
       case "vehicle_reg":
-        application.madmv_applicationtype = 876570000;
-        application[
+        newApp.madmv_applicationtype = 876570000;
+        newApp[
           "madmv_ownerinfo@odata.bind"
-        ] = `/madmv_ma_customers(${uId})`;
-        application[
+        ] = `/madmv_ma_customers(${this.state.userId})`;
+        newApp[
           "madmv_vehicledetails@odata.bind"
-        ] = `/madmv_ma_vehicles(${vId})`;
+        ] = `/madmv_ma_vehicles(${this.state.vehicleId})`;
         break;
+
       case "address_change":
-        application.madmv_applicationtype = 876570001;
-        application["madmv_ownerinfo@odata.bind"] =
-          "/madmv_ma_customers(" + uId + ")";
-        application.madmv_newstreet1 = this.state.street1;
+        newApp.madmv_applicationtype = 876570001;
+        newApp["madmv_ownerinfo@odata.bind"] =
+          "/madmv_ma_customers(" + this.state.userId + ")";
+        newApp.madmv_newstreet1 = this.state.street1;
         if (this.state.street2 !== "" || this.state.street2 !== null) {
-          application.madmv_newstreet2 = this.state.street2;
+          newApp.madmv_newstreet2 = this.state.street2;
         }
-        application.madmv_newcity = this.state.city;
-        application.madmv_newstate = this.state.stateProv;
-        application.madmv_newzip = this.state.zip;
+        newApp.madmv_newcity = this.state.city;
+        newApp.madmv_newstate = this.state.stateProv;
+        newApp.madmv_newzip = this.state.zip;
         break;
+
       case "new_license":
-        application.madmv_applicationtype = 876570002;
-        application[
+        newApp.madmv_applicationtype = 876570002;
+        newApp[
           "madmv_ownerinfo@odata.bind"
-        ] = `/madmv_ma_customers(${uId})`;
+        ] = `/madmv_ma_customers(${this.state.userId})`;
         break;
+
       case "renew_license":
-        application.madmv_applicationtype = 876570003;
-        application[
+        newApp.madmv_applicationtype = 876570003;
+        newApp[
           "madmv_ownerinfo@odata.bind"
-        ] = `/madmv_ma_customers(${uId})`;
+        ] = `/madmv_ma_customers(${this.state.userId})`;
+        console.log(newApp);
         break;
     }
 
@@ -249,8 +253,10 @@ export class CreateApplication extends React.Component {
       "OData-Version": 4.0,
       Accept: "application/json",
       "Content-Type": "application/json; charset=utf-8",
-      data: application
+      data: newApp
     };
+
+
     adalApiFetch(
       axios,
       "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications",
@@ -511,7 +517,7 @@ export class CreateApplication extends React.Component {
       );
     }
 
-    return { createDisplay };
+    return createDisplay;
   }
   /**
    * decides what to render in the customer section of the page
