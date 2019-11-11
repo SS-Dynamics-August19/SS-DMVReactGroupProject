@@ -7,6 +7,7 @@
  *************************************/
 import Dispatcher from '../dispatcher/appDispatcher.js';
 import axios from 'axios';
+import { adalApiFetch } from '../adalConfig.js';
 
 /*
 Functions included in file
@@ -29,35 +30,57 @@ const ApplicationActions = {
 
         ApplicationActions.updateApplication("765fc9b6-81fd-e911-a811-000d3a36880e", app);    // function call
     */
-    updateApplication: (id, application) => {
+    updateApplication: (id, updateObj) => {
         // notify store that update has started
         Dispatcher.dispatch({
             actionType: 'update_application_started'
         });
+        let application = {
+            madmv_applicationsubject:         updateObj.madmv_applicationsubject,
+            madmv_applicationtype:            updateObj.madmv_applicationtype,
+            madmv_describeother:              updateObj.madmv_describeother,
+            madmv_insurancecompany:           updateObj.madmv_insurancecompany,
+            fee:                              updateObj.fee,
+            madmv_newcity:                    updateObj.madmv_newcity,
+            madmv_newcountry:                 updateObj.madmv_newcountry,
+            madmv_newstate:                   updateObj.madmv_newstate,
+            madmv_newstreet1:                 updateObj.madmv_newstreet1,
+            madmv_newstreet2:                 updateObj.madmv_newstreet2,
+            madmv_newzip:                     updateObj.madmv_newzip,
+            madmv_platetype:                  updateObj.madmv_platetype,
+            madmv_reasonforaddresschange:     updateObj.madmv_reasonforaddresschange,
+            madmv_registrationperiod:         updateObj.madmv_registrationperiod,
+            madmv_registrationtype:           updateObj.madmv_registrationtype,
+            madmv_reissuedplates:             updateObj.madmv_reissuedplates,
+            madmv_ssn:                        updateObj.madmv_ssn
+        }
+        application["madmv_ownerinfo@odata.bind"] = "/madmv_ma_customers(" + updateObj.madmv_ownerinfo + ")";
+        application["madmv_vehicledetails@odata.bind"] = "/madmv_ma_vehicles(" + updateObj.madmv_vehicledetails + ")";
         // build uri and headers
         let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications(" + id + ")";
         let config = {
+            method: 'patch',
             'OData-MaxVersion': 4.0,
             'OData-Version': 4.0,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-
-        // make axios put call
-        axios.patch(uri, application, config)
-            .then(res => {
-                Dispatcher.dispatch({
-                    actionType: 'update_application_success',
-                    data: res.data
-                });
-            })
-            .catch( (error) => {
-                console.log(error);
-                Dispatcher.dispatch({
-                    actionType: 'update_application_failure'
-                });
+            Accept: 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            data: application
+        };
+      
+        // send the api call
+        adalApiFetch(axios, uri, config)
+        .then(res => {
+            Dispatcher.dispatch({
+                actionType: 'update_application_success',
+                data: res.data
             });
-
+        })
+        .catch( (error) => {
+            console.log(error);
+            Dispatcher.dispatch({
+                actionType: 'update_application_failure'
+            });
+        });
     },
 
     //just send the guid of the record you want deleted in the function call ApplicationActions.deleteApplication(id)
@@ -68,23 +91,28 @@ const ApplicationActions = {
         });
         // build uri and headers
         let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications(" + id + ")";
-
-
-        // make axios put call
-
-            axios.delete(uri)
-                .then(res => {
-                    console.log(res.data);
-                    Dispatcher.dispatch({
-                    actionType: 'delete_application_success'
-                    });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    Dispatcher.dispatch({
-                        actionType: 'delete_application_failure'
-                    });
+        let config = {
+            method: 'delete',
+            'OData-MaxVersion': 4.0,
+            'OData-Version': 4.0,
+            Accept: 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+          };
+      
+        // send the api call
+        adalApiFetch(axios, uri, config)
+            .then(res => {
+                console.log(res.data);
+                Dispatcher.dispatch({
+                actionType: 'delete_application_success'
                 });
+            })
+            .catch((err) => {
+                console.log(err);
+                Dispatcher.dispatch({
+                    actionType: 'delete_application_failure'
+                });
+            });
             
 
     }
