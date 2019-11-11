@@ -26,7 +26,7 @@ export default class Subpage {
 
     toNavJSX() {
         if(this.label !== undefined) return (
-            <Switch>
+            <Switch key={this.path}>
                 <Route key={this.path + " Active"}
                     exact
                     path={this.path}>
