@@ -50,7 +50,12 @@ class VehicleDetailsView extends React.Component {
       handleSubmit (event)  {
         event.preventDefault();
         console.log(this.state);
-        VehicleActions.updateVehicle(this.state.olddata.madmv_ma_vehicleid,this.state)
+        if (this.state.madmv_vehicleidnumber === this.state.olddata.madmv_vehicleidnumber){
+            VehicleActions.updateVehicle(this.state.olddata.madmv_ma_vehicleid,this.state);
+        }
+        else {
+            VehicleActions.updateVehicleVin(this.state.olddata.madmv_ma_vehicleid, this.state.madmv_vehicleidnumber);
+        }
         //this.props.changeStore(this.state)
         this.setState({disabled: !this.state.disabled})
 
