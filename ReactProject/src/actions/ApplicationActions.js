@@ -40,7 +40,7 @@ const ApplicationActions = {
             madmv_applicationtype:            updateObj.madmv_applicationtype,
             madmv_describeother:              updateObj.madmv_describeother,
             madmv_insurancecompany:           updateObj.madmv_insurancecompany,
-            fee:                              updateObj.fee,
+            madmv_fee:                        parseInt(updateObj.madmv_fee),
             madmv_newcity:                    updateObj.madmv_newcity,
             madmv_newcountry:                 updateObj.madmv_newcountry,
             madmv_newstate:                   updateObj.madmv_newstate,
@@ -54,8 +54,7 @@ const ApplicationActions = {
             madmv_reissuedplates:             updateObj.madmv_reissuedplates,
             madmv_ssn:                        updateObj.madmv_ssn
         }
-        application["madmv_ownerinfo@odata.bind"] = "/madmv_ma_customers(" + updateObj.madmv_ownerinfo + ")";
-        application["madmv_vehicledetails@odata.bind"] = "/madmv_ma_vehicles(" + updateObj.madmv_vehicledetails + ")";
+
         // build uri and headers
         let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications(" + id + ")";
         let config = {
