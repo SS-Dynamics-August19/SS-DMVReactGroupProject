@@ -181,7 +181,7 @@ class ApplicationDetailsView extends React.Component {
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>applicationtype:</label>
-                                        <input name="madmv_applicationtype" onChange={this.handleChange} type="text" className="form-control" value={appSubject} />
+                                        <input name="madmv_applicationtype"  type="text" className="form-control" value={appSubject} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>ownerinfo:</label>
@@ -215,6 +215,7 @@ class ApplicationDetailsView extends React.Component {
         , "madmv_applicationtype", "madmv_describeother", "madmv_fee", "madmv_insurancecompany"
         , "madmv_newcity", "madmv_newcountry", "madmv_newstate", "madmv_newstreet1&$expand=madmv_OwnerInfo($select=madmv_fullname)");
         
+        
          
        
         console.log(cosQuery)
@@ -231,7 +232,7 @@ class ApplicationDetailsView extends React.Component {
             .then(function (response) {
 
 
-              
+            console.log(response.data.madmv_OwnerInfo.madmv_ma_customerid)
 
                 this.setState({
                     //customerid :response.data.madmv_OwnerInfo.madmv_ma_customerid,
