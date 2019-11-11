@@ -180,9 +180,11 @@ input {
     display: flex;
     justify-content: space-around;
 }
-
-.trDetailedView, .detailedHeader, .fieldDetailed, .h2Th {
+ .detailedHeader, .fieldDetailed, .h2Th {
     display: flex;
+}
+.trDetailedView {
+margin: auto;
 }
 
 .detailedHeader, .h2Th {
@@ -197,7 +199,11 @@ input {
 .detailedForm {
     margin-left: 18%;
 }
-
+.cancel-submit {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
 .h2Th {
     margin-bottom: 3%;
     margin-top: 3%;
