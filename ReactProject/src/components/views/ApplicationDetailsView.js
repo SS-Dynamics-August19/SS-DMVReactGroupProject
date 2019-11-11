@@ -203,7 +203,7 @@ class ApplicationDetailsView extends React.Component {
 
     fetchFromCRM() {
         let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "application", "madmv_applicationsubject"
-        , "madmv_applicationtype", "madmv_describeother", "madmv_fee", "madmv_insurancecompany"
+        , "madmv_applicationtype", "madmv_describeother", "madmv_fee", "madmv_insurancecompany", "madmv_newzip","madmv_reasonforaddresschange"
         , "madmv_newcity", "madmv_newcountry", "madmv_newstate", "madmv_newstreet1&$expand=madmv_OwnerInfo($select=madmv_fullname)");
         
         
