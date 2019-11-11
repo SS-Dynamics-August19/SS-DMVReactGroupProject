@@ -113,7 +113,7 @@ class ApplicationDetailsView extends React.Component {
                         <label>reissuedplates:</label>
                         <input name="madmv_reissuedplates" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reissuedplates} />
                     </div>
-                </div>
+                    </div>
             );
 
         } else 
@@ -149,7 +149,7 @@ class ApplicationDetailsView extends React.Component {
                         <label>newzip:</label>
                         <input name="madmv_newzip" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newzip} />
                     </div>
-                </div>
+                    </div>
             );
         }
 
@@ -158,22 +158,16 @@ class ApplicationDetailsView extends React.Component {
 
             <div className="detailedHeader">
                 <h1>Application</h1>
-                <button className="btn btn-primary" onClick={this.handleClick} type="button">Update Record</button>
+                <button className={(!this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
-                <h2>General Information</h2>
                 <h2>Detailed Information</h2>
             </div>
+          
             <form onSubmit={this.handleSubmit} className="detailedForm">
                 <fieldset disabled={(this.state.disabled) ? "disabled" : ""}>
-                    <table>
-                        <tbody>
-
-                            <tr className="trDetailedView">
-
-
-                                <th className="thDetailedView">
-                                    
+                   
+                    <div className="thDetailedView">
 
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>Application Subject:</label>
@@ -194,11 +188,8 @@ class ApplicationDetailsView extends React.Component {
                                     </div>
 
                                     {content}
-
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
+                      </div>
+                       
                 </fieldset>
 
                 <button className={(this.state.disabled)?"invisible":"btn btn-primary cancel-submit btn-lg"}   onClick={this.handleCancel} type="button">Cancel</button>
