@@ -175,7 +175,7 @@ class ApplicationDetailsView extends React.Component {
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>applicationtype:</label>
-                                        <input name="madmv_applicationtype"  type="text" className="form-control" value={appSubject} />
+                                        <input name="madmv_applicationtype" readOnly type="text" className="form-control" value={appSubject} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>ownerinfo:</label>
