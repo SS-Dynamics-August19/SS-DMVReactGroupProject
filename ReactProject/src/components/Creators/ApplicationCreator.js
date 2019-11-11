@@ -58,7 +58,7 @@ export class CreateApplication extends React.Component {
     this.vinFieldChange = this.vinFieldChange.bind(this);
   }
 
-  //|||||||||||||||||||||ALL FIELD CHANGE METHODS DEFINED BELOW||||||||||||||||||||||||\\
+  //|||||||||||||||||||||HANDLES FIELD CHANGES FOR CUSTOMER VALUE'S||||||||||||||||||||||||\\
   firstNameFieldChange(e) {
     this.setState({ firstname: capitalize(e.target.value) });
   }
@@ -89,6 +89,8 @@ export class CreateApplication extends React.Component {
   zipFieldChange(e) {
     this.setState({ zip: e.target.value });
   }
+
+  //|||||||||||||||||||||HANDLES FIELD CHANGES FOR VEHICLE VALUE'S||||||||||||||||||||||||\\
   yearFieldChange(e) {
     this.setState({ year: e.target.value });
   }
@@ -101,9 +103,9 @@ export class CreateApplication extends React.Component {
   vinFieldChange(e) {
     this.setState({ vin: e.target.value });
   }
-  //||||||||||||||||||||RETRIEVE ID||||||||||||||||||||||||||||||||||||||\\
+  //||||||||||||||||||||CREATE AND RETRIEVE ID||||||||||||||||||||||||||||||||||||||\\
   /**
-   * submits the values provided to create a new record
+   * submits the values provided to create a new customer record and returns the id
    */
   createNewCustomer() {
     let customer = {};
@@ -161,6 +163,9 @@ export class CreateApplication extends React.Component {
         console.log(e);
       });
   }
+  /**
+   * submits the values provided to create a new vehicle record and returns the id
+ */
   createNewVehicle() {
     //build record object (vehicle) for CRM from parameter object (description)
     var vehicle = {};
@@ -192,7 +197,7 @@ export class CreateApplication extends React.Component {
         console.log(e);
       });
   }
-  //|||||||||||||||||||||SET TYPE OPTIONS|||||||||||||||||||||||||||||||||||||\\
+  //|||||||||||||||||||||TYPE SELECTOR METHODS|||||||||||||||||||||||||||||||||||||\\
   /**
    * *Changes the application type when the value changes in the option set
    * @param event when the selection changes
@@ -206,32 +211,11 @@ export class CreateApplication extends React.Component {
   existingUserOption(event) {
     this.setState({ existingUser: event.target.value });
   }
-  //|||||||||||||||||||||SELECTOR DISPLAY METHODS|||||||||||||||||||||||||||||||||||||\\
   /**
    * *Sets the current display
    * @param appType value from the application type option set
    * @param existing value from the existing user option set
    */
-  applicationCustomerDisplay(appType, existing) {
-    if (existing === "" && appType === "") {
-      return "";
-    } else if (this.state.userId !== "") {
-      return <div>ID Applied..</div>;
-    } else {
-      switch (appType) {
-        case "address_change":
-          return this.addressChangeDisplay();
-        case "renew_license":
-          return this.renewLicenseDisplay();
-        case "vehicle_reg":
-          return this.vehicleRegDisplay(existing);
-        case "new_license":
-          return this.newDriverDisplay();
-        default:
-          return "";
-      }
-    }
-  }
   showExisting(apptype, id) {
     if (
       apptype === "new_license" ||
@@ -262,7 +246,10 @@ export class CreateApplication extends React.Component {
       );
     }
   }
-  //|||||||||||||||||||||CREATE VIEWS||||||||||||||||||||||||||||\\
+  //|||||||||||||||||||DISPLAY BY CONDITIONS|||||||||||||||||||||||||||||||||||||||\\
+  /**
+   * returns a customer creation view / for if customer isn't an existing user 
+   */
   createCustomerView() {
     return (
       <div className="card-header">
@@ -406,6 +393,42 @@ export class CreateApplication extends React.Component {
       </div>
     );
   }
+  /**
+   * decides what to render in the customer section of the page
+   * @param appType what type of application is being created? / value from applicationTypeOption
+   * @param existing is this an existing user? / value from existingUserOption
+   */
+  applicationCustomerDisplay(appType, existing) {
+    if (existing === "" && appType === "") {
+      return "";
+    } else if (this.state.userId !== "") {
+      return (
+        <div>
+          ID Applied..
+          <br />
+          <br />
+        </div>
+      );
+    } else {
+      switch (appType) {
+        case "address_change":
+          return this.addressChangeDisplay();
+        case "renew_license":
+          return this.renewLicenseDisplay();
+        case "vehicle_reg":
+          return this.vehicleRegDisplay(existing);
+        case "new_license":
+          return this.newDriverDisplay();
+        default:
+          return "";
+      }
+    }
+  }
+  /**
+   * decides what to render in the vehicle section of the page
+   * @param appType what type of application is being created? / value from applicationTypeOption
+   * @param vId is there a vehicle applied to the application already? / value from this.state.vehicleId
+   */
   applicationVehicleDisplay(appType, vId) {
     if (appType === "vehicle_reg" && vId === "") {
       let thisYear = new Date().getFullYear(); //to set the max value on the year field
@@ -478,7 +501,9 @@ export class CreateApplication extends React.Component {
       return "";
     }
   }
-  //|||||||||||||||||||DISPLAY BY CONDITIONS|||||||||||||||||||||||||||||||||||||||\\
+  /**
+   * returns an update address view in the customer section
+   */
   addressChangeDisplay() {
     return (
       <div className="">
@@ -552,6 +577,9 @@ export class CreateApplication extends React.Component {
       </div>
     );
   }
+  /**
+   * returns a renew driver's license display in the customer section
+   */
   renewLicenseDisplay() {
     return (
       <div className="">
@@ -597,24 +625,41 @@ export class CreateApplication extends React.Component {
       </div>
     );
   }
+  /**
+   * returns the vehicle registration display
+   * @param existing is this customer an existing customer? / value from existingUserOption
+   */
   vehicleRegDisplay(existing) {
     if (existing === "yes") {
       return (
-        <LookupFieldFormControl
-          storeName="testLookup"
-          crmTableName="customer"
-          valueCRMColumn="madmv_ma_customerid"
-          labelCRMColumns={["madmv_fullname", "madmv_birthdate"]}
-          onChange={e => this.setState({ userId: e.target.value })}
-        />
+        <div>
+          <LookupFieldFormControl
+            storeName="testLookup"
+            crmTableName="customer"
+            valueCRMColumn="madmv_ma_customerid"
+            labelCRMColumns={["madmv_fullname", "madmv_birthdate"]}
+            onChange={e => this.setState({ userId: e.target.value })}
+          />
+          <br />
+          <br />
+        </div>
       );
     } else {
       return this.createCustomerView();
     }
   }
+  /**
+   * returns display for new driver's license in customer section 
+   */
   newDriverDisplay() {
     return this.createCustomerView();
   }
+  /**
+   * shows submit application button if the base requirements are met for the application type
+   * @param appType the type of application being created / value from this.state.applicationType
+   * @param uId is there a customer connected to the application? / value from this.state.userId
+   * @param vId is there a vehicle connected to the application? / value from this.state.vehicleId
+   */
   showSubmitBtn(appType, uId, vId) {
     if ((appType === "", uId === "", vId === "")) {
       return "";
@@ -658,7 +703,7 @@ export class CreateApplication extends React.Component {
   }
   //||||||||||||||||||||||RENDER||||||||||||||||||||||||||||||||||||\\
   render() {
-    const appTypeSelector = (
+    const appTypeSelector = (//what type of application is it?
       <div className="input-group mb-3">
         <select
           className="custom-select"
@@ -679,22 +724,22 @@ export class CreateApplication extends React.Component {
         </div>
       </div>
     );
-    const existingUserSelect = this.showExisting(
+    const existingUserSelect = this.showExisting(//is this user an existing user / for if this is a vehicle registration
       this.state.applicationType,
       this.state.userId
     );
 
-    const customerDisplay = this.applicationCustomerDisplay(
+    const customerDisplay = this.applicationCustomerDisplay(//who is this application for?
       this.state.applicationType,
       this.state.existingUser
     );
 
-    const vehicleDisplay = this.applicationVehicleDisplay(
+    const vehicleDisplay = this.applicationVehicleDisplay(//is this a vehicle registration?
       this.state.applicationType,
       this.state.vehicleId
     );
 
-    const submitAppBtn = this.showSubmitBtn(
+    const submitAppBtn = this.showSubmitBtn(//submit the application
       this.state.applicationType,
       this.state.userId,
       this.state.vehicleId
@@ -713,13 +758,17 @@ export class CreateApplication extends React.Component {
 }
 
 //||||||||||||||||||||MISC|||||||||||||||||||||||||||\\
+/**
+ * capitalizes the first letter in a name / takes into consideration multi-word names
+ * @param name the name being formatted
+ */
 const capitalize = name => {
   if (typeof name !== "string") {
     //check the type of the value to make sure string methods can be applied
     return "";
   } else {
     let lowercased = name.toLowerCase(); //lowercase the entire string
-    let capped = []; //array of capitalized words
+    let capped = []; //create empty array of capitalized words
     let forMultiWordName = lowercased.split(" "); //will create an array of lowercased words, if its only one word the array will only contain that one word
     forMultiWordName.map(element => {
       //will capitalize the first letter of each word in the array and add the word to the capped array
@@ -731,14 +780,19 @@ const capitalize = name => {
       newName += `${element} `;
     });
 
-    return newName.trim(); //delete the space at the end of the string
+    return newName.trim(); //delete the space at the end of the string and return it as the newly formatted name
   }
 };
+
+/**
+ * the id can be extracted from within the response's url
+ * @param responseString the string that contains the id
+ */
 const extractId = responseString => {
-  let newStr1 = responseString.replace(
+  let newStr1 = responseString.replace(//remove the following from the url
     "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(",
     ""
   );
-  let newStr2 = newStr1.replace(")", "");
-  return newStr2;
+  let newStr2 = newStr1.replace(")", "");//remove the the closing paren from the url
+  return newStr2;//return the extracted id
 };
