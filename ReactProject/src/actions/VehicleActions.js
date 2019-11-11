@@ -55,7 +55,6 @@ const VehicleActions = {
             madmv_ma_vehicleid: updateObj.madmv_ma_vehicleid,
             madmv_modelorseries: updateObj.madmv_modelorseries,
             madmv_typeofvehicle: updateObj.madmv_typeofvehicle,
-            madmv_vehicleidnumber: updateObj.madmv_vehicleidnumber,
             madmv_vehiclemake: updateObj.madmv_vehiclemake,
             madmv_yearmodel: updateObj.madmv_yearmodel
         }
@@ -97,53 +96,55 @@ const VehicleActions = {
      * Return: none
      **********************************************/
     updateVehicleVin: (id, vin) => {
-        // notify store that update has started
-        Dispatcher.dispatch({
-            actionType: 'update_vehicle_started'
-        });
-        // make call to vin decoder api
-        let webApi = "https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/";
-        let apiParams = "?format=json";
-        // build uri and headers
-        let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles(" + id + ")";
-
-        axios.get(webApi+vin+apiParams)
-            .then(res => {
-                // create the vehicle object
-                let vehicle = parseVinDecodeResult(res.data.Results[0]);
-                vehicle["madmv_vehicleidnumber"] = vin;
-                console.log(vehicle);
-                // make the axios call to Dynamics CRM to update the vehicle
-                let config = {
-                    method: 'patch',
-                    'OData-MaxVersion': 4.0,
-                    'OData-Version': 4.0,
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json; charset=utf-8',
-                    data: vehicle
-                  };
-              
-                // send the api call
-                adalApiFetch(axios, uri, config)
-                    .then(res => {
-                        Dispatcher.dispatch({
-                            actionType: 'update_vehicle_success',
-                            data: res.data
-                        });
-                    })
-                    .catch( (error) => {
-                        console.log(error);
-                        Dispatcher.dispatch({
-                            actionType: 'update_vehicle_failure'
-                        });
-                    });
-            })
-            .catch( (error) => {
-                console.log(error);
-                Dispatcher.dispatch({
-                    actionType: 'update_vehicle_failure'
-                });
+        if (id !== "" && id !== null && vin !== null && vin !== ""){
+            // notify store that update has started
+            Dispatcher.dispatch({
+                actionType: 'update_vehicle_started'
             });
+            // make call to vin decoder api
+            let webApi = "https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/";
+            let apiParams = "?format=json";
+            // build uri and headers
+            let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles(" + id + ")";
+
+            axios.get(webApi+vin+apiParams)
+                .then(res => {
+                    // create the vehicle object
+                    let vehicle = parseVinDecodeResult(res.data.Results[0]);
+                    vehicle["madmv_vehicleidnumber"] = vin;
+                    console.log(vehicle);
+                    // make the axios call to Dynamics CRM to update the vehicle
+                    let config = {
+                        method: 'patch',
+                        'OData-MaxVersion': 4.0,
+                        'OData-Version': 4.0,
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json; charset=utf-8',
+                        data: vehicle
+                    };
+                
+                    // send the api call
+                    adalApiFetch(axios, uri, config)
+                        .then(res => {
+                            Dispatcher.dispatch({
+                                actionType: 'update_vehicle_success',
+                                data: res.data
+                            });
+                        })
+                        .catch( (error) => {
+                            console.log(error);
+                            Dispatcher.dispatch({
+                                actionType: 'update_vehicle_failure'
+                            });
+                        });
+                })
+                .catch( (error) => {
+                    console.log(error);
+                    Dispatcher.dispatch({
+                        actionType: 'update_vehicle_failure'
+                    });
+                });
+        }
     },
       /**
    * *Send vehicle create request to the Dynamics365 api
