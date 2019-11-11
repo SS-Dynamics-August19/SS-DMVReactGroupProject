@@ -86,17 +86,15 @@ export default class ActivitiesHome extends React.Component {
         
 
         let pieData = {
-                  labels: ["Vehicle Registration", "Address Change"],
+                  labels: ["Vehicle Registration", "Address Change", "New License", "License Renewal"],
                   datasets: [
                     {
                       data: this.appTypeCounter(appRecords),
                       backgroundColor: [
-                        "#F7464A",
-                        "#46BFBD"
+                        "#F7464A", "#46BFBD", "#FDB45C", "#949FB1"
                       ],
                       hoverBackgroundColor: [
-                        "#FF5A5E",
-                        "#5AD3D1"
+                        "#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5"
                       ]
                     }
                   ]
