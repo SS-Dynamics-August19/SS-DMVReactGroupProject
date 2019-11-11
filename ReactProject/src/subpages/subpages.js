@@ -7,8 +7,9 @@ import customersView     from "../components/views/CustomersView.js";
 import applicationsView  from "../components/views/ApplicationsView.js";
 import historyView  from "../components/views/HistoryView.js";
 import vehiclesView      from "../components/views/VehiclesView.js";
+import {CreateApplication} from '../components/Creators/ApplicationCreator.js';
 import CustomerDetails   from "../components/views/CustomerDetailsView.js";
-import ApplicationDetails   from "../components/views/ApplicationDetailsView.js";
+import ApplicationDetails from "../components/views/ApplicationDetailsView.js";
 import VehicleDetails    from "../components/views/VehicleDetailsView.js";
 import URLParamsEchoDemo from "../components/Test or Demo/URLParamsEchoDemo.js";
 import testLookupFormControl from "../components/Test or Demo/TestLookupFormControl.js"
@@ -30,6 +31,7 @@ const subpages = [
     new Subpage(vehiclesView,          Constants.FUNCTIONAL,      "/Vehicles",           "Vehicles"),
     new Subpage(applicationsView,      Constants.FUNCTIONAL,      "/Applications",       "Applications"),
     new Subpage(historyView,           Constants.FUNCTIONAL,      "/History",            "History"),
+    new Subpage(CreateApplication,     Constants.REACT_COMPONENT, "/NewApplication",     "Start New Application"),
     new Subpage(CustomerDetails,       Constants.REACT_COMPONENT, "/CustomerDetails/:id"),
     new Subpage(ApplicationDetails,    Constants.REACT_COMPONENT, "/ApplicationDetails/:id"),
     new Subpage(VehicleDetails,        Constants.REACT_COMPONENT, "/VehicleDetails/:id"),

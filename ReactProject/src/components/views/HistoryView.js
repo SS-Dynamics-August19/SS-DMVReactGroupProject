@@ -4,7 +4,10 @@ import CRMView from "./CRMView";
 
 let _DATA_TYPE = "applicationhist";
 let _COLUMNS = [
-                { label: 'Applicationhistory ID',  field: 'madmv_appidhist'}
+                { label: 'Application ID',  field: 'madmv_appidhist'},
+                { label: 'Subject',       field: 'madmv_applicationsubject' },
+                { label: 'Deletion Time', field: 'createdon' }
+
 ];
 let extrarow =[{ label:' ',     field: 'click' },{ label:' ',    field: 'checkbox' }]
 let _headCOLUMNS=_COLUMNS.concat(extrarow)

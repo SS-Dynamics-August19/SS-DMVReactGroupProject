@@ -4,7 +4,7 @@ import VehicleActions from "../../actions/VehicleActions";
 
 /**
  * *Component with input fields for creating a vehicle record in the CRM
- * @param props should be the global state ~ actions will dispatch a status of the creation and this component will render success or failure message based on results
+ * @param modal boolean / if true this component renders with a submit button for quick create inside a modal
  */
 export class VehicleCreator extends React.Component {
   constructor(props) {
@@ -38,22 +38,24 @@ export class VehicleCreator extends React.Component {
   vinFieldChange(e) {
     this.setState({ vin: e.target.value });
   }
+  /**
+   * submits the values provided to create a new record
+   */
   startCreation() {
-    //submit values when form is complete
     VehicleActions.createVehicle(this.state);
   }
 
   render() {
-    let display = "";
-    let thisYear = new Date().getFullYear();
-    let button = "";
+    let display = ""//display's the form
+    let thisYear = new Date().getFullYear();//to set the max value on the year field
+    let button = "";//will display a button if this component is in a modal
 
-    display = ( // default (no change in global state) / display's the form since creationStatus didn't return success or failure
+    display = ( //displays the form
       <div className="card-header">
         <div className="input-group mb-3">
           <input
             type="number"
-            max={thisYear + 1}
+            max={thisYear + 1}//next year's model should be the max value in this field
             onChange={this.yearFieldChange}
             className="form-control"
             placeholder="Enter year of car's release .."
@@ -105,12 +107,12 @@ export class VehicleCreator extends React.Component {
         </div>
       </div>
     );
-    if (this.props.modal === true) {
+    if (this.props.modal === true) {//this component is in a modal
       button = (
         <div>
           <hr />
           <button
-            onClick={this.startCreation} //should trigger the submit action
+            onClick={this.startCreation} //triggers the create action
             className="btn btn-block btn-primary btn-lg"
           >
             SUBMIT

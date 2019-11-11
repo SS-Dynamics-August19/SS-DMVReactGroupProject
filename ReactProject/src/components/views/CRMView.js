@@ -138,6 +138,15 @@ export default class CRMView extends React.Component {
 
     addInputs(record) {
         //console.log(record);
+        if (this.props.dataType == "applicationhist"){
+            record.checkbox = (<button
+                className="btn btn-sm btn-danger"
+                onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record["madmv_ma_" + this.props.dataType + "id"]) }}
+            >
+                Undo
+            </button>
+            );
+        } else {
         record.click = (
             <button
                 className="btn btn-sm btn-primary"
@@ -156,6 +165,7 @@ export default class CRMView extends React.Component {
             Delete
         </button>
         );
+        }
     }
 
 
