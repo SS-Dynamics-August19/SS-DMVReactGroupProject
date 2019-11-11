@@ -26,7 +26,7 @@ const subpages = [
     //                                               cations",    "application"),
     //                                                                                   (optional - if absent, will not render a nav tab)
     //          Component Reference,   Type of reference,         URL route to use,      Label for nav tab
-    new Subpage(Activities,            Constants.REACT_COMPONENT, "/Activities",         "Activities"),
+    new Subpage(Activities,            Constants.REACT_COMPONENT, "/",         "Activities"),
     new Subpage(customersView,         Constants.FUNCTIONAL,      "/Customers",          "Customers"),
     new Subpage(vehiclesView,          Constants.FUNCTIONAL,      "/Vehicles",           "Vehicles"),
     new Subpage(applicationsView,      Constants.FUNCTIONAL,      "/Applications",       "Applications"),
