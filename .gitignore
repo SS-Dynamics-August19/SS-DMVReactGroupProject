@@ -4,5 +4,7 @@
 **/ReactProject/dist
 **/ReactProject/package-lock.json
 **/.vs
+**/.vscode
 **/*.sh
 **/*.bat
+**/.DS_Store
