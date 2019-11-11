@@ -128,6 +128,10 @@ export default class CRMView extends React.Component {
     cleanupNullFieldValues(record) {
         for (const field of Object.keys(record)) {
             if (record[field] === null) record[field] = " ";
+            if (field == "createdon")
+            {
+                record[field] = record[field].split("T")[0];
+            }
         }
     }
 
