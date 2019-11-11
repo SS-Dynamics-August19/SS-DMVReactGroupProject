@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { State } from "../../constants/DataLoaderConstants.js";
 import DataLoader from "../../actions/DataLoader.js";
 import stores from "../../stores/stores.js";
-import { MDBDataTable, Row, Col, Card, CardBody } from 'mdbreact';
+import { MDBDataTable } from 'mdbreact';
 import ApplicationActions from "../../actions/ApplicationActions.js";
 import CustomerActions from "../../actions/CustomerActions.js";
 import VehicleActions from "../../actions/VehicleActions.js";
@@ -82,20 +82,12 @@ export default class CRMView extends React.Component {
 
         return (
             <div>
-                <Row className="mb-4">
-                    <Col md="12">
-                        <Card>
-                            <CardBody>
-                                <MDBDataTable
-                                    striped
-                                    bordered
-                                    hover
-                                    data={content}
-                                />
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
+                <MDBDataTable
+                    striped
+                    bordered
+                    hover
+                    data={content}
+                />
                 <div className="pb-4">
                     <Modal comp={this.props.dataType} text="Create New" />
                 </div>
@@ -153,7 +145,7 @@ export default class CRMView extends React.Component {
                 //onClick={() => this.handleView(record)}
                 onClick={() => this.handleView(record["madmv_ma_" + this.props.dataType + "id"])}
             >
-                Detail Info
+                Detailed Info
             </button>
         );
         //base on table type, pass the right id into delete function, also in the delete function, we

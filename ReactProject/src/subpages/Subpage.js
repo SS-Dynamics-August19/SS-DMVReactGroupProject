@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Link } from "react-router-dom";
-//import stores from "../stores/stores.js";
+import { Switch, Route, Link } from "react-router-dom";
 import Constants from "../constants/SubpageConstants.js";
 
 /**Usage:
@@ -27,9 +26,18 @@ export default class Subpage {
 
     toNavJSX() {
         if(this.label !== undefined) return (
-            <Link key={this.label} to={this.path} replace>
-                <li className="nav-list"> {this.label} </li>
-            </Link>
+            <Switch>
+                <Route key={this.path + " Active"}
+                    exact
+                    path={this.path}>
+                    <li className="active-nav-list"> {this.label} </li>
+                </Route>
+                <Route key={this.path + " Inactive"}>
+                    <Link key={this.label} to={this.path} replace>
+                        <li className="nav-list"> {this.label} </li>
+                    </Link>
+                </Route>
+            </Switch>
         );
     }
 

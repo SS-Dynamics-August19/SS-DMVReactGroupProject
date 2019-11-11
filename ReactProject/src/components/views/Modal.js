@@ -63,10 +63,10 @@ const ModalContent = ({ onClose, comp, record }) => {
   let componentType = "";
   switch (comp) {//switch on the component type
     case "customer":
-      componentType = <CustomerCreator modal={true} />;
+      componentType = <CustomerCreator modal={true} modalClose={onClose} />;
       break;
     case "vehicle":
-      componentType = <VehicleCreator modal={true} />;
+      componentType = <VehicleCreator modal={true} modalClose={onClose} />;
       break;
     case "customerdetail":
       componentType = <CustomerDetailsView customer={record} />;
