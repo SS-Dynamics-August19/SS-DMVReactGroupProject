@@ -80,7 +80,9 @@ export default class CRMView extends React.Component {
             CustomerActions.deleteCustomer(id)
         else if(deletetype == 'vehicle') 
             VehicleActions.deleteVehicle(id)
-    }
+        else if(deletetype == 'applicationhist') 
+            ApplicationActions.undoApplication(id)
+        }
 
     getSuccessContent() {
         let content = {
@@ -154,6 +156,15 @@ export default class CRMView extends React.Component {
 
 //base on table type, pass the right id into delete function, also in the delete function, we
 //have to check the type to make sure run the right delete action.
+        if(this.props.dataType == 'applicationhist')
+        record.checkbox =(<button
+            className="btn btn-sm btn-danger"
+            onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(record.madmv_ma_applicationhistid)}}
+            >
+            Delete
+        </button>
+        );
+
         if(this.props.dataType == 'application')
         record.checkbox =(<button
             className="btn btn-sm btn-danger"

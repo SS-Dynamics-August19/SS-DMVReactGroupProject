@@ -5,6 +5,7 @@ import Login             from "../components/Login/Login.js";
 import Activities        from "../components/ActivitiesHome.js";
 import customersView     from "../components/views/CustomersView.js";
 import applicationsView  from "../components/views/ApplicationsView.js";
+import historyView  from "../components/views/HistoryView.js";
 import vehiclesView      from "../components/views/VehiclesView.js";
 import CustomerDetails   from "../components/views/CustomerDetailsView.js";
 import URLParamsEchoDemo from "../components/Test or Demo/URLParamsEchoDemo.js";
@@ -27,6 +28,7 @@ const subpages = [
     new Subpage(customersView,       Constants.FUNCTIONAL,      "/Customers",       "Customers",       "customer"),
     new Subpage(vehiclesView,        Constants.FUNCTIONAL,      "/Vehicles",        "Vehicles",        "vehicle"),
     new Subpage(applicationsView,    Constants.FUNCTIONAL,      "/Applications",    "Applications",    "application"),
+    new Subpage(historyView,    Constants.FUNCTIONAL,      "/History",    "History"),
     new Subpage(CustomerDetails,     Constants.REACT_COMPONENT, "/CustomerDetails", null,              "customer").setNoNavigation(),
     new Subpage(URLParamsEchoDemo,   Constants.REACT_COMPONENT, "/Echo/:echoText").setNoNavigation()
 ];

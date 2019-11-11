@@ -25,6 +25,7 @@ const stores = {
     application: new CRMQueryListenerDataStore("application"),
     vehicle:     new CRMQueryListenerDataStore("vehicle"),
     user:        new CRMQueryListenerDataStore("user"),
+    applicationhist:     new CRMQueryListenerDataStore("applicationhist"),
     login:       new GenericDataStore("login", defaultLoginState, loginEventHandlers)
 };
 export default stores;
