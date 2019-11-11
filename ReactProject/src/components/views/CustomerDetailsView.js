@@ -88,13 +88,10 @@ class CustomerDetailsView extends React.Component {
             </div>
             <form onSubmit={this.handleSubmit} className="detailedForm">
                 <fieldset disabled={(this.state.disabled) ? "disabled" : ""}>
-                    <table>
-                        <tbody>
-
-                            <tr className="trDetailedView">
+                   
 
                             
-                                <th className="thDetailedView">
+                                <div className="thDetailedView">
 
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>First Name:</label>
@@ -143,10 +140,9 @@ class CustomerDetailsView extends React.Component {
                                         <label>Country:</label>
                                         <input name="madmv_country" onChange={this.handleChange} type="text" className="form-control" value={customer.madmv_country} />
                                     </div>
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
+                                </div>
+                           
+                      
                 </fieldset>
 
                 <button className={(this.state.disabled)?"invisible":"btn btn-primary cancel-submit btn-lg"}   onClick={this.handleCancel} type="button">Cancel</button>
