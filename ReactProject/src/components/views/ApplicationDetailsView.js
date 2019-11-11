@@ -223,8 +223,6 @@ class ApplicationDetailsView extends React.Component {
             .then(function (response) {
 
 
-            console.log(response.data.madmv_OwnerInfo.madmv_ma_customerid)
-
                 this.setState({
                     //customerid :response.data.madmv_OwnerInfo.madmv_ma_customerid,
                     olddata:                    response.data,
