@@ -179,7 +179,7 @@ class ApplicationDetailsView extends React.Component {
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>ownerinfo:</label>
-                                        <input name="madmv_ownerinfo" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_ownerinfo} />
+                                        <input name="madmv_ownerinfo" readOnly type="text" className="form-control" value={application.madmv_ownerinfo} />
                                     </div>
                                    
                                     <div className="form-group fieldDetailed form-inline">
