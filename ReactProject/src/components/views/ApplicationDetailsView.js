@@ -12,6 +12,7 @@ class ApplicationDetailsView extends React.Component {
         this.state = {
             loaded: false,
             disabled: true,
+            
         };
         this.handleClick = this.handleClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -90,27 +91,27 @@ class ApplicationDetailsView extends React.Component {
                 <div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>Vehicle:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_vehicledetails} />
+                        <input name="madmv_vehicledetails" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_vehicledetails} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>insurancecompany:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_insurancecompany} />
+                        <input name="madmv_insurancecompany" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_insurancecompany} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>platetype:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_platetype} />
+                        <input name="madmv_platetype" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_platetype} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>registrationperiod:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationperiod} />
+                        <input name="madmv_registrationperiod" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationperiod} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>registrationtype:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationtype} />
+                        <input name="madmv_registrationtype" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_registrationtype} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>reissuedplates:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reissuedplates} />
+                        <input name="madmv_reissuedplates" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reissuedplates} />
                     </div>
                 </div>
             );
@@ -122,31 +123,31 @@ class ApplicationDetailsView extends React.Component {
                 <div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>reasonforaddresschange:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reasonforaddresschange} />
+                        <input name="e={application.mad" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reasonforaddresschange} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>newcity:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcity} />
+                        <input name="madmv_newcity" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcity} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>newcountry:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcountry} />
+                        <input name="madmv_newcountry" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newcountry} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>newstate:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstate} />
+                        <input name="madmv_newstate" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstate} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>newstreet1:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet1} />
+                        <input name="madmv_newstreet1" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet1} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>newstreet2:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet2} />
+                        <input name="madmv_newstreet2" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newstreet2} />
                     </div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>newzip:</label>
-                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newzip} />
+                        <input name="madmv_newzip" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newzip} />
                     </div>
                 </div>
             );
@@ -176,23 +177,20 @@ class ApplicationDetailsView extends React.Component {
 
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>Application Subject:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_applicationsubject} />
+                                        <input name="madmv_applicationsubject" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_applicationsubject} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>applicationtype:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={appSubject} />
+                                        <input name="madmv_applicationtype" onChange={this.handleChange} type="text" className="form-control" value={appSubject} />
                                     </div>
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>ownerinfo:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_ownerinfo} />
+                                        <input name="madmv_ownerinfo" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_ownerinfo} />
                                     </div>
-                                    <div className="form-group fieldDetailed form-inline">
-                                        <label>ssn:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_ssn} />
-                                    </div>
+                                   
                                     <div className="form-group fieldDetailed form-inline">
                                         <label>fee:</label>
-                                        <input name="madmv_firstname" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_fee} />
+                                        <input name="madmv_fee" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_fee} />
                                     </div>
 
                                     {content}
@@ -215,9 +213,12 @@ class ApplicationDetailsView extends React.Component {
     fetchFromCRM() {
         let cosQuery = DataLoader.generateDynamicsQuerySingleRecord(this.props.match.params.id, "application", "madmv_applicationsubject"
         , "madmv_applicationtype", "madmv_describeother", "madmv_fee", "madmv_insurancecompany"
-        , "madmv_newcity", "madmv_newcountry", "madmv_newstate", "madmv_newstreet1");
+        , "madmv_newcity", "madmv_newcountry", "madmv_newstate", "madmv_newstreet1&$expand=madmv_OwnerInfo($select=madmv_fullname)");
+        
+         
+       
+        console.log(cosQuery)
 
-        //console.log(cosQuery);
         let config = {
             'method': 'get',
             'OData-MaxVersion': 4.0,
@@ -228,10 +229,12 @@ class ApplicationDetailsView extends React.Component {
 
         adalApiFetch(axios, cosQuery, config)
             .then(function (response) {
-                console.log(response);
-                
+
+
+              
+
                 this.setState({
-                    
+                    //customerid :response.data.madmv_OwnerInfo.madmv_ma_customerid,
                     olddata:                    response.data,
                     madmv_applicationsubject:   response.data.madmv_applicationsubject,
                     madmv_applicationtype:   response.data.madmv_applicationtype,
@@ -244,7 +247,7 @@ class ApplicationDetailsView extends React.Component {
                     madmv_newstreet1:   response.data.madmv_newstreet1,
                     madmv_newstreet2:   response.data.madmv_newstreet2,
                     madmv_newzip:   response.data.madmv_newzip,
-                    madmv_ownerinfo:   response.data.madmv_ownerinfo,
+                    madmv_ownerinfo:   response.data.madmv_OwnerInfo.madmv_fullname,
                     madmv_platetype:   response.data.madmv_platetype,
                     madmv_reasonforaddresschange:   response.data.madmv_reasonforaddresschange,
                     madmv_registrationperiod:   response.data.madmv_registrationperiod,
@@ -252,11 +255,17 @@ class ApplicationDetailsView extends React.Component {
                     madmv_reissuedplates:   response.data.madmv_reissuedplates,
                     madmv_ssn:   response.data.madmv_ssn,
                     madmv_vehicledetails:   response.data.madmv_vehicledetails,
+
                     loaded: true
                 });
-            }.bind(this));
+
+
+
+            }.bind(this))
+        }
     }
-}
+
+
 ApplicationDetailsView.propTypes = {
     match: PropTypes.object.isRequired
 };
