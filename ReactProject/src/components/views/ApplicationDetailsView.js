@@ -88,7 +88,7 @@ class ApplicationDetailsView extends React.Component {
         {
             appSubject = "Vehicle Registration"
             content = (
-                <div  className="thDetailedView">
+                <div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>Vehicle:</label>
                         <input name="madmv_vehicledetails" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_vehicledetails} />
@@ -113,14 +113,14 @@ class ApplicationDetailsView extends React.Component {
                         <label>reissuedplates:</label>
                         <input name="madmv_reissuedplates" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reissuedplates} />
                     </div>
-                </div>
+                    </div>
             );
 
         } else 
         {
             appSubject = "Address Change";
             content = (
-                <div   className="thDetailedView">
+                <div>
                     <div className="form-group fieldDetailed form-inline">
                         <label>reasonforaddresschange:</label>
                         <input name="e={application.mad" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_reasonforaddresschange} />
@@ -149,7 +149,7 @@ class ApplicationDetailsView extends React.Component {
                         <label>newzip:</label>
                         <input name="madmv_newzip" onChange={this.handleChange} type="text" className="form-control" value={application.madmv_newzip} />
                     </div>
-                </div>
+                    </div>
             );
         }
 
@@ -158,7 +158,7 @@ class ApplicationDetailsView extends React.Component {
 
             <div className="detailedHeader">
                 <h1>Application</h1>
-                <button className="btn btn-primary" onClick={this.handleClick} type="button">Update Record</button>
+                <button className={(this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
                 <h2>Detailed Information</h2>
