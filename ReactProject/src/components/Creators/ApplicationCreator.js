@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { adalApiFetch } from "../../adalConfig";
 import LookupFieldFormControl from "../Lookup/LookupFieldFormControl";
 
 export class CreateApplication extends React.Component {
@@ -31,7 +32,9 @@ export class CreateApplication extends React.Component {
     this.applicationTypeOption = this.applicationTypeOption.bind(this);
     this.existingUserOption = this.existingUserOption.bind(this);
     this.showExisting = this.showExisting.bind(this);
-    this.applicationCustomerDisplay = this.applicationCustomerDisplay.bind(this);
+    this.applicationCustomerDisplay = this.applicationCustomerDisplay.bind(
+      this
+    );
     this.applicationVehicleDisplay = this.applicationVehicleDisplay.bind(this);
     this.addressChangeDisplay = this.addressChangeDisplay.bind(this);
     this.updateUserAddress = this.updateUserAddress.bind(this);
@@ -143,17 +146,18 @@ export class CreateApplication extends React.Component {
     }
     customer.madmv_fullname = `${this.state.firstname} ${this.state.lastname}`;
     let config = {
+      method: "post",
       "OData-MaxVersion": 4.0,
       "OData-Version": 4.0,
       Accept: "application/json",
-      "Content-Type": "application/json; charset=utf-8"
+      "Content-Type": "application/json; charset=utf-8",
+      data: customer
     };
-    axios
-      .post(
-        "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers",
-        customer,
-        config
-      )
+    adalApiFetch(
+      axios,
+      "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers",
+      config
+    )
       .then(res => {
         this.setState({
           userId: extractId(res.headers["odata-entityid"])
@@ -176,18 +180,19 @@ export class CreateApplication extends React.Component {
     vehicle.madmv_modelorseries = this.state.model;
     vehicle.madmv_vehicleidnumber = this.state.vin;
     let config = {
+      method: "post",
       "OData-MaxVersion": 4.0,
       "OData-Version": 4.0,
       Accept: "application/json",
-      "Content-Type": "application/json; charset=utf-8"
+      "Content-Type": "application/json; charset=utf-8",
+      data: vehicle
     };
 
-    axios
-      .post(
-        "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles",
-        vehicle,
-        config
-      )
+    adalApiFetch(
+      axios,
+      "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_vehicles",
+      config
+    )
       .then(res => {
         this.setState({
           vehicleId: extractId(res.headers["odata-entityid"])
@@ -205,12 +210,17 @@ export class CreateApplication extends React.Component {
     switch (appType) {
       case "vehicle_reg":
         application.madmv_applicationtype = 876570000;
-        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
-        application["madmv_vehicledetails@odata.bind"] = `/madmv_ma_vehicles(${vId})`;
+        application[
+          "madmv_ownerinfo@odata.bind"
+        ] = `/madmv_ma_customers(${uId})`;
+        application[
+          "madmv_vehicledetails@odata.bind"
+        ] = `/madmv_ma_vehicles(${vId})`;
         break;
       case "address_change":
         application.madmv_applicationtype = 876570001;
-        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        application["madmv_ownerinfo@odata.bind"] =
+          "/madmv_ma_customers(" + uId + ")";
         application.madmv_newstreet1 = this.state.street1;
         if (this.state.street2 !== "" || this.state.street2 !== null) {
           application.madmv_newstreet2 = this.state.street2;
@@ -221,26 +231,31 @@ export class CreateApplication extends React.Component {
         break;
       case "new_license":
         application.madmv_applicationtype = 876570002;
-        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        application[
+          "madmv_ownerinfo@odata.bind"
+        ] = `/madmv_ma_customers(${uId})`;
         break;
       case "renew_license":
         application.madmv_applicationtype = 876570003;
-        application["madmv_ownerinfo@odata.bind"] = `/madmv_ma_customers(${uId})`;
+        application[
+          "madmv_ownerinfo@odata.bind"
+        ] = `/madmv_ma_customers(${uId})`;
         break;
     }
 
     let config = {
+      method: "post",
       "OData-MaxVersion": 4.0,
       "OData-Version": 4.0,
       Accept: "application/json",
-      "Content-Type": "application/json; charset=utf-8"
+      "Content-Type": "application/json; charset=utf-8",
+      data: application
     };
-    axios
-      .post(
-        "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications",
-        application,
-        config
-      )
+    adalApiFetch(
+      axios,
+      "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_applications",
+      config
+    )
       .then(() => {
         this.setState({
           application_successful: true
@@ -264,19 +279,20 @@ export class CreateApplication extends React.Component {
     customer.madmv_zippostalcode = this.state.zip;
 
     let config = {
+      method: "patch",
       "OData-MaxVersion": 4.0,
       "OData-Version": 4.0,
       Accept: "application/json",
-      "Content-Type": "application/json; charset=utf-8"
+      "Content-Type": "application/json; charset=utf-8",
+      data: customer
     };
 
     // make axios put call
-    axios
-      .patch(
-        `https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(${this.state.userId})`,
-        customer,
-        config
-      )
+    adalApiFetch(
+      axios,
+      `https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(${this.state.userId})`,
+      config
+    )
       .then(() => alert("updated successfully"))
       .then(() => {
         this.setState({
@@ -342,147 +358,160 @@ export class CreateApplication extends React.Component {
    * returns a customer creation view / for if customer isn't an existing user
    */
   createCustomerView() {
-    return (
-      <div className="card-header">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.firstNameFieldChange}
-            className="form-control"
-            placeholder="Enter first name.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              First Name
-            </span>
+    let createDisplay = "";
+
+    if (this.state.userId === "") {
+      createDisplay = (
+        <div className="card-header">
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.firstNameFieldChange}
+              className="form-control"
+              placeholder="Enter first name.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                First Name
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.lastNameFieldChange}
-            className="form-control"
-            placeholder="Enter last name.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Last Name
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.lastNameFieldChange}
+              className="form-control"
+              placeholder="Enter last name.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Last Name
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="date"
-            onChange={this.bdayFieldChange}
-            className="form-control"
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Birthdate
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="date"
+              onChange={this.bdayFieldChange}
+              className="form-control"
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Birthdate
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.ssnFieldChange}
-            className="form-control"
-            placeholder="Enter Social Security Number"
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Social Security Number
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.ssnFieldChange}
+              className="form-control"
+              placeholder="Enter Social Security Number"
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Social Security Number
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="email"
-            onChange={this.emailFieldChange}
-            className="form-control"
-            placeholder="Enter email address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Email
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="email"
+              onChange={this.emailFieldChange}
+              className="form-control"
+              placeholder="Enter email address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Email
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.street1FieldChange}
-            className="form-control"
-            placeholder="Enter line 1 of street address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Street 1
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.street1FieldChange}
+              className="form-control"
+              placeholder="Enter line 1 of street address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Street 1
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.street2FieldChange}
-            className="form-control"
-            placeholder="Enter line 2 of street address.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Street 2
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.street2FieldChange}
+              className="form-control"
+              placeholder="Enter line 2 of street address.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Street 2
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.cityFieldChange}
-            className="form-control"
-            placeholder="Enter city of residence.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              City
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.cityFieldChange}
+              className="form-control"
+              placeholder="Enter city of residence.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                City
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.stateFieldChange}
-            className="form-control"
-            maxLength="2"
-            placeholder="Enter state abbreviation.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              State
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.stateFieldChange}
+              className="form-control"
+              maxLength="2"
+              placeholder="Enter state abbreviation.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                State
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            onChange={this.zipFieldChange}
-            className="form-control"
-            placeholder="Enter zip code.."
-          />
-          <div className="input-group-append">
-            <span className="input-group-text" id="basic-addon2">
-              Zip Code
-            </span>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              onChange={this.zipFieldChange}
+              className="form-control"
+              placeholder="Enter zip code.."
+            />
+            <div className="input-group-append">
+              <span className="input-group-text" id="basic-addon2">
+                Zip Code
+              </span>
+            </div>
           </div>
+          <button
+            onClick={this.createNewCustomer} //triggers the create action
+            className="btn btn-primary btn-lg"
+          >
+            Create User
+          </button>
+          <br />
         </div>
-        <button
-          onClick={this.createNewCustomer} //triggers the create action
-          className="btn btn-primary btn-lg"
-        >
-          Create User
-        </button>
-        <br />
-      </div>
-    );
+      );
+    } else {
+      createDisplay = (
+        <div>
+          <p>Customer ID Applied</p>;
+          <br />
+        </div>
+      );
+    }
+
+    return { createDisplay };
   }
   /**
    * decides what to render in the customer section of the page
