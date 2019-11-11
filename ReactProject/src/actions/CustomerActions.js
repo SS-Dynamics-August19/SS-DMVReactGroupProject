@@ -7,6 +7,7 @@
  *************************************/
 import Dispatcher from "../dispatcher/appDispatcher.js";
 import axios from "axios";
+import { adalApiFetch } from '../adalConfig.js';
 const config = {
   "OData-MaxVersion": 4.0,
   "OData-Version": 4.0,
@@ -40,48 +41,49 @@ const CustomerActions = {
       actionType: "update_customer_started"
     });
 
-        // create customer object
-        let customer = {
-            madmv_age: updateObj.madmv_age,
-            madmv_birthdate: updateObj.madmv_birthdate,
-            madmv_city: updateObj.madmv_city,
-            madmv_country: updateObj.madmv_country,
-            madmv_cssn: updateObj.madmv_cssn,
-            madmv_email: updateObj.madmv_email,
-            madmv_firstname: updateObj.madmv_firstname,
-            madmv_lastname: updateObj.madmv_lastname,
-            madmv_phonenumber: updateObj.madmv_phonenumber,
-            madmv_stateprovince: updateObj.madmv_stateprovince,
-            madmv_street1: updateObj.madmv_street1,
-            madmv_street2: updateObj.madmv_street2,
-            madmv_zippostalcode: updateObj.madmv_zippostalcode
-        }
-        
-        // build uri and headers
-        let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(" + id + ")";
-        let config = {
-            'OData-MaxVersion': 4.0,
-            'OData-Version': 4.0,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        }
+    // create customer object
+    let customer = {
+        madmv_age: updateObj.madmv_age,
+        madmv_birthdate: updateObj.madmv_birthdate,
+        madmv_city: updateObj.madmv_city,
+        madmv_country: updateObj.madmv_country,
+        madmv_cssn: updateObj.madmv_cssn,
+        madmv_email: updateObj.madmv_email,
+        madmv_firstname: updateObj.madmv_firstname,
+        madmv_lastname: updateObj.madmv_lastname,
+        madmv_phonenumber: updateObj.madmv_phonenumber,
+        madmv_stateprovince: updateObj.madmv_stateprovince,
+        madmv_street1: updateObj.madmv_street1,
+        madmv_street2: updateObj.madmv_street2,
+        madmv_zippostalcode: updateObj.madmv_zippostalcode
+    }
+    
+    // build uri and headers
+    let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(" + id + ")";
+    let config = {
+      method: 'patch',
+      'OData-MaxVersion': 4.0,
+      'OData-Version': 4.0,
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
+      data: customer
+    };
 
-        // make axios put call
-        axios.patch(uri, customer, config)
-            .then(res => {
-                Dispatcher.dispatch({
-                    actionType: 'update_customer_success',
-                    data: res.data
-                });
-            })
-            .catch( (error) => {
-                console.log(error);
-                Dispatcher.dispatch({
-                    actionType: 'update_customer_failure'
-                });
+    // send the api call
+    adalApiFetch(axios, uri, config)
+        .then(res => {
+            Dispatcher.dispatch({
+                actionType: 'update_customer_success',
+                data: res.data
             });
-
-    },
+        })
+        .catch( (error) => {
+            console.log(error);
+            Dispatcher.dispatch({
+                actionType: 'update_customer_failure'
+            });
+        });
+  },
   /*
    * *Send customer create request to the Dynamics365 api
    * @param person object built from the creator component
@@ -151,9 +153,16 @@ const CustomerActions = {
     });
     // build uri and headers
     let uri = "https://sstack.crm.dynamics.com/api/data/v9.1/madmv_ma_customers(" + id + ")";
-    // make axios put call
-    axios
-      .delete(uri)
+    let config = {
+      method: 'delete',
+      'OData-MaxVersion': 4.0,
+      'OData-Version': 4.0,
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
+    };
+
+    // send the api call
+    adalApiFetch(axios, uri, config)
       .then(res => {
         console.log(res.data);
         Dispatcher.dispatch({
