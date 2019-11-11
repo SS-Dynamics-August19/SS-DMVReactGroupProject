@@ -158,7 +158,7 @@ class ApplicationDetailsView extends React.Component {
 
             <div className="detailedHeader">
                 <h1>Application</h1>
-                <button className={(this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
+                <button className={(!this.state.disabled)?"invisible":"btn btn-primary"} onClick={this.handleClick} type="button">Update Record</button>
             </div>
             <div className="h2Th">
                 <h2>Detailed Information</h2>
