@@ -104,7 +104,7 @@ export default class ActivitiesHome extends React.Component {
         //display all the stuff and things
         return (
             <div className="row">
-                <div className="cardActContainer col-4">
+                <div className="cardActContainer col-lg-4 col-sm-12">
                    {actValidCategory.map((value, index) => {
                        let cdate = (new Date(value.createdon)).toLocaleDateString('en-US', DATE_OPTIONS);
                        
@@ -115,7 +115,7 @@ export default class ActivitiesHome extends React.Component {
                                         <h5 className="card-title">{value.subject}</h5>
                                         <p className="card-text">{value.description}</p>
                                         <button
-                                            className="btn btn-sm btn-primary"
+                                            className="btn btn-block btn-primary"
                                             //onClick={() => this.handleView(record)}
                                             onClick={() => this.handleView(value._regardingobjectid_value, value.category)}
                                         >
@@ -126,42 +126,42 @@ export default class ActivitiesHome extends React.Component {
                             )
                         })}
                 </div>
-                <div className="cardCounterContainer col-8">
-                <div className="row">
-                    <div className="cardCounter">
-                        <h5 className="card-header">Applications</h5>
-                        <div className="card-body">
-                            <h5 className="card-title">{appValidDates.length}</h5>
-                            <p className="card-text">Created this week</p>
-                        </div>
-                    </div>
-                    <div className="cardCounter">
-                        <h5 className="card-header">Customers</h5>
-                        <div className="card-body">
-                            <h5 className="card-title">{cusValidDates.length}</h5>
-                            <p className="card-text">Created this week</p>
-                        </div>
-                    </div>
-                    <div className="cardCounter">
-                        <h5 className="card-header">Vehicles</h5>
-                        <div className="card-body">
-                            <h5 className="card-title">{vehValidDates.length}</h5>
-                            <p className="card-text">Created this week</p>
-                        </div>
-                    </div>
-                    </div>
+                <div className="cardCounterContainer col-lg-8 col-sm-12">
                     <div className="row">
-                    <div className="cardSpacer"><hr /></div>
+                        <div className="cardCounter col-3">
+                            <h5 className="card-header">Applications</h5>
+                            <div className="card-body">
+                                <h5 className="card-title">{appValidDates.length} Created</h5>
+                                <h5 className="card-text">this week</h5>
+                            </div>
+                        </div>
+                        <div className="col-1"></div>
+                        <div className="cardCounter col-3">
+                            <h5 className="card-header">Customers</h5>
+                            <div className="card-body">
+                                <h5 className="card-title">{cusValidDates.length} Created</h5>
+                                <h5 className="card-text">this week</h5>
+                            </div>
+                        </div>
+                        <div className="col-1"></div>
+                        <div className="cardCounter col-3">
+                            <h5 className="card-header">Vehicles</h5>
+                            <div className="card-body">
+                                <h5 className="card-title">{vehValidDates.length} Created</h5>
+                                <h5 className="card-text">this week</h5>
+                            </div>
+                        </div>
+                        <div className="pieContainer col-12">
+                            <div className="row">
+                                    <MDBContainer>
+                                        <h3 className="">Application Types</h3>
+                                        <Pie data={pieData} options={{ responsive: true }} />
+                                    </MDBContainer>
+                            </div>
+                        </div>
                     </div>
-                    <div className="row">
-                     <div className="col-12">
-                    <MDBContainer>
-                        <h3 className="">Application Types</h3>
-                        <Pie data={pieData} options={{ responsive: true }} />
-                    </MDBContainer>
-                    </div>
-                    </div>
-                </div>
+                </div>    
+                
             </div>
         );
     }
